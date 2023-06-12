@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { TodoItem, generateUniqueId } from "../App";
 import { TodoContext } from "../context/todoContext";
 import AddImg from "./add.png";
@@ -39,6 +39,10 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey, onAddSubTodo }) => {
     e.preventDefault();
     handleAddTodo(todoKey, subTodoText)
   }
+
+  useEffect(()=>{
+console.log(todos)
+  },[todos])
   return (
     <div
       className="todo_container"

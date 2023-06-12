@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TodoList from './components/TodoList';
-import data from './data/todoData';
 import { TodoContextProvider } from './context/todoContext';
+import { TodoContext } from './context/todoContext';
 
 export interface TodoItem {
   id: string;
@@ -17,31 +17,32 @@ export function generateUniqueId(): string {
   return `${timestamp}_${randomNumber}`;
 }
 const App: React.FC = () => {
-  const [todo, setTodos] = useState<TodoItem[]>(data);
+  const {todos,addTodo} = useContext(TodoContext);
+  const [subTodoText, setSubTodoText] = useState("");
 
-  // const handleAddSubTodo = (parentId: string, title: string) => {
-  //   // Find the parent todo based on parentId
-  //   const parentTodo = todo.find(todo => todo.id === parentId);
+  const handleChange=(
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSubTodoText(event.target.value);
+  };
 
-  //   if (parentTodo) {
-  //     // Create the new sub-todo
-  //     const newSubTodo: TodoItem = {
-  //       id: generateUniqueId(), // You would need to implement a unique ID generation logic
-  //       title: title,
-  //       todo: []
-  //     };
+  const handleParentaddition=()=>{
+    console.log(todos)
+    addTodo(new Date().toISOString(),subTodoText)
+    setSubTodoText("")
+  }
 
-  //     // Add the new sub-todo to the parent todo
-  //     parentTodo.todo.push(newSubTodo);
-  //   }
-  // };
+  useEffect(()=>{
+    console.log(todos)
+      },[todos])
+
 
   return (
     <div>
-      <TodoContextProvider>
       <h1>Nested Todos</h1>
-      <TodoList todo={todo} />
-      </TodoContextProvider>
+      <input type="text" value={subTodoText} onChange={handleChange} />
+      <div className="add_parent" onClick={handleParentaddition}>Add +</div>
+      <TodoList todo={todos} />
     </div>
   );
 };

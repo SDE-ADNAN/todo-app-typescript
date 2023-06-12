@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 import { TodoItem } from "../App";
 import data from "../data/todoData";
 
-const initialTodoData: TodoItem[] = data;
+const initialTodoData: TodoItem[] = [];
 
 type TodoContextProviderProps = {
   children: React.ReactNode;
@@ -48,6 +48,15 @@ export const TodoContextProvider = ({
 
       // Update the todos state
       setTodos([...todos]);
+    }else if(!parentTodo){
+      const newTodo: TodoItem = {
+        id: generateUniqueId(),
+        title: title,
+        todo: [],
+        isCreated:true,
+        showInput:false
+      };
+      setTodos([...todos,{...newTodo}]);
     }
   };
 
@@ -56,7 +65,12 @@ export const TodoContextProvider = ({
     const updatedTodos = deleteTodoById(id, todos);
 
     // Update the todos state
-    setTodos(updatedTodos);
+    if(updatedTodos.length===0){
+      setTodos([])
+    }else{
+      setTodos(updatedTodos);
+    }
+ 
   };
 
   const setShowAddInput = (id: string,val: boolean)=>{
@@ -110,6 +124,9 @@ const changeTodoById = (id: string, updatedTodo: TodoItem, todos: TodoItem[]): T
 };
 // Helper function to delete a todo by id recursively
 const deleteTodoById = (id: string, todos: TodoItem[]): TodoItem[] => {
+  console.log(id)
+  console.log(todos)
+
   return todos.filter(todo => {
     if (todo.id === id) {
       // Exclude the todo with the given id
