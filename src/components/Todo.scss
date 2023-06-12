@@ -8,12 +8,21 @@
   img{
     width:20px
 }
- span{
+ .CTAS_container{
     display: flex;
     gap: 10px;
+    justify-content: space-between;
+
+    .CTAS{
+        display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    }
  }
  .head_container{
     padding: 0 10px;
+    width:100%;
 
     .adc{
         padding:0
@@ -23,11 +32,16 @@
 
 .btns{
     display: flex;
+    form{
+        flex: 1;
+    display: flex;
+    }
     img{
         width:20px
     }
     input{
         margin-left: 10px;
+        margin-top: 10px;
     }
 }
 

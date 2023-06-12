@@ -72,15 +72,15 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
       className="todo_container"
     >
       <div className="head_container">
-        <span>
+        <div className="CTAS_container">
           {todo.title}
-          <div onClick={() => handleDeleteTodo(todoKey)}>
+          <div className="CTAS"><div onClick={() => handleDeleteTodo(todoKey)}>
             <img src={DeleteImg} alt={"images"}></img>
           </div>
           <div className={`add_btn`} onClick={() => setShowAddInput(todoKey, true)}>
             <img src={AddImg} alt={"images"}></img>
-          </div>
-        </span>
+          </div></div>
+        </div>
         <div className={`btns `}>
           {todo.showInput && <form onSubmit={handleSubmit}>
             <input
