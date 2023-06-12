@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TodoList from './components/TodoList';
 import data from './data/todoData';
+import { TodoContextProvider } from './context/todoContext';
 
 export interface TodoItem {
   id: string;
@@ -35,8 +36,10 @@ const App: React.FC = () => {
 
   return (
     <div>
+      <TodoContextProvider>
       <h1>Nested Todos</h1>
       <TodoList todo={todo} onAddSubTodo={handleAddSubTodo} />
+      </TodoContextProvider>
     </div>
   );
 };
