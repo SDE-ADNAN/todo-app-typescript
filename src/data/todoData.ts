@@ -2,24 +2,29 @@ import {TodoItem} from "../App"
 
 const data : TodoItem[]  = [{
     id:"1",
-    title: " Todo no.1",
+    title: " add lecture notes",
+    showInput:false,
     todo: [
         {
             id:"2",
-            title: " Todo no.1",
+            title: " do home work",
+                showInput:false,
             todo: [] 
         },
         {
             id:"3",
-            title: " Todo no.1",
+            title: " go for a walk",
+                showInput:false,
             todo: [
                 {
                     id:"4",
-                    title: " Todo no.1",
+                    title: "go to gym",
+                        showInput:false,
                     todo: [
                         {
                             id:"5",
-                            title: " Todo no.1",
+                            title: " call papa",
+                                showInput:false,
                             todo: []
                         }
                     ] 
@@ -28,7 +33,8 @@ const data : TodoItem[]  = [{
         },
         {
             id:"6",
-            title: " Todo no.1",
+            title: "do assignment",
+                showInput:false,
             todo: [] 
         },
     ]

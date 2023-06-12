@@ -13,12 +13,14 @@ type TodoContextType = {
   todos: TodoItem[];
   addTodo: (parentId: string, title: string) => void;
   deleteTodo: (id: string) => void;
+  setShowAddInput: (id: string,val: boolean) => void;
 };
 
 export const TodoContext = createContext<TodoContextType>({
   todos: initialTodoData,
   addTodo: () => {},
   deleteTodo: () => {},
+  setShowAddInput:() => {},
 });
 
 export const TodoContextProvider = ({
@@ -37,10 +39,12 @@ export const TodoContextProvider = ({
         id: generateUniqueId(),
         title: title,
         todo: [],
+        isCreated:true,
+        showInput:false
       };
 
       // Add the new todo to the parent todo
-      parentTodo.todo.push(newTodo);
+      parentTodo.todo.unshift(newTodo);
 
       // Update the todos state
       setTodos([...todos]);
@@ -55,10 +59,22 @@ export const TodoContextProvider = ({
     setTodos(updatedTodos);
   };
 
+  const setShowAddInput = (id: string,val: boolean)=>{
+    const ITodo = findTodoById(id, todos);
+    console.log(ITodo)
+    if(ITodo){
+      ITodo.showInput = val
+      const updatedTodos = changeTodoById(id,ITodo,todos)
+      setTodos(updatedTodos);
+    }
+  }
+
+
   const contextValue: TodoContextType = {
     todos: todos,
     addTodo: addTodo,
     deleteTodo: deleteTodo,
+    setShowAddInput:setShowAddInput
   };
 
   return (
@@ -80,27 +96,33 @@ const findTodoById = (id: string, todos: TodoItem[]): TodoItem | undefined => {
   }
   return undefined;
 };
-
+//Helper for changing a todo at a specific id
+const changeTodoById = (id: string, updatedTodo: TodoItem, todos: TodoItem[]): TodoItem[] => {
+  return todos.map(todo => {
+    if (todo.id === id) {
+      return updatedTodo;
+    } else if (todo.todo.length > 0) {
+      return { ...todo, todo: changeTodoById(id, updatedTodo, todo.todo) };
+    } else {
+      return todo;
+    }
+  });
+};
 // Helper function to delete a todo by id recursively
-const deleteTodoById = (
-  id: string,
-  todos: TodoItem[]
-): TodoItem[] => {
-  return todos.reduce((acc, todo) => {
+const deleteTodoById = (id: string, todos: TodoItem[]): TodoItem[] => {
+  return todos.filter(todo => {
     if (todo.id === id) {
       // Exclude the todo with the given id
-      return acc;
+      return false;
     } else if (todo.todo.length > 0) {
       // Recursively delete todos from the sub-todo list
-      const updatedSubTodos = deleteTodoById(id, todo.todo);
-      if (updatedSubTodos.length > 0) {
-        // Update the sub-todo list if it's not empty
-        return [...acc, { ...todo, todo: updatedSubTodos }];
-      }
+      todo.todo = deleteTodoById(id, todo.todo);
+      return true;
+    } else {
+      // Include the todo if it's not the one to be deleted
+      return true;
     }
-    // Include the todo if it's not the one to be deleted and has no updated sub-todos
-    return [...acc, todo];
-  }, [] as TodoItem[]);
+  });
 };
 
 // Helper function to generate a unique ID

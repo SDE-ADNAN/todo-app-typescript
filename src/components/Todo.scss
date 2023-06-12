@@ -1,0 +1,28 @@
+.todo_container{
+background-color: aqua;
+border:solid black 1px;
+  img{
+    width:20px
+}
+ span{
+    display: flex;
+    gap: 10px;
+ }
+ .head_container{
+    
+ }
+}
+
+.btns{
+    display: flex;
+    img{
+        width:20px
+    }
+    input{
+        margin-left: 40px;
+    }
+}
+
+.btns.hide{
+    display:none
+}
