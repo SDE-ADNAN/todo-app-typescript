@@ -3,24 +3,24 @@ import {TodoItem} from "../App"
 const data : TodoItem[]  = [{
     id:"1",
     title: " Todo no.1",
-    todos: [
+    todo: [
         {
             id:"2",
             title: " Todo no.1",
-            todos: [] 
+            todo: [] 
         },
         {
             id:"3",
             title: " Todo no.1",
-            todos: [
+            todo: [
                 {
                     id:"4",
                     title: " Todo no.1",
-                    todos: [
+                    todo: [
                         {
                             id:"5",
                             title: " Todo no.1",
-                            todos: []
+                            todo: []
                         }
                     ] 
                 }
@@ -29,7 +29,7 @@ const data : TodoItem[]  = [{
         {
             id:"6",
             title: " Todo no.1",
-            todos: [] 
+            todo: [] 
         },
     ]
 }]

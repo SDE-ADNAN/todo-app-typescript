@@ -1,22 +1,18 @@
 import React from 'react';
 import Todo from './Todo';
+import { TodoItem } from '../App';
 
 interface TodoListProps {
-  todos: {
-    id: string;
-    title: string;
-    todos: {
-      id: string;
-      title: string;
-    }[];
-  }[];
-  onAddSubTodo: (parentId: string, title: string) => void;
+  // id: string;
+  // title: string;
+  todo: TodoItem[];
+  onAddSubTodo?: (parentId: string, title: string) => void;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ todos, onAddSubTodo }) => {
+const TodoList: React.FC<TodoListProps> = ({ todo, onAddSubTodo }) => {
   return (
     <div>
-      {todos.map((todo) => (
+      {todo.map((todo) => (
         <Todo key={todo.id} todo={todo} onAddSubTodo={onAddSubTodo} />
       ))}
     </div>

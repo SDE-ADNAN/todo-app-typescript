@@ -5,7 +5,8 @@ import data from './data/todoData';
 export interface TodoItem {
   id: string;
   title: string;
-  todos: TodoItem[];
+  todo: TodoItem[];
+  onAddSubTodo?: (parentId: string, title: string) => void;
 }
 
 const App: React.FC = () => {
@@ -17,11 +18,11 @@ const App: React.FC = () => {
         const newTodo: TodoItem = {
           id: new Date().toISOString(),
           title,
-          todos: [],
+          todo: [],
         };
         return {
           ...todo,
-          todos: [...todo.todos, newTodo],
+          todos: [...todo.todo, newTodo],
         };
       }
       return todo;
@@ -33,7 +34,7 @@ const App: React.FC = () => {
   return (
     <div>
       <h1>Nested Todos</h1>
-      <TodoList todos={todos} onAddSubTodo={handleAddSubTodo} />
+      <TodoList todo={todos} onAddSubTodo={handleAddSubTodo} />
     </div>
   );
 };

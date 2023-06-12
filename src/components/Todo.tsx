@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
+import { TodoItem } from '../App';
 
 interface TodoProps {
   todo: {
     id: string;
     title: string;
-    todos: {
-      id: string;
-      title: string;
-    }[];
+    todo: TodoItem[];
   };
-  onAddSubTodo: (parentId: string, title: string) => void;
+  onAddSubTodo?: (parentId: string, title: string) => void;
 }
 
 const Todo: React.FC<TodoProps> = ({ todo, onAddSubTodo }) => {
@@ -20,7 +18,9 @@ const Todo: React.FC<TodoProps> = ({ todo, onAddSubTodo }) => {
   };
 
   const handleAddSubTodo = () => {
+    if(onAddSubTodo){
     onAddSubTodo(todo.id, subTodoText);
+  }
     setSubTodoText('');
   };
 
@@ -29,8 +29,8 @@ const Todo: React.FC<TodoProps> = ({ todo, onAddSubTodo }) => {
       <input type="checkbox" />
       <span>{todo.title}</span>
       <ul>
-        {todo.todos.map((subTodo) => (
-          <li key={subTodo.id}>{subTodo.title}</li>
+        {todo.todo.map((todo) => (
+          <li >{JSON.stringify(todo)}</li>
         ))}
       </ul>
       <div>
