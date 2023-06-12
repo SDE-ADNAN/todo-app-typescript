@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import TodoList from './components/TodoList';
 
-function App() {
+interface TodoItem {
+  id: number;
+  text: string;
+  subTodos: TodoItem[];
+}
+
+const App: React.FC = () => {
+  const [todos, setTodos] = useState<TodoItem[]>([
+    {
+      id: 1,
+      text: 'Todo 1',
+      subTodos: [],
+    },
+    {
+      id: 2,
+      text: 'Todo 2',
+      subTodos: [],
+    },
+  ]);
+
+  const handleAddSubTodo = (parentId: number, text: string) => {
+    const newTodos = todos.map((todo) => {
+      if (todo.id === parentId) {
+        const newSubTodo: TodoItem = {
+          id: Math.random(),
+          text,
+          subTodos: [],
+        };
+        return {
+          ...todo,
+          subTodos: [...todo.subTodos, newSubTodo],
+        };
+      }
+      return todo;
+    });
+
+    setTodos(newTodos);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          React
-        </a>
-      </header>
+    <div>
+      <h1>Nested Todos</h1>
+      <TodoList todos={todos} onAddSubTodo={handleAddSubTodo} />
     </div>
   );
-}
+};
 
 export default App;
