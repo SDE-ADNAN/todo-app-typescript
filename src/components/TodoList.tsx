@@ -3,10 +3,7 @@ import Todo from "./Todo";
 import { TodoItem } from '../App';
 
 interface TodoListProps {
-  // id: string;
-  // title: string;
   todo: TodoItem[];
-  // onAddSubTodo?: (parentId: string, title: string) => void;
 }
 
 const TodoList: React.FC<TodoListProps> = ({ todo}) => {
