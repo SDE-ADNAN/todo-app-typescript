@@ -13,7 +13,7 @@ const TodoList: React.FC<TodoListProps> = ({ todo, onAddSubTodo }) => {
   return (
     <div>
       {todo.map((todo) => (
-        <Todo key={todo.id} todo={todo} onAddSubTodo={onAddSubTodo} />
+        <Todo todoKey={todo.id} todo={todo} onAddSubTodo={onAddSubTodo} />
       ))}
     </div>
   );
