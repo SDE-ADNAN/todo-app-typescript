@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TodoItem } from '../App';
+import { TodoItem, generateUniqueId } from '../App';
 
 interface TodoProps {
   todo: {
@@ -21,16 +21,32 @@ const Todo: React.FC<TodoProps> = ({ todo, onAddSubTodo }) => {
     if(onAddSubTodo){
     onAddSubTodo(todo.id, subTodoText);
   }
+  const handleAddSubTodo = (parentId: string, title: string) => {
+    // Find the parent todo based on parentId
+    const parentTodo = todo.todo.find(todo => todo.id === parentId);
+
+    if (parentTodo) {
+      // Create the new sub-todo
+      const newSubTodo: TodoItem = {
+        id: generateUniqueId(), // You would need to implement a unique ID generation logic
+        title: title,
+        todo: []
+      };
+
+      // Add the new sub-todo to the parent todo
+      parentTodo.todo.push(newSubTodo);
+    }
+  };
     setSubTodoText('');
   };
 
   return (
-    <div>
+    <div style={{padding:"5px 0 5px 0"}}>
       <input type="checkbox" />
       <span>{todo.title}</span>
       <ul>
         {todo.todo.map((todo) => (
-          <li >{JSON.stringify(todo)}</li>
+        <Todo todo={todo} key={todo.id}  onAddSubTodo={handleAddSubTodo}/>
         ))}
       </ul>
       <div>
