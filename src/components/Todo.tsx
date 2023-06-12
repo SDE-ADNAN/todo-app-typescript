@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { TodoItem, generateUniqueId } from "../App";
+import React, { useState, useContext} from "react";
+import { TodoItem} from "../App";
 import { TodoContext } from "../context/todoContext";
 import AddImg from "./add.png";
 import DeleteImg from "./remove.png";
@@ -68,29 +68,18 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
 
   return (
     <div
-      className="todo_container"
-      style={{ padding: "5px 0 5px 0" }}
       key={todoKey}
+      className="todo_container"
     >
       <div className="head_container">
         <span>
-          <img
-            src={
-              "https://upload.wikimedia.org/wikipedia/commons/9/92/Location_dot_red.svg"
-            }
-            alt={
-              "https://upload.wikimedia.org/wikipedia/commons/9/92/Location_dot_red.svg"
-            }
-          ></img>
-          {todo.title}{" "}
-          {"      " + todo.id}
-
+          {todo.title}
           <div onClick={() => handleDeleteTodo(todoKey)}>
             <img src={DeleteImg} alt={"images"}></img>
           </div>
-          <button onClick={() => setShowAddInput(todoKey, true)}>
+          <div className={`add_btn`} onClick={() => setShowAddInput(todoKey, true)}>
             <img src={AddImg} alt={"images"}></img>
-          </button>
+          </div>
         </span>
         <div className={`btns `}>
           {todo.showInput && <form onSubmit={handleSubmit}>

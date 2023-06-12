@@ -1,6 +1,5 @@
 import React, { createContext, useState } from "react";
 import { TodoItem } from "../App";
-import data from "../data/todoData";
 
 const initialTodoData: TodoItem[] = [];
 
