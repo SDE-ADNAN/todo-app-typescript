@@ -8,11 +8,11 @@ import "./Todo.scss";
 interface TodoProps {
   todo: TodoItem;
   todoKey: string;
-  onAddSubTodo?: (parentId: string, title: string) => void;
+  // onAddSubTodo?: (parentId: string, title: string) => void;
 }
 
-const Todo: React.FC<TodoProps> = ({ todo, todoKey, onAddSubTodo }) => {
-  const { todos, addTodo, deleteTodo,setShowAddInput } = useContext(TodoContext);
+const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
+  const { todos, addTodo, deleteTodo, setShowAddInput } = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
 
   const handleSubTodoTextChange = (
@@ -27,7 +27,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey, onAddSubTodo }) => {
     addTodo(parentId, title);
     setSubTodoText("");
     // setShowAddInput2(false)
-    setShowAddInput(todoKey,false)
+    setShowAddInput(todoKey, false)
   };
 
   const handleDeleteTodo = (id: string) => {
@@ -40,19 +40,39 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey, onAddSubTodo }) => {
     handleAddTodo(todoKey, subTodoText)
   }
 
-  useEffect(()=>{
-console.log(todos)
-  },[todos])
+  const RenderConditionalTodos = () => {
+    if (todo.todo != null) {
+      return (<ul className="adc">
+        {todo.todo.map((subTodo) => (
+          <Todo
+            todo={subTodo}
+            todoKey={subTodo.id}
+          />
+        ))}
+      </ul>)
+    } else
+      if (todo.todo === null && todos.length > 0) {
+        return (<ul className="xyz">
+          {todos.map((subTodo) => (
+            <Todo
+              todo={subTodo}
+              todoKey={subTodo.id}
+            />
+          ))}
+        </ul>)
+      }
+    return (
+      <div>nope</div>
+    )
+  }
+
   return (
     <div
       className="todo_container"
       style={{ padding: "5px 0 5px 0" }}
       key={todoKey}
     >
-
       <div className="head_container">
-
-
         <span>
           <img
             src={
@@ -63,37 +83,26 @@ console.log(todos)
             }
           ></img>
           {todo.title}{" "}
-          {"      "+todo.id}
-          
+          {"      " + todo.id}
+
           <div onClick={() => handleDeleteTodo(todoKey)}>
             <img src={DeleteImg} alt={"images"}></img>
           </div>
-          <button onClick={() => setShowAddInput(todoKey,true)}>
+          <button onClick={() => setShowAddInput(todoKey, true)}>
             <img src={AddImg} alt={"images"}></img>
           </button>
         </span>
-        <div className={`btns ${todo.isCreated && "hide"}`}>
-            {todo.showInput  && <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                value={subTodoText}
-                onChange={handleSubTodoTextChange}
-              />
-            </form>}
-          </div>
-        <ul>
-          {todo.todo.map((subTodo) => (
-            <Todo
-              todo={subTodo}
-              todoKey={subTodo.id}
-              onAddSubTodo={handleAddTodo}
+        <div className={`btns `}>
+          {todo.showInput && <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={subTodoText}
+              onChange={handleSubTodoTextChange}
             />
-          ))}
-        </ul>
-
+          </form>}
+        </div>
+        <RenderConditionalTodos />
       </div>
-
-
     </div>
   );
 };

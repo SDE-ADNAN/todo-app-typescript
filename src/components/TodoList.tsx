@@ -6,14 +6,14 @@ interface TodoListProps {
   // id: string;
   // title: string;
   todo: TodoItem[];
-  onAddSubTodo?: (parentId: string, title: string) => void;
+  // onAddSubTodo?: (parentId: string, title: string) => void;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ todo, onAddSubTodo }) => {
+const TodoList: React.FC<TodoListProps> = ({ todo}) => {
   return (
     <div>
       {todo.map((todo) => (
-        <Todo todoKey={todo.id} todo={todo} onAddSubTodo={onAddSubTodo} />
+        <Todo todoKey={todo.id} todo={todo}/>
       ))}
     </div>
   );

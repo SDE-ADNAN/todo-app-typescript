@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import TodoList from './components/TodoList';
-import { TodoContextProvider } from './context/todoContext';
 import { TodoContext } from './context/todoContext';
 
 export interface TodoItem {
@@ -9,7 +8,7 @@ export interface TodoItem {
   todo: TodoItem[];
   isCreated?:Boolean;
   showInput:Boolean;
-  onAddSubTodo?: (parentId: string, title: string) => void;
+  // onAddSubTodo?: (parentId: string, title: string) => void;
 }
 export function generateUniqueId(): string {
   const timestamp = new Date().getTime();
@@ -31,11 +30,6 @@ const App: React.FC = () => {
     addTodo(new Date().toISOString(),subTodoText)
     setSubTodoText("")
   }
-
-  useEffect(()=>{
-    console.log(todos)
-      },[todos])
-
 
   return (
     <div>
