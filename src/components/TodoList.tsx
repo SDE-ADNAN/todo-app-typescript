@@ -3,14 +3,14 @@ import Todo from './Todo';
 
 interface TodoListProps {
   todos: {
-    id: number;
-    text: string;
-    subTodos: {
-      id: number;
-      text: string;
+    id: string;
+    title: string;
+    todos: {
+      id: string;
+      title: string;
     }[];
   }[];
-  onAddSubTodo: (parentId: number, text: string) => void;
+  onAddSubTodo: (parentId: string, title: string) => void;
 }
 
 const TodoList: React.FC<TodoListProps> = ({ todos, onAddSubTodo }) => {

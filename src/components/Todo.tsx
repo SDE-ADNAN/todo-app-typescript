@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 
 interface TodoProps {
   todo: {
-    id: number;
-    text: string;
-    subTodos: {
-      id: number;
-      text: string;
+    id: string;
+    title: string;
+    todos: {
+      id: string;
+      title: string;
     }[];
   };
-  onAddSubTodo: (parentId: number, text: string) => void;
+  onAddSubTodo: (parentId: string, title: string) => void;
 }
 
 const Todo: React.FC<TodoProps> = ({ todo, onAddSubTodo }) => {
@@ -27,10 +27,10 @@ const Todo: React.FC<TodoProps> = ({ todo, onAddSubTodo }) => {
   return (
     <div>
       <input type="checkbox" />
-      <span>{todo.text}</span>
+      <span>{todo.title}</span>
       <ul>
-        {todo.subTodos.map((subTodo) => (
-          <li key={subTodo.id}>{subTodo.text}</li>
+        {todo.todos.map((subTodo) => (
+          <li key={subTodo.id}>{subTodo.title}</li>
         ))}
       </ul>
       <div>

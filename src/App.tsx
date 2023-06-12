@@ -1,37 +1,27 @@
 import React, { useState } from 'react';
 import TodoList from './components/TodoList';
+import data from './data/todoData';
 
-interface TodoItem {
-  id: number;
-  text: string;
-  subTodos: TodoItem[];
+export interface TodoItem {
+  id: string;
+  title: string;
+  todos: TodoItem[];
 }
 
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<TodoItem[]>([
-    {
-      id: 1,
-      text: 'Todo 1',
-      subTodos: [],
-    },
-    {
-      id: 2,
-      text: 'Todo 2',
-      subTodos: [],
-    },
-  ]);
+  const [todos, setTodos] = useState<TodoItem[]>(data);
 
-  const handleAddSubTodo = (parentId: number, text: string) => {
+  const handleAddSubTodo = (parentId: string, title: string) => {
     const newTodos = todos.map((todo) => {
       if (todo.id === parentId) {
-        const newSubTodo: TodoItem = {
-          id: Math.random(),
-          text,
-          subTodos: [],
+        const newTodo: TodoItem = {
+          id: new Date().toISOString(),
+          title,
+          todos: [],
         };
         return {
           ...todo,
-          subTodos: [...todo.subTodos, newSubTodo],
+          todos: [...todo.todos, newTodo],
         };
       }
       return todo;
