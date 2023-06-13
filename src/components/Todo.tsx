@@ -1,9 +1,8 @@
 import React, { useState, useContext} from "react";
 import { TodoItem} from "../App";
 import { TodoContext } from "../context/todoContext";
-import AddImg from "./add.png";
-import DeleteImg from "./remove.png";
 import "./Todo.scss";
+import { AddImg, DeleteImg } from "../medias";
 
 interface TodoProps {
   todo: TodoItem;

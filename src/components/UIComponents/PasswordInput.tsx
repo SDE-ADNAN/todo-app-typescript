@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import show from "./view.png"
-import hide from "./hidden.png"
 import "./PasswordInput.scss"
+import { hide, show } from '../../medias';
 
 interface PasswordInputProps {
   label: string;
