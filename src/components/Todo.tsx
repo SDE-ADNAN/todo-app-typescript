@@ -94,10 +94,10 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
         <div className="CTAS_container">
           
           {todo.title}
-          <div className="CTAS"><div onClick={() => handleDeleteTodo(todoKey)}>
+          <div className="CTAS"><div title={"Delete this todo "} onClick={() => handleDeleteTodo(todoKey)}>
             <img src={DeleteImg} alt={"images"}></img>
           </div>
-          <div className={`add_btn`} onClick={() => setShowAddInput(todoKey, true)}>
+          <div className={`add_btn`} title={"Add a subtodo"} onClick={() => setShowAddInput(todoKey, true)}>
             <img src={AddImg} alt={"images"}></img>
           </div></div>
           {todo.todo.length >0 && <img onClick={()=>setShowSubTodos(todo.id)} className={`rightarrow  ${todo.showSubtodos && "rotate-90deg"}`} src={rightArrow} alt={"right-arrow"}></img>}
@@ -115,7 +115,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
         
         <RenderConditionalTodos />
       </div>
-      <div className="checkbox">{checkboxDisabled && "first complete subtodos"}<input type="checkbox" disabled={checkboxDisabled} checked={todo.isCompleted} onChange={(e)=>handleCheckboxChange(e,todo.id)}></input></div>
+      <div className="checkbox"><input type="checkbox" disabled={checkboxDisabled} checked={todo.isCompleted} title={`${checkboxDisabled ? "first complete subtodos" : "Complete"} `} onChange={(e)=>handleCheckboxChange(e,todo.id)}></input></div>
       </div>
       
     </div>
