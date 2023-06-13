@@ -11,19 +11,21 @@
   .CTAS_container {
     display: flex;
     gap: 10px;
-    justify-content: space-between;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    align-items: center;
 
     .CTAS {
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: 10px;
+      gap: 5px;
       margin-right: 20px;
     }
   }
   .head_container {
     padding: 0 10px;
-    width: 100%;
+    width: 96%;
 
     .adc {
       padding: 0;
