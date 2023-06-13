@@ -15,6 +15,7 @@ type TodoContextType = {
   setShowAddInput: (id: string,val: boolean) => void;
   setIsCompleted: (id: string,val: boolean) => void;
   setShowSubTodos: (id: string) => void;
+  setNewTitle: (id: string,val: string) => void;
 };
 
 export const TodoContext = createContext<TodoContextType>({
@@ -24,6 +25,7 @@ export const TodoContext = createContext<TodoContextType>({
   setShowAddInput:() => {},
   setIsCompleted:() => {},
   setShowSubTodos:()=>{},
+  setNewTitle:()=>{},
 });
 
 export const TodoContextProvider = ({
@@ -64,7 +66,7 @@ export const TodoContextProvider = ({
         isCompleted:false,
         showSubtodos:true,
       };
-      setTodos([...todos,{...newTodo}]);
+      setTodos([{...newTodo},...todos]);
     }
   };
 
@@ -107,6 +109,14 @@ export const TodoContextProvider = ({
       setTodos(updatedTodos);
     }
   }
+  const setNewTitle = (id: string,val:string)=>{
+    const ITodo = findTodoById(id, todos);
+    if(ITodo){
+      ITodo.title = val
+      const updatedTodos = changeTodoById(id,ITodo,todos)
+      setTodos(updatedTodos);
+    }
+  }
 
 
   const contextValue: TodoContextType = {
@@ -116,6 +126,7 @@ export const TodoContextProvider = ({
     setShowAddInput:setShowAddInput,
     setIsCompleted:setIsCompleted,
     setShowSubTodos:setShowSubTodos,
+    setNewTitle:setNewTitle,
   };
 
   return (
