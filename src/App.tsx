@@ -60,7 +60,7 @@ const App: React.FC = () => {
 
   const Dashboard = () => {
     return (
-      <>
+      <React.Fragment>
         <div className="parent_todo_head">
           <h1>Nested Todos</h1>
           <button onClick={handleLogout} className="logoutBtn" >Logout</button>
@@ -81,7 +81,7 @@ const App: React.FC = () => {
         <div className="todos_list_container">
           <TodoList todo={todos} />
         </div>
-      </>
+      </React.Fragment>
     );
   };
 
@@ -89,20 +89,13 @@ const App: React.FC = () => {
     <div className="main_container">
       <Router>
         <Routes>
-        
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-          {isAuthenticated && (<>
+          {isAuthenticated && (<React.Fragment>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} /></>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} /></React.Fragment>
           )}
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
-          {/* <PrivateRoute
-            path="/dashboard"
-            element={<Dashboard />}
-            isAuthenticated={isAuthenticated}
-            redirectPath="/login"
-          /> */}
         </Routes>
       </Router>
     </div>

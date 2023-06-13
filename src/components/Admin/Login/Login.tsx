@@ -5,12 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import PasswordInput from '../../UIComponents/PasswordInput';
 import "./Login.scss"
 
-// const users: User[] = [
-//   { username: 'user1', password: 'password1' },
-//   { username: 'user2', password: 'password2' },
-//   // Add more user objects as needed
-// ];
-
 interface LoginProps extends LoginPageProps{
 }
 

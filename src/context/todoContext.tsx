@@ -26,6 +26,7 @@ export const TodoContextProvider = ({
   children,
   todo,
 }: TodoContextProviderProps) => {
+  
   const [todos, setTodos] = useState<TodoItem[]>(todo ?? initialTodoData);
 
   const addTodo = (parentId: string, title: string) => {

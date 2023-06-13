@@ -8,7 +8,6 @@ import "./Todo.scss";
 interface TodoProps {
   todo: TodoItem;
   todoKey: string;
-  // onAddSubTodo?: (parentId: string, title: string) => void;
 }
 
 const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
@@ -26,7 +25,6 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     // Call the addTodo function with the required parameters
     addTodo(parentId, title);
     setSubTodoText("");
-    // setShowAddInput2(false)
     setShowAddInput(todoKey, false)
   };
 
