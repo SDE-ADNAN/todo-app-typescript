@@ -3,7 +3,7 @@
   outline: solid white 2px;
   border-radius: 10px;
   padding: 5px 0px;
-  margin: 3px 0;
+  margin: 6px 0;
   color: #353434;
   position: relative;
   /* width: 100%; */
@@ -29,13 +29,14 @@
     justify-content: flex-end;
     align-items: center;
     padding-left: 10px;
+    width: 97%;
 
     .CTAS {
       display: flex;
       flex-direction: row;
-      align-items: center;
       gap: 5px;
-      margin-right: 20px;
+      align-items: center;
+      padding-right: 6px;
     }
     .rotate-90deg{
       transform: rotate(90deg);
@@ -46,8 +47,21 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    .todo_title{
+      flex: 1 1;
+      background-color: #FFFBE9;
+      border-radius: 5px;
+      padding: 10px;
 
-    
+      form{
+        display:flex;
+        input{
+          background-color: #ebcca8;
+    padding: 10px;
+    flex: 1;
+        }
+      }
+    }
 
     .adc {
       padding: 0;
@@ -56,16 +70,20 @@
       flex-direction: column;
       align-items: stretch;
       margin: 0;
-      padding-left: 12px;
+      padding-left: 42px;
     }
   }
 }
 
 .btns {
   display: flex;
+    width: 100%;
+    justify-content: flex-start;
   form {
-    flex: 1;
     display: flex;
+    width: 80%;
+    justify-content: flex-end;
+    margin-left: 29px;
   }
   img {
     width: 20px;
