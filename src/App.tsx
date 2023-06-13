@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import TodoList from "./components/TodoList";
 import { TodoContext } from "./context/todoContext";
 import "./App.scss";
 import { Navigate, Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import LoginPage from "./Pages/Admin/LoginPage";
 import userCredentialsArray from "./data/users";
+import DashboardPage from "./Pages/Dashboard/Dashboard";
 
 export interface TodoItem {
   id: string;
@@ -58,40 +58,13 @@ const App: React.FC = () => {
     }
   },[isAuthenticated])
 
-  const Dashboard = () => {
-    return (
-      <React.Fragment>
-        <div className="parent_todo_head">
-          <h1>Nested Todos</h1>
-          <button onClick={handleLogout} className="logoutBtn" >Logout</button>
-          <div className="main_input_container">
-            <form onSubmit={submitParentTodo}>
-              <input
-                className="main_input"
-                type="text"
-                value={subTodoText}
-                onChange={handleChange}
-              />
-            </form>
-            <div className="add_parent" onClick={handleParentaddition}>
-              Add +
-            </div>
-          </div>
-        </div>
-        <div className="todos_list_container">
-          <TodoList todo={todos} />
-        </div>
-      </React.Fragment>
-    );
-  };
-
   return (
     <div className="main_container">
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
           {isAuthenticated && (<React.Fragment>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<DashboardPage handleLogout={handleLogout} submitParentTodo={submitParentTodo} subTodoText={subTodoText} handleChange={handleChange} handleParentaddition={handleParentaddition}  todos={todos} />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} /></React.Fragment>
           )}
           <Route path="/" element={<Navigate to="/login" replace />} />
