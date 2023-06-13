@@ -147,14 +147,20 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
               <div
                 className={`add_btn`}
                 title={"Add a subtodo"}
-                onClick={() => setShowAddInput(todoKey, true)}
+                onClick={() => setShowAddInput(todoKey, !todo.showInput)}
               >
                 <img src={AddImg} alt={"images"}></img>
               </div>
               <div
                 className={`edit_btn`}
                 title={"Edit"}
-                onClick={() => setShowTodoTitleInput(!showTodoTitleInput)}
+                onClick={() => {
+                  
+                  setShowTodoTitleInput(!showTodoTitleInput)
+                  if(!showTodoTitleInput){
+                    setTodoTitle(todo.title)
+                  }
+                }}
               >
                 <img src={edit} alt={"edit"}></img>
               </div>
@@ -169,6 +175,10 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
                   value={subTodoText}
                   onChange={handleSubTodoTextChange}
                 />
+                <div className="cancelbtn" onClick={()=>{
+                  setSubTodoText('')
+                  setShowAddInput(todoKey, false)
+                }}>Cancel</div>
               </form>
             )}
           </div>

@@ -81,9 +81,24 @@
     justify-content: flex-start;
   form {
     display: flex;
-    width: 80%;
+    width: 93%;
     justify-content: flex-end;
-    margin-left: 29px;
+    margin-left: 40px;
+    flex-direction: row;
+    align-items: center;
+    gap: 17px;
+
+    .cancelbtn{
+      background-color: #feffff;
+    border: solid 1px black;
+    border-radius: 5px;
+    padding: 6px;
+    }
+
+    input[type="text"]{
+      width: 100%;
+      margin: 10px 0;
+    }
   }
   img {
     width: 20px;
