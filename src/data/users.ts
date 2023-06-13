@@ -1,4 +1,9 @@
-const userCredentialsArray = [
+export type User = {
+  username: string;
+  password: string;
+  jwtToken: string
+};
+const userCredentialsArray: User[] = [
     {
       username: "user1",
       password: "password1",
