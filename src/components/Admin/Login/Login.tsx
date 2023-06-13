@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import  userCredentialsArray, { User } from "../../../data/users"
+import  userCredentialsArray from "../../../data/users"
 import { LoginPageProps } from '../../../Pages/Admin/LoginPage';
 import { useNavigate } from 'react-router-dom';
 import PasswordInput from '../../UIComponents/PasswordInput';
