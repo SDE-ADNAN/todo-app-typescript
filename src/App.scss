@@ -59,16 +59,16 @@ body{
     width: 100%;
   }
   input{
-    width: 85%;
-    height: 35px;
     border-radius: 10px;
     border: none;
     background-color: cornsilk;
-    padding:0 10px;
     font-size: 18px;
   }
 
   input[type="text"] {
+    height: 35px;
+    width: 85%;
+    padding:0 10px;
     font-family: 'Signika', sans-serif;
 }
 }

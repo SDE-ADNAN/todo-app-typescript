@@ -13,6 +13,7 @@ type TodoContextType = {
   addTodo: (parentId: string, title: string) => void;
   deleteTodo: (id: string) => void;
   setShowAddInput: (id: string,val: boolean) => void;
+  setIsCompleted: (id: string,val: boolean) => void;
 };
 
 export const TodoContext = createContext<TodoContextType>({
@@ -20,13 +21,14 @@ export const TodoContext = createContext<TodoContextType>({
   addTodo: () => {},
   deleteTodo: () => {},
   setShowAddInput:() => {},
+  setIsCompleted:() => {},
 });
 
 export const TodoContextProvider = ({
   children,
   todo,
 }: TodoContextProviderProps) => {
-  
+
   const [todos, setTodos] = useState<TodoItem[]>(todo ?? initialTodoData);
 
   const addTodo = (parentId: string, title: string) => {
@@ -40,7 +42,8 @@ export const TodoContextProvider = ({
         title: title,
         todo: [],
         isCreated:true,
-        showInput:false
+        showInput:false,
+        isCompleted:false,
       };
 
       // Add the new todo to the parent todo
@@ -54,7 +57,8 @@ export const TodoContextProvider = ({
         title: title,
         todo: [],
         isCreated:true,
-        showInput:false
+        showInput:false,
+        isCompleted:false,
       };
       setTodos([...todos,{...newTodo}]);
     }
@@ -82,13 +86,23 @@ export const TodoContextProvider = ({
       setTodos(updatedTodos);
     }
   }
+  const setIsCompleted = (id: string,val: boolean)=>{
+    const ITodo = findTodoById(id, todos);
+    console.log(ITodo)
+    if(ITodo){
+      ITodo.isCompleted = val
+      const updatedTodos = changeTodoById(id,ITodo,todos)
+      setTodos(updatedTodos);
+    }
+  }
 
 
   const contextValue: TodoContextType = {
     todos: todos,
     addTodo: addTodo,
     deleteTodo: deleteTodo,
-    setShowAddInput:setShowAddInput
+    setShowAddInput:setShowAddInput,
+    setIsCompleted:setIsCompleted,
   };
 
   return (

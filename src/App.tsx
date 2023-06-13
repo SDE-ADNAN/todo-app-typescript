@@ -12,6 +12,7 @@ export interface TodoItem {
   todo: TodoItem[];
   isCreated?: Boolean;
   showInput: Boolean;
+  isCompleted:boolean;
   // onAddSubTodo?: (parentId: string, title: string) => void;
 }
 export function generateUniqueId(): string {
@@ -30,7 +31,9 @@ const App: React.FC = () => {
   };
 
   const handleParentaddition = () => {
-    console.log(todos);
+    if(subTodoText.length === 0){
+      alert("do a valid input todos cant be empty")
+    }else
     addTodo(new Date().toISOString(), subTodoText);
     setSubTodoText("");
   };

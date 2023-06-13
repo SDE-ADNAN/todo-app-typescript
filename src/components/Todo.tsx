@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext, ChangeEvent, useEffect} from "react";
 import { TodoItem} from "../App";
 import { TodoContext } from "../context/todoContext";
 import "./Todo.scss";
@@ -10,8 +10,9 @@ interface TodoProps {
 }
 
 const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
-  const { todos, addTodo, deleteTodo, setShowAddInput } = useContext(TodoContext);
+  const { todos, addTodo, deleteTodo, setShowAddInput , setIsCompleted } = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
+  const [checkboxDisabled ,setCheckboxDisabled] = useState(false)
 
   const handleSubTodoTextChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -34,6 +35,9 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    if(subTodoText.length === 0){
+      alert("do a valid input todos cant be empty")
+    }else
     handleAddTodo(todoKey, subTodoText)
   }
 
@@ -63,11 +67,28 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     )
   }
 
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>,todoId:string) => {
+    const { checked } = event.target;
+    setIsCompleted(todoId,checked)
+  };
+
+  useEffect(()=>{
+    const allCompleted = todo.todo.map((todo)=>todo.isCompleted === true).some(value => value === false)
+    if(todo.todo.length > 0 && !allCompleted){
+      setCheckboxDisabled(false)
+    }else if(todo.todo.length > 0 && allCompleted){
+      setCheckboxDisabled(true)
+    }else if(todo.todo.length === 0){
+      setCheckboxDisabled(false)
+    }
+  },[todo])
+
   return (
     <div
       key={todoKey}
-      className="todo_container"
+      className={`todo_container ${todo.isCompleted && "completed"}`}
     >
+      <div className="subTodos_container">
       <div className="head_container">
         <div className="CTAS_container">
           {todo.title}
@@ -87,8 +108,12 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
             />
           </form>}
         </div>
+        
         <RenderConditionalTodos />
       </div>
+      <div className="checkbox">{checkboxDisabled && "first complete subtodos"}<input type="checkbox" disabled={checkboxDisabled} checked={todo.isCompleted} onChange={(e)=>handleCheckboxChange(e,todo.id)}></input></div>
+      </div>
+      
     </div>
   );
 };

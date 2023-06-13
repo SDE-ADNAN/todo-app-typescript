@@ -5,6 +5,18 @@
   padding: 5px 0px;
   margin: 10px;
   color: #8a8a8a;
+  position:relative;
+
+  .subTodos_container{
+
+  }
+  .checkbox{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display:flex;
+    gap:5px
+  }
   img {
     width: 20px;
   }
@@ -26,6 +38,9 @@
   .head_container {
     padding: 0 10px;
     width: 96%;
+    position:relative;
+
+    
 
     .adc {
       padding: 0;
@@ -42,12 +57,18 @@
   img {
     width: 20px;
   }
-  input {
+  input[type="text"] {
     margin-left: 10px;
     margin-top: 10px;
+    width:100%;
   }
+  
 }
 
 .hide {
   display: none;
+}
+
+.completed{
+  background-color: #80f493bc !important;
 }

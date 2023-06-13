@@ -1,5 +1,6 @@
 import React from "react"
 import TodoList from "../../components/TodoList"
+import { TodoItem } from "../../App";
 
 interface DashboardPageProps{
     handleLogout:any;
@@ -7,7 +8,7 @@ interface DashboardPageProps{
     subTodoText:string;
     handleChange:any;
     handleParentaddition:any;
-    todos:any;
+    todos:TodoItem[];
 }
 
 const DashboardPage:React.FC<DashboardPageProps> =({handleLogout,submitParentTodo,subTodoText,handleChange,handleParentaddition,todos})=>{
