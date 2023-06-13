@@ -13,6 +13,7 @@ export interface TodoItem {
   isCreated?: Boolean;
   showInput: Boolean;
   isCompleted:boolean;
+  showSubtodos:Boolean;
   // onAddSubTodo?: (parentId: string, title: string) => void;
 }
 export function generateUniqueId(): string {

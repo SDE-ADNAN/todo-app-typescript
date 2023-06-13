@@ -8,7 +8,10 @@ interface TodoListProps {
 
 const TodoList: React.FC<TodoListProps> = ({ todo}) => {
   return (
-    <div key={new Date().toISOString()}>
+    <div style={{
+    display: "flex",
+    flexDirection:"column"
+}} key={new Date().toISOString()}>
       {todo.map((todo) => (
         <Todo todoKey={todo.id} todo={todo}/>
       ))}

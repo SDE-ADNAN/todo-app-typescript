@@ -2,7 +2,7 @@ import React, { useState, useContext, ChangeEvent, useEffect} from "react";
 import { TodoItem} from "../App";
 import { TodoContext } from "../context/todoContext";
 import "./Todo.scss";
-import { AddImg, DeleteImg } from "../medias";
+import { AddImg, DeleteImg, rightArrow } from "../medias";
 
 interface TodoProps {
   todo: TodoItem;
@@ -10,7 +10,7 @@ interface TodoProps {
 }
 
 const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
-  const { todos, addTodo, deleteTodo, setShowAddInput , setIsCompleted } = useContext(TodoContext);
+  const { todos, addTodo, deleteTodo, setShowAddInput , setIsCompleted , setShowSubTodos} = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
   const [checkboxDisabled ,setCheckboxDisabled] = useState(false)
 
@@ -42,8 +42,9 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   }
 
   const RenderConditionalTodos = () => {
+    console.log(todo.showSubtodos)
     if (todo.todo != null) {
-      return (<ul className="adc">
+      return (<ul className={`adc ${!todo.showSubtodos && "hide"}`}>
         {todo.todo.map((subTodo) => (
           <Todo
             todo={subTodo}
@@ -53,7 +54,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
       </ul>)
     } else
       if (todo.todo === null && todos.length > 0) {
-        return (<ul className="xyz">
+        return (<ul className={`xyz  ${!todo.showSubtodos && "hide"}`}>
           {todos.map((subTodo) => (
             <Todo
               todo={subTodo}
@@ -86,11 +87,12 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   return (
     <div
       key={todoKey}
-      className={`todo_container ${todo.isCompleted && "completed"}`}
+      className={`todo_container ${todo.isCompleted && "completed"}  `}
     >
       <div className="subTodos_container">
       <div className="head_container">
         <div className="CTAS_container">
+          
           {todo.title}
           <div className="CTAS"><div onClick={() => handleDeleteTodo(todoKey)}>
             <img src={DeleteImg} alt={"images"}></img>
@@ -98,6 +100,8 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
           <div className={`add_btn`} onClick={() => setShowAddInput(todoKey, true)}>
             <img src={AddImg} alt={"images"}></img>
           </div></div>
+          {todo.todo.length >0 && <img onClick={()=>setShowSubTodos(todo.id)} className={`rightarrow  ${todo.showSubtodos && "rotate-90deg"}`} src={rightArrow} alt={"right-arrow"}></img>}
+          
         </div>
         <div className={`btns `}>
           {todo.showInput && <form onSubmit={handleSubmit}>
