@@ -4,7 +4,6 @@ import { TodoContext } from "./context/todoContext";
 import "./App.scss";
 import { Navigate, Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import LoginPage from "./Pages/Admin/LoginPage";
-import PrivateRoute from "./components/RouteComponents/PrivateRoute";
 import userCredentialsArray from "./data/users";
 
 export interface TodoItem {
