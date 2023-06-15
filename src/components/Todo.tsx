@@ -1,4 +1,4 @@
-import React, { useState, useContext, ChangeEvent, useEffect } from "react";
+import React, { useState, useContext, ChangeEvent, useEffect, useRef } from "react";
 import { TodoItem } from "../App";
 import { TodoContext } from "../context/todoContext";
 import "./Todo.scss";
@@ -24,6 +24,9 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   const [todoTitle, setTodoTitle] = useState(todo.title);
   const [showTodoTitleInput, setShowTodoTitleInput] = useState(false);
   const [checkboxDisabled, setCheckboxDisabled] = useState(false);
+  const [allCompleted, setAllCompleted] = useState(false);
+
+  const editTitleInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubTodoTextChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -105,6 +108,13 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     }
   }, [todo]);
 
+
+  useEffect(() => {
+    if (showTodoTitleInput && editTitleInputRef.current) {
+      editTitleInputRef.current.focus();
+    }
+  }, [showTodoTitleInput]);
+
   return (
     <div
       key={todoKey}
@@ -122,11 +132,28 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
               ></img>
             )}
             {!showTodoTitleInput ? (
-              <div className="todo_title truncate-text">{todo.title}</div>
+              <div
+                className="todo_title truncate-text"
+                onDoubleClick={() => {
+                  setShowTodoTitleInput(!showTodoTitleInput);
+                  if (!showTodoTitleInput) {
+                    setTodoTitle(todo.title);
+                  }
+                }}
+                onDoubleClickCapture={() => {
+                  setShowTodoTitleInput(!showTodoTitleInput);
+                  if (!showTodoTitleInput) {
+                    setTodoTitle(todo.title);
+                  }
+                }}
+              >
+                {todo.title}
+              </div>
             ) : (
               <div className="todo_title truncate-text">
                 <form onSubmit={handleTodoTitleSubmit}>
                   <input
+                  ref={editTitleInputRef}
                     type="textarea"
                     value={todoTitle}
                     onChange={handleTodoTitleChange}
@@ -135,9 +162,9 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
               </div>
             )}
             <div className="CTAS">
-              {todo.todo.length > 0 &&
-                <NoofSubtodos subTodoNumber={todo.todo.length}/>
-              }
+              {todo.todo.length > 0 && (
+                <NoofSubtodos subTodoNumber={todo.todo.length} />
+              )}
               <div
                 title={"Delete this todo "}
                 onClick={() => handleDeleteTodo(todoKey)}
@@ -155,30 +182,38 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
                 className={`edit_btn`}
                 title={"Edit"}
                 onClick={() => {
-                  
-                  setShowTodoTitleInput(!showTodoTitleInput)
-                  if(!showTodoTitleInput){
-                    setTodoTitle(todo.title)
+                  setShowTodoTitleInput(!showTodoTitleInput);
+                  const todoTitleChangeInput = document.getElementById("todoTitleChange")
+                  if(todoTitleChangeInput){
+                    todoTitleChangeInput.focus();
+                  }
+                  if (!showTodoTitleInput) {
+                    setTodoTitle(todo.title);
                   }
                 }}
               >
                 <img src={edit} alt={"edit"}></img>
               </div>
-              
             </div>
           </div>
           <div className={`btns `}>
             {todo.showInput && (
               <form onSubmit={handleSubmit}>
                 <input
+                  id="subTodoText"
                   type="text"
                   value={subTodoText}
                   onChange={handleSubTodoTextChange}
                 />
-                <div className="cancelbtn" onClick={()=>{
-                  setSubTodoText('')
-                  setShowAddInput(todoKey, false)
-                }}>Cancel</div>
+                <div
+                  className="cancelbtn"
+                  onClick={() => {
+                    setSubTodoText("");
+                    setShowAddInput(todoKey, false);
+                  }}
+                >
+                  Cancel
+                </div>
               </form>
             )}
           </div>
@@ -189,7 +224,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
           <input
             type="checkbox"
             disabled={checkboxDisabled}
-            checked={todo.isCompleted}
+            checked={todo.isCompleted && allCompleted}
             title={`${
               checkboxDisabled ? "first complete subtodos" : "Complete"
             } `}
@@ -201,4 +236,4 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   );
 };
 
-export default Todo;
+export default React.memo(Todo);
