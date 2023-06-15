@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import TodoList from "../../components/TodoList"
 import { TodoItem } from "../../App";
 
@@ -12,6 +12,14 @@ interface DashboardPageProps{
 }
 
 const DashboardPage:React.FC<DashboardPageProps> =({handleLogout,submitParentTodo,subTodoText,handleChange,handleParentaddition,todos})=>{
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
     return(
         <React.Fragment>
         <div className="parent_todo_head">
@@ -21,6 +29,7 @@ const DashboardPage:React.FC<DashboardPageProps> =({handleLogout,submitParentTod
             <form onSubmit={submitParentTodo}>
               <input
                 className="main_input"
+                ref={inputRef} 
                 type="text"
                 value={subTodoText}
                 onChange={handleChange}
