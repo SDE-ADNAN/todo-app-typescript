@@ -77,6 +77,11 @@ body{
     width: 85%;
     padding:0 10px;
     font-family: 'Signika', sans-serif;
+  }
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  font-family: 'Signika', sans-serif;
 }
 }
 
