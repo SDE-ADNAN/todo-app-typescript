@@ -35,14 +35,12 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   };
 
   const handleAddTodo = (parentId: string, title: string) => {
-    // Call the addTodo function with the required parameters
     addTodo(parentId, title);
     setSubTodoText("");
     setShowAddInput(todoKey, false);
   };
 
   const handleDeleteTodo = (id: string) => {
-    // Call the deleteTodo function with the ID of the todo to delete
     deleteTodo(id);
   };
 
@@ -52,6 +50,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
       alert("do a valid input todos cant be empty");
     } else handleAddTodo(todoKey, subTodoText);
   };
+
   const handleTodoTitleSubmit = (e: any) => {
     e.preventDefault();
     if (todoTitle.length === 0) {
@@ -62,7 +61,6 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   };
 
   const RenderConditionalTodos = () => {
-    console.log(todo.showSubtodos);
     if (todo.todo != null) {
       return (
         <ul className={`adc ${!todo.showSubtodos && "hide"}`}>
