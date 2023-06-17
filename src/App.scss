@@ -91,3 +91,8 @@ textarea {
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+
+.opacity0\&disable{
+  opacity:0;
+  pointer-events: none;
+}

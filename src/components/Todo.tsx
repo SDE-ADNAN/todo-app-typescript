@@ -172,6 +172,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
               <div
                 title={"Delete this todo "}
                 onClick={() => handleDeleteTodo(todoKey)}
+                className={`${todo.todo.length > 0 && "opacity0&disable"}`}
               >
                 <img src={DeleteImg} alt={"images"}></img>
               </div>
