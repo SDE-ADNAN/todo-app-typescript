@@ -33,6 +33,7 @@ const DashboardPage:React.FC<DashboardPageProps> =({handleLogout,submitParentTod
                 type="text"
                 value={subTodoText}
                 onChange={handleChange}
+                placeholder="Enter Your first level todo"
               />
             </form>
             <div className="add_parent" onClick={handleParentaddition}>
