@@ -24,7 +24,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   const [todoTitle, setTodoTitle] = useState(todo.title);
   const [showTodoTitleInput, setShowTodoTitleInput] = useState(false);
   const [checkboxDisabled, setCheckboxDisabled] = useState(false);
-  const [allCompleted, setAllCompleted] = useState(false);
+  const [anyOneTodoIncomplete, setAnyOneTodoIncomplete] = useState(false);
 
   const editTitleInputRef = useRef<HTMLInputElement>(null);
 
@@ -97,6 +97,12 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     const allCompleted = todo.todo
       .map((todo) => todo.isCompleted === true)
       .some((value) => value === false);
+    const anyOneInComplete = todo.todo
+      .map((todo) => todo.isCompleted)
+      .some((value) => value === false);
+      console.log(anyOneInComplete)
+
+      setAnyOneTodoIncomplete(anyOneInComplete)
     if (todo.todo.length > 0 && !allCompleted) {
       setCheckboxDisabled(false);
     } else if (todo.todo.length > 0 && allCompleted) {
@@ -116,7 +122,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   return (
     <div
       key={todoKey}
-      className={`todo_container ${todo.isCompleted && "completed"}  `}
+      className={`todo_container ${todo.isCompleted && !anyOneTodoIncomplete && "completed"}  `}
     >
       <div className="subTodos_container">
         <div className="head_container">
@@ -222,7 +228,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
           <input
             type="checkbox"
             disabled={checkboxDisabled}
-            checked={todo.isCompleted && allCompleted}
+            checked={todo.isCompleted && !anyOneTodoIncomplete}
             title={`${
               checkboxDisabled ? "first complete subtodos" : "Complete"
             } `}
