@@ -162,9 +162,6 @@ const changeTodoById = (id: string, updatedTodo: TodoItem, todos: TodoItem[]): T
 };
 // Helper function to delete a todo by id recursively
 const deleteTodoById = (id: string, todos: TodoItem[]): TodoItem[] => {
-  console.log(id)
-  console.log(todos)
-
   return todos.filter(todo => {
     if (todo.id === id) {
       // Exclude the todo with the given id
