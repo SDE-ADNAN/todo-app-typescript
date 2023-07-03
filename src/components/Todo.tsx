@@ -4,6 +4,7 @@ import { TodoContext } from "../context/todoContext";
 import "./Todo.scss";
 import { AddImg, DeleteImg, edit, rightArrow } from "../medias";
 import NoofSubtodos from "./UIComponents/NoofSubtodos";
+import { API_URL_LOCAL } from "../data/api";
 
 interface TodoProps {
   todo: TodoItem;
@@ -17,7 +18,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     deleteTodo,
     setShowAddInput,
     setIsCompleted,
-    setShowSubTodos,
+    // setShowSubTodos,
     setNewTitle,
   } = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
@@ -25,8 +26,11 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   const [showTodoTitleInput, setShowTodoTitleInput] = useState(false);
   const [checkboxDisabled, setCheckboxDisabled] = useState(false);
   const [anyOneTodoIncomplete, setAnyOneTodoIncomplete] = useState(false);
+  const [showSubTodos, setShowSubTodos] = useState(todo.showSubtodos);
+  const [showSubTodosClicked, setShowSubTodosClicked] = useState(false);
 
   const editTitleInputRef = useRef<HTMLInputElement>(null);
+
 
   const handleSubTodoTextChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -100,7 +104,6 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     const anyOneInComplete = todo.todo
       .map((todo) => todo.isCompleted)
       .some((value) => value === false);
-      console.log(anyOneInComplete)
 
       setAnyOneTodoIncomplete(anyOneInComplete)
     if (todo.todo.length > 0 && !allCompleted) {
@@ -119,6 +122,28 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     }
   }, [showTodoTitleInput]);
 
+  const handleRightArrowClick = async () => {
+    const formData = new FormData();
+    formData.append('todoId', todo.id);
+    if (showSubTodos) {
+      formData.append('showSubtodos', 'false' );
+    } else {
+      formData.append('showSubtodos', 'true' );
+    }
+    try {
+      const response = await fetch(API_URL_LOCAL + '/admin/putTodo', {
+        method: 'PUT',
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error('Request failed');
+      } else {
+        setShowSubTodos(!showSubTodos);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   return (
     <div
       key={todoKey}
@@ -129,7 +154,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
           <div className="CTAS_container">
             {todo.todo.length > 0 && (
               <img
-                onClick={() => setShowSubTodos(todo.id)}
+                onClick={handleRightArrowClick}
                 className={`rightarrow  ${todo.showSubtodos && "rotate-90deg"}`}
                 src={rightArrow}
                 alt={"right-arrow"}
