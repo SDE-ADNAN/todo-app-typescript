@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 import Todo from "./Todo";
 import { TodoItem } from '../App';
-import { API_URL_LIVE , API_URL_LOCAL } from '../data/api';
+// import { API_URL_LIVE , API_URL_LOCAL } from '../data/api';
 import useTodos from '../hooks/useTodo';
 
 interface TodoListProps {

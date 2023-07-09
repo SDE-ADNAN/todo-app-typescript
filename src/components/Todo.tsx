@@ -27,7 +27,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   const [checkboxDisabled, setCheckboxDisabled] = useState(false);
   const [anyOneTodoIncomplete, setAnyOneTodoIncomplete] = useState(false);
   const [showSubTodos, setShowSubTodos] = useState(todo.showSubtodos);
-  const [showSubTodosClicked, setShowSubTodosClicked] = useState(false);
+  // const [showSubTodosClicked, setShowSubTodosClicked] = useState(false);
 
   const editTitleInputRef = useRef<HTMLInputElement>(null);
 
