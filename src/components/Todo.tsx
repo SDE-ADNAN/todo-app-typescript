@@ -20,6 +20,8 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     setIsCompleted,
     // setShowSubTodos,
     setNewTitle,
+    fetchData,
+    setTodos,
   } = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
   const [todoTitle, setTodoTitle] = useState(todo.title);
@@ -139,6 +141,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
         throw new Error('Request failed');
       } else {
         setShowSubTodos(!showSubTodos);
+        fetchData()
       }
     } catch (error) {
       console.error('Error:', error);

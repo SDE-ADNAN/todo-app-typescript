@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react"
 import TodoList from "../../components/TodoList"
+import Button from '@mui/material/Button';
 import { TodoItem } from "../../App";
 
 interface DashboardPageProps{
@@ -35,10 +36,10 @@ const DashboardPage:React.FC<DashboardPageProps> =({handleLogout,submitParentTod
                 onChange={handleChange}
                 placeholder="Enter Your first level todo"
               />
-            </form>
-            <button className="add_parent" onClick={handleParentaddition}>
+              <Button style={{backgroundColor: "#898121",borderRadius:"12px" , top:"0"}} variant="contained" className="add_parent" onClick={handleParentaddition}>
               Add +
-            </button>
+            </Button>
+            </form>
           </div>
         </div>
         <div className="todos_list_container">

@@ -1,5 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, { Dispatch, SetStateAction, createContext, useState } from "react";
 import { TodoItem } from "../App";
+import { API_URL_LOCAL } from "../data/api";
 
 const initialTodoData: TodoItem[] = [];
 
@@ -10,22 +11,28 @@ type TodoContextProviderProps = {
 
 type TodoContextType = {
   todos: TodoItem[];
+  isLoading:Boolean;
   addTodo: (parentId: string, title: string) => void;
   deleteTodo: (id: string) => void;
   setShowAddInput: (id: string,val: boolean) => void;
   setIsCompleted: (id: string,val: boolean) => void;
   setShowSubTodos: (id: string) => void;
   setNewTitle: (id: string,val: string) => void;
+  fetchData:()=> void;
+  setTodos: Dispatch<SetStateAction<TodoItem[]>>;
 };
 
 export const TodoContext = createContext<TodoContextType>({
   todos: initialTodoData,
+  isLoading: true,
   addTodo: () => {},
   deleteTodo: () => {},
   setShowAddInput:() => {},
   setIsCompleted:() => {},
   setShowSubTodos:()=>{},
   setNewTitle:()=>{},
+  fetchData:()=>{},
+  setTodos:()=>{},
 });
 
 export const TodoContextProvider = ({
@@ -33,7 +40,9 @@ export const TodoContextProvider = ({
   todo,
 }: TodoContextProviderProps) => {
 
-  const [todos, setTodos] = useState<TodoItem[]>(todo ?? initialTodoData);
+  // const [todos, setTodos] = useState<TodoItem[]>(todo ?? initialTodoData);
+  const [todos , setTodos] = useState<TodoItem[]>([])
+  const [isLoading , setIsLoading] = useState<Boolean>(true)
 
   const addTodo = (parentId: string, title: string) => {
     // Find the parent todo based on parentId
@@ -83,6 +92,23 @@ export const TodoContextProvider = ({
  
   };
 
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(API_URL_LOCAL+"/admin/getAllTodos");
+      if (!response.ok) {
+        setIsLoading(true)
+        throw new Error('Request failed');
+      }
+      const jsonData = await response.json();
+      setTodos(jsonData);
+      setIsLoading(false)
+      console.log(jsonData)
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  };
+
   const setShowAddInput = (id: string,val: boolean)=>{
     const ITodo = findTodoById(id, todos);
     console.log(ITodo)
@@ -121,12 +147,15 @@ export const TodoContextProvider = ({
 
   const contextValue: TodoContextType = {
     todos: todos,
+    isLoading:isLoading,
     addTodo: addTodo,
     deleteTodo: deleteTodo,
     setShowAddInput:setShowAddInput,
     setIsCompleted:setIsCompleted,
     setShowSubTodos:setShowSubTodos,
     setNewTitle:setNewTitle,
+    fetchData:fetchData,
+    setTodos:setTodos,
   };
 
   return (

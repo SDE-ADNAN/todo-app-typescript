@@ -23,7 +23,7 @@ export function generateUniqueId(): string {
 }
 const App: React.FC = () => {
 
-  const { todos, addTodo } = useContext(TodoContext);
+  const { todos, addTodo , fetchData} = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -54,6 +54,9 @@ const App: React.FC = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("jwtToken")
   };
+  useEffect(()=>{
+    fetchData()
+  },[])
   useEffect(()=>{
     const localStorage_jwtToken = localStorage.getItem("jwtToken")
     const isUserVerifiedPreviously = userCredentialsArray.find((user) => user.jwtToken === localStorage_jwtToken);
