@@ -44,39 +44,8 @@ export const TodoContextProvider = ({
   const [todos , setTodos] = useState<TodoItem[]>([])
   const [isLoading , setIsLoading] = useState<Boolean>(true)
 
-  const addTodo = (parentId: string, title: string) => {
-    // Find the parent todo based on parentId
-    const parentTodo = findTodoById(parentId, todos);
-
-    if (parentTodo) {
-      // Create the new todo
-      const newTodo: TodoItem = {
-        id: generateUniqueId(),
-        title: title,
-        todo: [],
-        isCreated:true,
-        showInput:false,
-        isCompleted:false,
-        showSubtodos:true,
-      };
-
-      // Add the new todo to the parent todo
-      parentTodo.todo.unshift(newTodo);
-
-      // Update the todos state
-      setTodos([...todos]);
-    }else if(!parentTodo){
-      const newTodo: TodoItem = {
-        id: generateUniqueId(),
-        title: title,
-        todo: [],
-        isCreated:true,
-        showInput:false,
-        isCompleted:false,
-        showSubtodos:true,
-      };
-      setTodos([{...newTodo},...todos]);
-    }
+  const addTodo = (title: string) => {
+    
   };
 
   const deleteTodo = (id: string) => {
@@ -103,7 +72,6 @@ export const TodoContextProvider = ({
       const jsonData = await response.json();
       setTodos(jsonData);
       setIsLoading(false)
-      console.log(jsonData)
     } catch (err) {
       console.error('Error:', err);
     }
@@ -111,7 +79,6 @@ export const TodoContextProvider = ({
 
   const setShowAddInput = (id: string,val: boolean)=>{
     const ITodo = findTodoById(id, todos);
-    console.log(ITodo)
     if(ITodo){
       ITodo.showInput = val
       const updatedTodos = changeTodoById(id,ITodo,todos)
