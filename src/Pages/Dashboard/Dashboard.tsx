@@ -27,7 +27,7 @@ const DashboardPage:React.FC<DashboardPageProps> =({handleLogout,submitParentTod
           <h1>Nested Todos</h1>
           <button onClick={handleLogout} className="logoutBtn" >Logout</button>
           <div className="main_input_container">
-            <form onSubmit={submitParentTodo}>
+            <form onSubmit={submitParentTodo} style={{display: "flex",alignItems: "center"}}>
               <input
                 className="main_input"
                 ref={inputRef} 
