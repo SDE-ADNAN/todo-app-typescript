@@ -29,11 +29,11 @@ const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 //   const formData = new FormData()
-//   // formData.append('title','some new task useHTTP')
-//   formData.append('todoId','1687164570139_20314')
-//   const [ data , error] = useHTTP(false,"delete",formData,{
+//   formData.append('title','some new task useHTTP')
+//   // formData.append('todoId','1687164570139_20314')
+//   const [ data , error] = useHTTP(false,"post",formData,{
 //   'Content-Type': 'application/json',
-// },"/admin/deleteTodo")
+// },"/admin/postTodo")
 //   console.log(data)
 //   console.log(error)
 
@@ -45,7 +45,7 @@ const App: React.FC = () => {
     if(subTodoText.length === 0){
       alert("do a valid input todos cant be empty")
     }else
-    addTodo(new Date().toISOString(), subTodoText);
+    addTodo(subTodoText);
     setSubTodoText("");
   };
 
