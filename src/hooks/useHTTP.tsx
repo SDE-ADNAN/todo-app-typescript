@@ -24,28 +24,54 @@ function useHTTP(isLive:boolean , method:string , body:Object | FormData,headers
   const [error, setError] = useState<any | null>(null);
   let url = `${isLive ? API_URL_LIVE : API_URL_LOCAL}${remUrl}`
 
-  const getCallOptions=(method:string,body:Object | FormData,headers:any)=>{
-    if(method === "GET" || method === "get"){
+  function formDataToJson(formData: FormData): { [key: string]: string | File } {
+    const json: { [key: string]: string | File } = {};
+    const entries = formData.entries();
+    let next = entries.next();
+    while (!next.done) {
+      const [key, value] = next.value;
+      json[key] = value instanceof File ? value : String(value);
+      next = entries.next();
+    }
+    return json;
+  }
+  const getCallOptions = (method: string, body: Object | FormData, headers: any) => {
+    if (method === 'GET' || method === 'get') {
       return {
         method: method,
-      }
+      };
     }
-    if(method === "POST" || method === "post"||method === "PUT" || method === "put"||method === "PATCH" || method === "patch"||method === "DELETE" || method === "delete"){
-      console.warn(body)
-      if(typeof body === "object"){
-        console.log("typeOf object")
+  
+    if (
+      method === 'POST' ||
+      method === 'post' ||
+      method === 'PUT' ||
+      method === 'put' ||
+      method === 'PATCH' ||
+      method === 'patch' ||
+      method === 'DELETE' ||
+      method === 'delete'
+    ) {
+      if (typeof body === 'object' && !(body instanceof FormData)) {
         return {
           method: method,
-          headers:headers,
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify(body),
-        }
-      }else
-      return {
-        method: method,
-        body: body,
+        };
+      } else {
+        const { 'Content-Type': contentType, ...restHeaders } = headers;
+        return {
+          method: method,
+          headers: restHeaders,
+          body: body,
+        };
       }
     }
-  }
+  };
+  
 useEffect(()=>{
   const fetchCallData = async () => {
     try {
