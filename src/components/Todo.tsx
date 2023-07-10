@@ -150,6 +150,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   return (
     <div
       key={todoKey}
+      id={todoKey}
       className={`todo_container ${todo.isCompleted && !anyOneTodoIncomplete && "completed"}  `}
     >
       <div className="subTodos_container">
