@@ -9,6 +9,7 @@
       "esnext"
     ],
     "allowJs": true,
+    "downlevelIteration": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
