@@ -15,6 +15,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   const {
     todos,
     addTodo,
+    addSubTodo,
     deleteTodo,
     setShowAddInput,
     setIsCompleted,
@@ -41,7 +42,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   };
 
   const handleAddTodo = (parentId: string, title: string) => {
-    addTodo(parentId, title);
+    addSubTodo(parentId,title);
     setSubTodoText("");
     setShowAddInput(todoKey, false);
   };
