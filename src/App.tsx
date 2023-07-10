@@ -5,6 +5,7 @@ import { Navigate, Route, BrowserRouter as Router, Routes} from "react-router-do
 import LoginPage from "./Pages/Admin/LoginPage";
 import userCredentialsArray from "./data/users";
 import DashboardPage from "./Pages/Dashboard/Dashboard";
+import useHTTP from "./hooks/useHTTP";
 
 export interface TodoItem {
   id: string;
@@ -26,6 +27,15 @@ const App: React.FC = () => {
   const { todos, addTodo , fetchData} = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+//   const formData = new FormData()
+//   // formData.append('title','some new task useHTTP')
+//   formData.append('todoId','1687164570139_20314')
+//   const [ data , error] = useHTTP(false,"delete",formData,{
+//   'Content-Type': 'application/json',
+// },"/admin/deleteTodo")
+//   console.log(data)
+//   console.log(error)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSubTodoText(event.target.value);
@@ -56,6 +66,7 @@ const App: React.FC = () => {
   };
   useEffect(()=>{
     fetchData()
+
   },[])
   useEffect(()=>{
     const localStorage_jwtToken = localStorage.getItem("jwtToken")
