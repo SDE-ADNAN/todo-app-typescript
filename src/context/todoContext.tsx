@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, createContext, useState } from "react";
 import { TodoItem } from "../App";
-import { API_URL_LOCAL } from "../data/api";
+import { API_URL_LIVE, API_URL_LOCAL ,isLive} from "../data/api";
 
 const initialTodoData: TodoItem[] = [];
 
@@ -12,7 +12,7 @@ type TodoContextProviderProps = {
 type TodoContextType = {
   todos: TodoItem[];
   isLoading:Boolean;
-  addTodo: (parentId: string, title: string) => void;
+  addTodo: (title: string) => void;
   deleteTodo: (id: string) => void;
   setShowAddInput: (id: string,val: boolean) => void;
   setIsCompleted: (id: string,val: boolean) => void;
@@ -20,6 +20,7 @@ type TodoContextType = {
   setNewTitle: (id: string,val: string) => void;
   fetchData:()=> void;
   setTodos: Dispatch<SetStateAction<TodoItem[]>>;
+  addSubTodo:(parentId:string,title: string) => any;
 };
 
 export const TodoContext = createContext<TodoContextType>({
@@ -33,6 +34,7 @@ export const TodoContext = createContext<TodoContextType>({
   setNewTitle:()=>{},
   fetchData:()=>{},
   setTodos:()=>{},
+  addSubTodo:()=>{},
 });
 
 export const TodoContextProvider = ({
@@ -44,8 +46,46 @@ export const TodoContextProvider = ({
   const [todos , setTodos] = useState<TodoItem[]>([])
   const [isLoading , setIsLoading] = useState<Boolean>(true)
 
-  const addTodo = (title: string) => {
-    
+  const getUrl =(remUrl:string) => `${isLive ? API_URL_LIVE : API_URL_LOCAL}${remUrl}`
+
+  const addTodo = async (title: string) => {
+    const formData = new FormData();
+    formData.append('title',title)
+    try {
+      const response = await fetch(getUrl("/admin/postTodo"),{
+        method:"POST",
+        body:formData
+      });
+      if (!response.ok) {
+        setIsLoading(true)
+        throw new Error('Request failed');
+      }
+      const jsonData = await response.json();
+      fetchData()
+      setIsLoading(false)
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  };
+  const addSubTodo = async (parentId:string,title: string) => {
+    const formData = new FormData();
+    formData.append('title',title)
+    formData.append('parentId',parentId)
+    try {
+      const response = await fetch(getUrl("/admin/postTodo"),{
+        method:"POST",
+        body:formData
+      });
+      if (!response.ok) {
+        setIsLoading(true)
+        throw new Error('Request failed');
+      }
+      const jsonData = await response.json();
+      fetchData()
+      setIsLoading(false)
+    } catch (err) {
+      console.error('Error:', err);
+    }
   };
 
   const deleteTodo = (id: string) => {
@@ -62,7 +102,7 @@ export const TodoContextProvider = ({
   };
 
 
-  const fetchData = async () => {
+const fetchData = async () => {
     try {
       const response = await fetch(API_URL_LOCAL+"/admin/getAllTodos");
       if (!response.ok) {
@@ -116,6 +156,7 @@ export const TodoContextProvider = ({
     todos: todos,
     isLoading:isLoading,
     addTodo: addTodo,
+    addSubTodo:addSubTodo,
     deleteTodo: deleteTodo,
     setShowAddInput:setShowAddInput,
     setIsCompleted:setIsCompleted,
