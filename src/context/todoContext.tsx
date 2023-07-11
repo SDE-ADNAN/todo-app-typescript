@@ -61,6 +61,7 @@ export const TodoContextProvider = ({
         throw new Error('Request failed');
       }
       const jsonData = await response.json();
+      // console.log(jsonData)
       fetchData()
       setIsLoading(false)
     } catch (err) {
@@ -80,25 +81,40 @@ export const TodoContextProvider = ({
         setIsLoading(true)
         throw new Error('Request failed');
       }
-      const jsonData = await response.json();
-      fetchData()
+      // const jsonData = await response.json();
+      // if(jsonData && jsonData.updatedTodos){
+      //   setTodos(jsonData.updatedTodos)
+      // }else{
+        fetchData()
+      // }
       setIsLoading(false)
     } catch (err) {
       console.error('Error:', err);
     }
   };
 
-  const deleteTodo = (id: string) => {
-    // Recursively find and delete the todo with the given id
-    const updatedTodos = deleteTodoById(id, todos);
-
-    // Update the todos state
-    if(updatedTodos.length===0){
-      setTodos([])
-    }else{
-      setTodos(updatedTodos);
+  const deleteTodo =async (id: string) => {
+    const formData = new FormData();
+    formData.append('todoId',id)
+    try {
+      const response = await fetch(getUrl("/admin/deleteTodo"),{
+        method:"DELETE",
+        body:formData
+      });
+      if (!response.ok) {
+        setIsLoading(true)
+        throw new Error('Request failed');
+      }
+      // const jsonData = await response.json();
+      // if(jsonData && jsonData.updatedTodos){
+      //   setTodos(jsonData.updatedTodos)
+      // }else{
+        fetchData()
+      // }
+      setIsLoading(false)
+    } catch (err) {
+      console.error('Error:', err);
     }
- 
   };
 
 
