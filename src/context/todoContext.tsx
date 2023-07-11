@@ -37,6 +37,8 @@ export const TodoContext = createContext<TodoContextType>({
   addSubTodo:()=>{},
 });
 
+export const getUrl =(remUrl:string) => `${isLive ? API_URL_LIVE : API_URL_LOCAL}${remUrl}`
+
 export const TodoContextProvider = ({
   children,
   todo,
@@ -46,7 +48,6 @@ export const TodoContextProvider = ({
   const [todos , setTodos] = useState<TodoItem[]>([])
   const [isLoading , setIsLoading] = useState<Boolean>(true)
 
-  const getUrl =(remUrl:string) => `${isLive ? API_URL_LIVE : API_URL_LOCAL}${remUrl}`
 
   const addTodo = async (title: string) => {
     const formData = new FormData();
