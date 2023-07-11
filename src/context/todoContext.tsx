@@ -119,19 +119,19 @@ export const TodoContextProvider = ({
 
 
 const fetchData = async () => {
-    try {
-      const response = await fetch(API_URL_LOCAL+"/admin/getAllTodos");
-      if (!response.ok) {
-        setIsLoading(true)
-        throw new Error('Request failed');
-      }
-      const jsonData = await response.json();
-      setTodos(jsonData);
-      setIsLoading(false)
-    } catch (err) {
-      console.error('Error:', err);
+  try {
+    const response = await fetch(getUrl("/admin/getAllTodos"));
+    if (!response.ok) {
+      setIsLoading(true)
+      throw new Error('Request failed');
     }
-  };
+    const jsonData = await response.json();
+    setTodos(jsonData);
+    setIsLoading(false)
+  } catch (err) {
+    console.error('Error:', err);
+  }
+};
 
   const setShowAddInput = (id: string,val: boolean)=>{
     const ITodo = findTodoById(id, todos);
