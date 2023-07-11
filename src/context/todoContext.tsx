@@ -60,7 +60,7 @@ export const TodoContextProvider = ({
         setIsLoading(true)
         throw new Error('Request failed');
       }
-      const jsonData = await response.json();
+      // const jsonData = await response.json();
       // console.log(jsonData)
       fetchData()
       setIsLoading(false)
@@ -213,26 +213,3 @@ const changeTodoById = (id: string, updatedTodo: TodoItem, todos: TodoItem[]): T
     }
   });
 };
-// Helper function to delete a todo by id recursively
-const deleteTodoById = (id: string, todos: TodoItem[]): TodoItem[] => {
-  return todos.filter(todo => {
-    if (todo.id === id) {
-      // Exclude the todo with the given id
-      return false;
-    } else if (todo.todo.length > 0) {
-      // Recursively delete todos from the sub-todo list
-      todo.todo = deleteTodoById(id, todo.todo);
-      return true;
-    } else {
-      // Include the todo if it's not the one to be deleted
-      return true;
-    }
-  });
-};
-
-// Helper function to generate a unique ID
-function generateUniqueId(): string {
-  const timestamp = new Date().getTime();
-  const randomNumber = Math.floor(Math.random() * 100000);
-  return `${timestamp}_${randomNumber}`;
-}
