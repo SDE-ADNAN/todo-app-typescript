@@ -14,7 +14,6 @@ interface TodoProps {
 const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   const {
     todos,
-    addTodo,
     addSubTodo,
     deleteTodo,
     setShowAddInput,
@@ -22,7 +21,6 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     // setShowSubTodos,
     setNewTitle,
     fetchData,
-    setTodos,
   } = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
   const [todoTitle, setTodoTitle] = useState(todo.title);
