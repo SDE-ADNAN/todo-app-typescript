@@ -5,7 +5,6 @@ import { Navigate, Route, BrowserRouter as Router, Routes} from "react-router-do
 import LoginPage from "./Pages/Admin/LoginPage";
 import userCredentialsArray from "./data/users";
 import DashboardPage from "./Pages/Dashboard/Dashboard";
-import useHTTP from "./hooks/useHTTP";
 
 export interface TodoItem {
   id: string;
@@ -67,6 +66,7 @@ const App: React.FC = () => {
   useEffect(()=>{
     fetchData()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   useEffect(()=>{
     const localStorage_jwtToken = localStorage.getItem("jwtToken")
