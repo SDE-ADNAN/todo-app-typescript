@@ -1,6 +1,6 @@
 import React, { useState, useContext, ChangeEvent, useEffect, useRef } from "react";
 import { TodoItem } from "../App";
-import { TodoContext } from "../context/todoContext";
+import { TodoContext, getUrl } from "../context/todoContext";
 import "./Todo.scss";
 import { AddImg, DeleteImg, edit, rightArrow } from "../medias";
 import NoofSubtodos from "./UIComponents/NoofSubtodos";
@@ -132,7 +132,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
       formData.append('showSubtodos', 'true' );
     }
     try {
-      const response = await fetch(API_URL_LOCAL + '/admin/putTodo', {
+      const response = await fetch(getUrl('/admin/putTodo'), {
         method: 'PUT',
         body: formData,
       });
