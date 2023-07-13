@@ -1,14 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap');
 
-// colorpellate used  darker at bottom
-// #FFFBE9 1. |
-// #F4EAD5 2. |
-// #DAE2B6 3. |
-// #CCD6A6 4.\/
+$black1: 	#000000;
+$black2: 	#303030;
+$black3: 	#606060;
+$black4: 	#909090;
+$black5: 	#aeaeae;
+$black6: 	#c1c1c1;
+$black7: 	#dcdcdc;
+$white: 	#ffffff;
+
 .truncate-text {
   overflow: hidden;
   text-overflow: ellipsis;
-  // white-space: nowrap;
 }
 #root{
   width: 100%;
@@ -18,19 +21,19 @@
 body{
   margin:0;
   padding:0;
-  background:#CCD6A6;
-  color:#898121;
+  background:$black1;
+  color:$white;
   font-family: 'Signika', sans-serif;
   display:flex;
   justify-content: center;
   align-items: center;
 
   .main_container{
-    background-color: #DAE2B6;
+    background-color: $black3;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid #F4EAD5;
+    border: 2px solid $black7;
     border-radius: 10px;
     margin-top: 40px;
     padding: 20px;
@@ -86,8 +89,6 @@ textarea::placeholder {
 }
 
 textarea {
-  // resize: vertical;
-  // box-sizing: border-box;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
