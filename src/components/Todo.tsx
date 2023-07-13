@@ -4,7 +4,6 @@ import { TodoContext, getUrl } from "../context/todoContext";
 import "./Todo.scss";
 import { AddImg, DeleteImg, edit, rightArrow } from "../medias";
 import NoofSubtodos from "./UIComponents/NoofSubtodos";
-import { API_URL_LOCAL } from "../data/api";
 
 interface TodoProps {
   todo: TodoItem;
@@ -16,6 +15,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     todos,
     addSubTodo,
     deleteTodo,
+    putTodo,
     setShowAddInput,
     setIsCompleted,
     // setShowSubTodos,
@@ -61,7 +61,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     if (todoTitle.length === 0) {
       alert("do a valid input todos cant be empty");
     } else {
-      setNewTitle(todoKey, todoTitle);
+      putTodo(todoTitle,todoKey);
     }
   };
 
