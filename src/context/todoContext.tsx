@@ -14,6 +14,7 @@ type TodoContextType = {
   isLoading:Boolean;
   addTodo: (title: string) => void;
   deleteTodo: (id: string) => void;
+  putTodo: (title:string,todoId: string) => void;
   setShowAddInput: (id: string,val: boolean) => void;
   setIsCompleted: (id: string,val: boolean) => void;
   setShowSubTodos: (id: string) => void;
@@ -28,6 +29,7 @@ export const TodoContext = createContext<TodoContextType>({
   isLoading: true,
   addTodo: () => {},
   deleteTodo: () => {},
+  putTodo: () => {},
   setShowAddInput:() => {},
   setIsCompleted:() => {},
   setShowSubTodos:()=>{},
@@ -49,6 +51,26 @@ export const TodoContextProvider = ({
   const [isLoading , setIsLoading] = useState<Boolean>(true)
 
 
+  const putTodo = async (title: string,todoId : string) => {
+    const formData = new FormData();
+    formData.append('title',title);
+    formData.append('todoId',todoId);
+    try {
+      const response = await fetch(getUrl("/admin/putTodo"),{
+        method:"PUT",
+        body:formData
+      });
+      if (!response.ok) {
+        setIsLoading(true)
+        throw new Error('Request failed');
+      }
+      fetchData()
+      setIsLoading(false)
+    } catch (err) {
+      console.error('Error:', err);
+    }
+    return
+  };
   const addTodo = async (title: string) => {
     const formData = new FormData();
     formData.append('title',title)
@@ -173,6 +195,7 @@ const fetchData = async () => {
     todos: todos,
     isLoading:isLoading,
     addTodo: addTodo,
+    putTodo: putTodo,
     addSubTodo:addSubTodo,
     deleteTodo: deleteTodo,
     setShowAddInput:setShowAddInput,
