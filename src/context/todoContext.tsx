@@ -14,7 +14,7 @@ type TodoContextType = {
   isLoading:Boolean;
   addTodo: (title: string) => void;
   deleteTodo: (id: string) => void;
-  putTodo: (title:string,todoId: string) => void;
+  putTodo: (changeObj:object,todoId: string) => void;
   setShowAddInput: (id: string,val: boolean) => void;
   setIsCompleted: (id: string,val: boolean) => void;
   setShowSubTodos: (id: string) => void;
@@ -51,9 +51,9 @@ export const TodoContextProvider = ({
   const [isLoading , setIsLoading] = useState<Boolean>(true)
 
 
-  const putTodo = async (title: string,todoId : string) => {
+  const putTodo = async (changeObj: object,todoId : string) => {
     const formData = new FormData();
-    formData.append('title',title);
+    formData.append('changeObj',JSON.stringify(changeObj));
     formData.append('todoId',todoId);
     try {
       const response = await fetch(getUrl("/admin/putTodo"),{
