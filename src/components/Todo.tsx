@@ -27,8 +27,8 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   const [showTodoTitleInput, setShowTodoTitleInput] = useState(false);
   const [checkboxDisabled, setCheckboxDisabled] = useState(false);
   const [anyOneTodoIncomplete, setAnyOneTodoIncomplete] = useState(false);
-  const [showSubTodos, setShowSubTodos] = useState(todo.showSubtodos);
-  // const [showSubTodosClicked, setShowSubTodosClicked] = useState(false);
+  const [showSubtodos, setShowSubTodos] = useState(todo.showSubtodos);
+  // const [showSubtodosClicked, setShowSubTodosClicked] = useState(false);
 
   const editTitleInputRef = useRef<HTMLInputElement>(null);
 
@@ -61,7 +61,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
     if (todoTitle.length === 0) {
       alert("do a valid input todos cant be empty");
     } else {
-      putTodo(todoTitle,todoKey);
+      putTodo({title:todoTitle},todoKey);
     }
   };
 
@@ -124,27 +124,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   }, [showTodoTitleInput]);
 
   const handleRightArrowClick = async () => {
-    const formData = new FormData();
-    formData.append('todoId', todo.id);
-    if (showSubTodos) {
-      formData.append('showSubtodos', 'false' );
-    } else {
-      formData.append('showSubtodos', 'true' );
-    }
-    try {
-      const response = await fetch(getUrl('/admin/putTodo'), {
-        method: 'PUT',
-        body: formData,
-      });
-      if (!response.ok) {
-        throw new Error('Request failed');
-      } else {
-        setShowSubTodos(!showSubTodos);
-        fetchData()
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+      putTodo({showSubtodos:!showSubtodos},todoKey)
   };
   return (
     <div
