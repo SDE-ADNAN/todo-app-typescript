@@ -4,13 +4,15 @@ import { TodoContext, getUrl } from "../context/todoContext";
 import "./Todo.scss";
 import { AddImg, DeleteImg, edit, rightArrow } from "../medias";
 import NoofSubtodos from "./UIComponents/NoofSubtodos";
+import Modal from "./UIComponents/Modal";
 
 interface TodoProps {
   todo: TodoItem;
   todoKey: string;
+  insideModal:Boolean;
 }
 
-const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
+const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
   const {
     todos,
     addSubTodo,
@@ -66,21 +68,16 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
   };
 
   const RenderConditionalTodos = () => {
+
     if (todo.todo != null) {
       return (
+        <Modal isOpen={todo.showSubtodos} onClose={handleRightArrowClick}>
         <ul className={`adc ${!todo.showSubtodos && "hide"}`}>
           {todo.todo.map((subTodo) => (
-            <Todo todo={subTodo} todoKey={subTodo.id} />
+            <Todo todo={subTodo} todoKey={subTodo.id} insideModal={true}/>
           ))}
         </ul>
-      );
-    } else if (todo.todo === null && todos.length > 0) {
-      return (
-        <ul className={`xyz  ${!todo.showSubtodos && "hide"}`}>
-          {todos.map((subTodo) => (
-            <Todo todo={subTodo} todoKey={subTodo.id} />
-          ))}
-        </ul>
+        </Modal>
       );
     }
     return <div>nope</div>;
@@ -135,7 +132,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
       <div className="subTodos_container">
         <div className="head_container">
           <div className="CTAS_container">
-            {todo.todo.length > 0 && (
+            {todo.todo.length > 0 && !insideModal && (
               <img
                 onClick={handleRightArrowClick}
                 className={`rightarrow  ${todo.showSubtodos && "rotate-90deg"}`}
@@ -233,6 +230,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey }) => {
 
           <RenderConditionalTodos />
         </div>
+        
         <div className="checkbox">
           <input
             type="checkbox"
