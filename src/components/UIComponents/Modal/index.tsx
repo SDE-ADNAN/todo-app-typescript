@@ -1,8 +1,10 @@
 import React, { FC, ReactNode } from 'react';
+import ReactDOM from 'react-dom';
 import './Modal.scss';
+import { Button } from '@mui/material';
 
 interface ModalProps {
-  isOpen: boolean;
+  isOpen: Boolean;
   onClose: () => void;
   children: ReactNode;
 }
@@ -10,15 +12,16 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>
+        <Button className="close-button" onClick={onClose}>
           X
-        </button>
+        </Button>
         {children}
       </div>
-    </div>
+    </div>,
+    document.getElementById('modal-root')!
   );
 };
 
