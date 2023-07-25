@@ -18,7 +18,7 @@ const TodoList: React.FC<TodoListProps> = ({ todo}) => {
     flexDirection:"column"
     }} key={new Date().toISOString()}>
       {todo.map((todo) => (
-        <Todo todoKey={todo._id.toString()} todo={todo} insideModal={false}/>
+        <Todo todoKey={todo._id.toString()} todo={todo} insideModal={false} isParent={true}/>
       ))}
     </div> : <h1> LOADING ......</h1>}
     </>
