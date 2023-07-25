@@ -14,7 +14,6 @@ interface TodoProps {
 
 const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
   const {
-    addSubTodo,
     deleteTodo,
     putTodo,
     postSubTodo,
@@ -38,11 +37,6 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
     setSubTodoText(event.target.value);
   };
 
-  const handleAddTodo = (parentId: string, title: string) => {
-    addSubTodo(parentId,title);
-    setSubTodoText("");
-    setShowAddInput(todoKey, false);
-  };
 
   const handleDeleteTodo = (id: string) => {
     deleteTodo(id);
