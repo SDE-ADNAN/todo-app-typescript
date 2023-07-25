@@ -14,12 +14,9 @@ type TodoContextType = {
   isLoading:Boolean;
   addTodo: (title: string) => void;
   deleteTodo: (id: string) => void;
+  deleteSubTodo: (todoKey: string,id: string) => void;
   putTodo: (changeObj:object,todoId: string) => void;
   postSubTodo: (todoId: string,title:string) => void;
-  setShowAddInput: (id: string,val: boolean) => void;
-  setIsCompleted: (id: string,val: boolean) => void;
-  setShowSubTodos: (id: string) => void;
-  setNewTitle: (id: string,val: string) => void;
   fetchData:()=> void;
   setTodos: Dispatch<SetStateAction<TodoItem[]>>;
   addSubTodo:(parentId:string,title: string) => any;
@@ -30,12 +27,9 @@ export const TodoContext = createContext<TodoContextType>({
   isLoading: true,
   addTodo: () => {},
   deleteTodo: () => {},
+  deleteSubTodo: () => {},
   putTodo: () => {},
   postSubTodo: () => {},
-  setShowAddInput:() => {},
-  setIsCompleted:() => {},
-  setShowSubTodos:()=>{},
-  setNewTitle:()=>{},
   fetchData:()=>{},
   setTodos:()=>{},
   addSubTodo:()=>{},
@@ -164,6 +158,27 @@ export const TodoContextProvider = ({
     }
   };
 
+  const deleteSubTodo=async(todoKey:string,id:string)=>{
+    const formData = new FormData();
+    formData.append('subTodoId',id)
+    formData.append('parentTodoId',todoKey)
+
+    try {
+      const response = await fetch(getUrl("/admin/deleteSubTodo"),{
+        method:"DELETE",
+        body:formData
+      });
+      if (!response.ok) {
+        setIsLoading(true)
+        throw new Error('Request failed');
+      }
+        fetchData()
+      setIsLoading(false)
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  }
+
 
 const fetchData = async () => {
   try {
@@ -179,42 +194,6 @@ const fetchData = async () => {
     console.error('Error:', err);
   }
 };
-
-  const setShowAddInput = (id: string,val: boolean)=>{
-    const ITodo = findTodoById(id, todos);
-    if(ITodo){
-      ITodo.showInput = val
-      const updatedTodos = changeTodoById(id,ITodo,todos)
-      setTodos(updatedTodos);
-    }
-  }
-  const setIsCompleted = (id: string,val: boolean)=>{
-    const ITodo = findTodoById(id, todos);
-    console.log(ITodo)
-    if(ITodo){
-      ITodo.isCompleted = val
-      const updatedTodos = changeTodoById(id,ITodo,todos)
-      setTodos(updatedTodos);
-    }
-  }
-  const setShowSubTodos = (id: string)=>{
-    const ITodo = findTodoById(id, todos);
-    if(ITodo){
-      ITodo.showSubtodos = !ITodo.showSubtodos
-      const updatedTodos = changeTodoById(id,ITodo,todos)
-      setTodos(updatedTodos);
-    }
-  }
-  const setNewTitle = (id: string,val:string)=>{
-    const ITodo = findTodoById(id, todos);
-    if(ITodo){
-      ITodo.title = val
-      const updatedTodos = changeTodoById(id,ITodo,todos)
-      setTodos(updatedTodos);
-    }
-  }
-
-
   const contextValue: TodoContextType = {
     todos: todos,
     isLoading:isLoading,
@@ -223,10 +202,7 @@ const fetchData = async () => {
     postSubTodo: postSubTodo,
     addSubTodo:addSubTodo,
     deleteTodo: deleteTodo,
-    setShowAddInput:setShowAddInput,
-    setIsCompleted:setIsCompleted,
-    setShowSubTodos:setShowSubTodos,
-    setNewTitle:setNewTitle,
+    deleteSubTodo: deleteSubTodo,
     fetchData:fetchData,
     setTodos:setTodos,
   };
@@ -236,29 +212,3 @@ const fetchData = async () => {
   );
 };
 
-// Helper function to find a todo by id recursively
-const findTodoById = (id: string, todos: TodoItem[]): TodoItem | undefined => {
-  for (const todo of todos) {
-    if (todo._id.toString() === id) {
-      return todo;
-    } else if (todo.todo.length > 0) {
-      const foundTodo = findTodoById(id, todo.todo);
-      if (foundTodo) {
-        return foundTodo;
-      }
-    }
-  }
-  return undefined;
-};
-//Helper for changing a todo at a specific id
-const changeTodoById = (id: string, updatedTodo: TodoItem, todos: TodoItem[]): TodoItem[] => {
-  return todos.map(todo => {
-    if (todo._id === id) {
-      return updatedTodo;
-    } else if (todo.todo.length > 0) {
-      return { ...todo, todo: changeTodoById(id, updatedTodo, todo.todo) };
-    } else {
-      return todo;
-    }
-  });
-};
