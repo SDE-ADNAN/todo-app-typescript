@@ -10,15 +10,15 @@ interface TodoProps {
   todo: TodoItem;
   todoKey: string;
   insideModal:Boolean;
+  isParent:Boolean;
 }
 
-const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
+const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal,isParent}) => {
   const {
     deleteTodo,
+    deleteSubTodo,
     putTodo,
     postSubTodo,
-    setShowAddInput,
-    setIsCompleted,
   } = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
   const [todoTitle, setTodoTitle] = useState(todo.title);
@@ -26,7 +26,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
   const [checkboxDisabled, setCheckboxDisabled] = useState(false);
   const [anyOneTodoIncomplete, setAnyOneTodoIncomplete] = useState(false);
   const [showSubtodos, setShowSubTodos] = useState(todo.showSubtodos);
-  // const [showSubtodosClicked, setShowSubTodosClicked] = useState(false);
+  const [showSubtodosInput, setShowSubTodosInput] = useState(false);
 
   const editTitleInputRef = useRef<HTMLInputElement>(null);
 
@@ -39,7 +39,11 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
 
 
   const handleDeleteTodo = (id: string) => {
-    deleteTodo(id);
+    if(isParent){
+    deleteTodo(id)
+    }else if(!isParent){
+      deleteSubTodo(todoKey,todo._id)
+    }
   };
 
   const handleSubmit = (e: any) => {
@@ -62,8 +66,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
     event: ChangeEvent<HTMLInputElement>,
     todoId: string
   ) => {
-    const { checked } = event.target;
-    setIsCompleted(todoId, checked);
+    // const { checked } = event.target;
   };
   const handleTodoTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newTitle = event.target.value;
@@ -160,7 +163,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
               <div
                 className={`add_btn`}
                 title={"Add a subtodo"}
-                onClick={() => setShowAddInput(todoKey, !todo.showInput)}
+                onClick={() => setShowSubTodosInput(!showSubtodosInput)}
               >
                 <img src={AddImg} alt={"images"}></img>
               </div>
@@ -183,7 +186,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
             </div>
           </div>
           <div className={`btns `}>
-            {todo.showInput && (
+            {showSubtodosInput && (
               <form onSubmit={handleSubmit}>
                 <input
                   id="subTodoText"
@@ -195,7 +198,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
                   className="cancelbtn"
                   onClick={() => {
                     setSubTodoText("");
-                    setShowAddInput(todoKey, false);
+                    setShowSubTodosInput(false)
                   }}
                 >
                   Cancel
@@ -207,7 +210,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
                 <Modal isOpen={showSubtodos} onClose={handleRightArrowClick}>
                 <ul className={`adc ${showSubtodos? "":"hide"}`}>
                   {todo.todo.map((subTodo) => {
-                    return(<Todo todo={subTodo} todoKey={todo._id} insideModal={true}/>)
+                    return(<Todo todo={subTodo} todoKey={todo._id} insideModal={true} isParent={false}/>)
                 })}
                 </ul>
                 </Modal>
