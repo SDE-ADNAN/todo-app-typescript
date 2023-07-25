@@ -15,6 +15,7 @@ type TodoContextType = {
   addTodo: (title: string) => void;
   deleteTodo: (id: string) => void;
   putTodo: (changeObj:object,todoId: string) => void;
+  postSubTodo: (todoId: string,title:string) => void;
   setShowAddInput: (id: string,val: boolean) => void;
   setIsCompleted: (id: string,val: boolean) => void;
   setShowSubTodos: (id: string) => void;
@@ -30,6 +31,7 @@ export const TodoContext = createContext<TodoContextType>({
   addTodo: () => {},
   deleteTodo: () => {},
   putTodo: () => {},
+  postSubTodo: () => {},
   setShowAddInput:() => {},
   setIsCompleted:() => {},
   setShowSubTodos:()=>{},
@@ -53,23 +55,45 @@ export const TodoContextProvider = ({
 
   const putTodo = async (changeObj: object,todoId : string) => {
     const formData = new FormData();
-    formData.append('changeObj',JSON.stringify(changeObj));
-    formData.append('todoId',todoId);
-    try {
-      const response = await fetch(getUrl("/admin/putTodo"),{
-        method:"PUT",
-        body:formData
-      });
-      if (!response.ok) {
-        setIsLoading(true)
-        throw new Error('Request failed');
-      }
-      fetchData()
-      setIsLoading(false)
-    } catch (err) {
-      console.error('Error:', err);
+  formData.append('todoId', todoId);
+  formData.append('changeObj', JSON.stringify(changeObj));
+
+  return fetch(getUrl("/admin/putTodo"), {
+    method: 'PUT',
+    body: formData,
+  })
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error('Failed to update todo.');
     }
-    return
+    fetchData()
+    return response.json();
+  })
+  .catch((error) => {
+    console.error('Error updating todo:', error);
+    throw error;
+  });
+  };
+  const postSubTodo =(todoId: string,title: string) => {
+    const formData = new FormData();
+  formData.append('parentId', todoId);
+  formData.append('subTodoTitle', title);
+
+  return fetch(getUrl("/admin/postSubTodo"), {
+    method: 'POST',
+    body: formData,
+  })
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error('Failed to update todo.');
+    }
+    fetchData()
+    return response.json();
+  })
+  .catch((error) => {
+    console.error('Error updating todo:', error);
+    throw error;
+  });
   };
   const addTodo = async (title: string) => {
     const formData = new FormData();
@@ -196,6 +220,7 @@ const fetchData = async () => {
     isLoading:isLoading,
     addTodo: addTodo,
     putTodo: putTodo,
+    postSubTodo: postSubTodo,
     addSubTodo:addSubTodo,
     deleteTodo: deleteTodo,
     setShowAddInput:setShowAddInput,
@@ -214,7 +239,7 @@ const fetchData = async () => {
 // Helper function to find a todo by id recursively
 const findTodoById = (id: string, todos: TodoItem[]): TodoItem | undefined => {
   for (const todo of todos) {
-    if (todo.id === id) {
+    if (todo._id.toString() === id) {
       return todo;
     } else if (todo.todo.length > 0) {
       const foundTodo = findTodoById(id, todo.todo);
@@ -228,7 +253,7 @@ const findTodoById = (id: string, todos: TodoItem[]): TodoItem | undefined => {
 //Helper for changing a todo at a specific id
 const changeTodoById = (id: string, updatedTodo: TodoItem, todos: TodoItem[]): TodoItem[] => {
   return todos.map(todo => {
-    if (todo.id === id) {
+    if (todo._id === id) {
       return updatedTodo;
     } else if (todo.todo.length > 0) {
       return { ...todo, todo: changeTodoById(id, updatedTodo, todo.todo) };

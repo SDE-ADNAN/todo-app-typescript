@@ -1,6 +1,6 @@
 import React, { useState, useContext, ChangeEvent, useEffect, useRef } from "react";
 import { TodoItem } from "../App";
-import { TodoContext, getUrl } from "../context/todoContext";
+import { TodoContext} from "../context/todoContext";
 import "./Todo.scss";
 import { AddImg, DeleteImg, edit, rightArrow } from "../medias";
 import NoofSubtodos from "./UIComponents/NoofSubtodos";
@@ -14,15 +14,12 @@ interface TodoProps {
 
 const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
   const {
-    todos,
     addSubTodo,
     deleteTodo,
     putTodo,
+    postSubTodo,
     setShowAddInput,
     setIsCompleted,
-    // setShowSubTodos,
-    setNewTitle,
-    fetchData,
   } = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
   const [todoTitle, setTodoTitle] = useState(todo.title);
@@ -55,7 +52,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
     e.preventDefault();
     if (subTodoText.length === 0) {
       alert("do a valid input todos cant be empty");
-    } else handleAddTodo(todoKey, subTodoText);
+    } else postSubTodo(todoKey, subTodoText);
   };
 
   const handleTodoTitleSubmit = (e: any) => {
@@ -65,22 +62,6 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
     } else {
       putTodo({title:todoTitle},todoKey);
     }
-  };
-
-  const RenderConditionalTodos = () => {
-
-    if (todo.todo != null) {
-      return (
-        <Modal isOpen={todo.showSubtodos} onClose={handleRightArrowClick}>
-        <ul className={`adc ${!todo.showSubtodos && "hide"}`}>
-          {todo.todo.map((subTodo) => (
-            <Todo todo={subTodo} todoKey={subTodo.id} insideModal={true}/>
-          ))}
-        </ul>
-        </Modal>
-      );
-    }
-    return <div>nope</div>;
   };
 
   const handleCheckboxChange = (
@@ -96,19 +77,19 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
   };
 
   useEffect(() => {
-    const allCompleted = todo.todo
-      .map((todo) => todo.isCompleted === true)
+    const allCompleted = todo && todo.todo && todo.todo
+      .map((todo) => todo && todo.isCompleted && todo.isCompleted === true)
       .some((value) => value === false);
-    const anyOneInComplete = todo.todo
-      .map((todo) => todo.isCompleted)
+    const anyOneInComplete = todo && todo.todo &&  todo.todo
+      .map((todo) => todo && todo.todo && todo.isCompleted)
       .some((value) => value === false);
 
       setAnyOneTodoIncomplete(anyOneInComplete)
-    if (todo.todo.length > 0 && !allCompleted) {
+    if (todo && todo.todo && todo.todo.length && todo.todo.length > 0 && !allCompleted) {
       setCheckboxDisabled(false);
-    } else if (todo.todo.length > 0 && allCompleted) {
+    } else if (todo && todo.todo && todo.todo.length && todo.todo.length > 0 && allCompleted) {
       setCheckboxDisabled(true);
-    } else if (todo.todo.length === 0) {
+    } else if (todo && todo.todo && todo.todo.length && todo.todo.length === 0) {
       setCheckboxDisabled(false);
     }
   }, [todo]);
@@ -120,8 +101,8 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
     }
   }, [showTodoTitleInput]);
 
-  const handleRightArrowClick = async () => {
-      putTodo({showSubtodos:!showSubtodos},todoKey)
+  const handleRightArrowClick = () => {
+    setShowSubTodos(!showSubtodos)
   };
   return (
     <div
@@ -132,14 +113,14 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
       <div className="subTodos_container">
         <div className="head_container">
           <div className="CTAS_container">
-            {todo.todo.length > 0 && !insideModal && (
+            {todo && todo.todo && todo.todo.length && todo.todo.length > 0 && !insideModal ? 
               <img
                 onClick={handleRightArrowClick}
-                className={`rightarrow  ${todo.showSubtodos && "rotate-90deg"}`}
+                className={`rightarrow  ${showSubtodos && "rotate-90deg"}`}
                 src={rightArrow}
                 alt={"right-arrow"}
-              ></img>
-            )}
+              ></img>:<></>
+            }
             {!showTodoTitleInput ? (
               <div
                 className="todo_title truncate-text"
@@ -171,13 +152,14 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
               </div>
             )}
             <div className="CTAS">
-              {todo.todo.length > 0 && (
+              {todo && todo.todo && todo.todo.length &&todo.todo.length > 0 ? 
                 <NoofSubtodos subTodoNumber={todo.todo.length} />
-              )}
+                :<></>
+              }
               <div
                 title={"Delete this todo "}
                 onClick={() => handleDeleteTodo(todoKey)}
-                className={`${todo.todo.length > 0 && "opacity0&disable"}`}
+                className={`${todo && todo.todo && todo.todo.length &&todo.todo.length > 0 && "opacity0&disable"}`}
               >
                 <img src={DeleteImg} alt={"images"}></img>
               </div>
@@ -227,8 +209,16 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
               </form>
             )}
           </div>
-
-          <RenderConditionalTodos />
+                {todo && todo.todo && showSubtodos ? 
+                <Modal isOpen={showSubtodos} onClose={handleRightArrowClick}>
+                <ul className={`adc ${showSubtodos? "":"hide"}`}>
+                  {todo.todo.map((subTodo) => {
+                    return(<Todo todo={subTodo} todoKey={todo._id} insideModal={true}/>)
+                })}
+                </ul>
+                </Modal>
+                :<></>
+                }
         </div>
         
         <div className="checkbox">
@@ -239,7 +229,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal}) => {
             title={`${
               checkboxDisabled ? "first complete subtodos" : "Complete"
             } `}
-            onChange={(e) => handleCheckboxChange(e, todo.id)}
+            onChange={(e) => handleCheckboxChange(e, todo._id.toString())}
           ></input>
         </div>
       </div>

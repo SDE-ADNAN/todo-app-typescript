@@ -10,6 +10,7 @@ interface ModalProps {
 }
 
 const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  console.log(children)
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(

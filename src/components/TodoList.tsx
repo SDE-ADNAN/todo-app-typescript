@@ -13,12 +13,12 @@ const TodoList: React.FC<TodoListProps> = ({ todo}) => {
 
   return (
     <>
-    {!isLoading ? <div style={{
+    {!isLoading ? <div className="todo_List__" style={{
     display: "flex",
     flexDirection:"column"
     }} key={new Date().toISOString()}>
       {todo.map((todo) => (
-        <Todo todoKey={todo.id} todo={todo} insideModal={false}/>
+        <Todo todoKey={todo._id.toString()} todo={todo} insideModal={false}/>
       ))}
     </div> : <h1> LOADING ......</h1>}
     </>

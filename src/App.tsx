@@ -7,7 +7,7 @@ import userCredentialsArray from "./data/users";
 import DashboardPage from "./Pages/Dashboard/Dashboard";
 
 export interface TodoItem {
-  id: string;
+  _id: string;
   title: string;
   todo: TodoItem[];
   isCreated?: Boolean;
