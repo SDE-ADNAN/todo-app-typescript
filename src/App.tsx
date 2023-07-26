@@ -27,15 +27,6 @@ const App: React.FC = () => {
   const [subTodoText, setSubTodoText] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-//   const formData = new FormData()
-//   formData.append('title','some new task useHTTP')
-//   // formData.append('todoId','1687164570139_20314')
-//   const [ data , error] = useHTTP(false,"post",formData,{
-//   'Content-Type': 'application/json',
-// },"/admin/postTodo")
-//   console.log(data)
-//   console.log(error)
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSubTodoText(event.target.value);
   };

@@ -8,12 +8,12 @@ import Modal from "./UIComponents/Modal";
 
 interface TodoProps {
   todo: TodoItem;
-  todoKey: string;
+  parentTodoKey: string;
   insideModal:Boolean;
   isParent:Boolean;
 }
 
-const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal,isParent}) => {
+const Todo: React.FC<TodoProps> = ({ todo, parentTodoKey ,insideModal,isParent}) => {
   const {
     deleteTodo,
     deleteSubTodo,
@@ -42,7 +42,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal,isParent}) => {
     if(isParent){
     deleteTodo(id)
     }else if(!isParent){
-      deleteSubTodo(todoKey,todo._id)
+      deleteSubTodo(parentTodoKey,todo._id)
     }
   };
 
@@ -50,7 +50,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal,isParent}) => {
     e.preventDefault();
     if (subTodoText.length === 0) {
       alert("do a valid input todos cant be empty");
-    } else postSubTodo(todoKey, subTodoText);
+    } else postSubTodo(parentTodoKey, subTodoText);
   };
 
   const handleTodoTitleSubmit = (e: any) => {
@@ -58,7 +58,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal,isParent}) => {
     if (todoTitle.length === 0) {
       alert("do a valid input todos cant be empty");
     } else {
-      putTodo({title:todoTitle},todoKey);
+      putTodo({title:todoTitle},parentTodoKey);
     }
   };
 
@@ -103,8 +103,8 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal,isParent}) => {
   };
   return (
     <div
-      key={todoKey}
-      id={todoKey}
+      key={parentTodoKey}
+      id={parentTodoKey}
       className={`todo_container ${todo.isCompleted && !anyOneTodoIncomplete && "completed"}  `}
     >
       <div className="subTodos_container">
@@ -155,7 +155,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal,isParent}) => {
               }
               <div
                 title={"Delete this todo "}
-                onClick={() => handleDeleteTodo(todoKey)}
+                onClick={() => handleDeleteTodo(parentTodoKey)}
                 className={`${todo && todo.todo && todo.todo.length &&todo.todo.length > 0 && "opacity0&disable"}`}
               >
                 <img src={DeleteImg} alt={"images"}></img>
@@ -210,7 +210,7 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal,isParent}) => {
                 <Modal isOpen={showSubtodos} onClose={handleRightArrowClick}>
                 <ul className={`adc ${showSubtodos? "":"hide"}`}>
                   {todo.todo.map((subTodo) => {
-                    return(<Todo todo={subTodo} todoKey={todo._id} insideModal={true} isParent={false}/>)
+                    return(<Todo todo={subTodo} parentTodoKey={todo._id} insideModal={true} isParent={false}/>)
                 })}
                 </ul>
                 </Modal>
@@ -234,4 +234,4 @@ const Todo: React.FC<TodoProps> = ({ todo, todoKey ,insideModal,isParent}) => {
   );
 };
 
-export default React.memo(Todo);
+export default Todo;

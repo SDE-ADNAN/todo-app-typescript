@@ -14,7 +14,7 @@ type TodoContextType = {
   isLoading:Boolean;
   addTodo: (title: string) => void;
   deleteTodo: (id: string) => void;
-  deleteSubTodo: (todoKey: string,id: string) => void;
+  deleteSubTodo: (parentTodoKey: string,id: string) => void;
   putTodo: (changeObj:object,todoId: string) => void;
   postSubTodo: (todoId: string,title:string) => void;
   fetchData:()=> void;
@@ -101,8 +101,6 @@ export const TodoContextProvider = ({
         setIsLoading(true)
         throw new Error('Request failed');
       }
-      // const jsonData = await response.json();
-      // console.log(jsonData)
       fetchData()
       setIsLoading(false)
     } catch (err) {
@@ -158,10 +156,10 @@ export const TodoContextProvider = ({
     }
   };
 
-  const deleteSubTodo=async(todoKey:string,id:string)=>{
+  const deleteSubTodo=async(parentTodoKey:string,id:string)=>{
     const formData = new FormData();
     formData.append('subTodoId',id)
-    formData.append('parentTodoId',todoKey)
+    formData.append('parentTodoId',parentTodoKey)
 
     try {
       const response = await fetch(getUrl("/admin/deleteSubTodo"),{
