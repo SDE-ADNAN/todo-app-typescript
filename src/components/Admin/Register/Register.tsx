@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import "./Register.scss"
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import GlassmorphicBackground from '../../UIComponents/Modal/DesignComponents/GlassmorphicBackground';
 import PasswordInput from '../../UIComponents/PasswordInput';
 import { getUrl } from '../../../context/todoContext';
@@ -75,6 +75,10 @@ const Register: React.FC<RegisterProps> = () => {
                         <PasswordInput label="Password:" id="password" value={password} onChange={handlePasswordChange} required />
                     </div>
                     <button className="login__btn" type="submit">Register</button>
+                    <div className='sign_in_redirect'>
+                        Already have an account ?
+                        <Link to='/login'><span>Sign In / Log In</span></Link>
+                    </div>
                 </form>
             </GlassmorphicBackground>
         </div>
