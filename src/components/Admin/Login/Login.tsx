@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
-import  userCredentialsArray from "../../../data/users"
 import { LoginPageProps } from '../../../Pages/Admin/LoginPage';
-import { useNavigate } from 'react-router-dom';
 import PasswordInput from '../../UIComponents/PasswordInput';
 import "./Login.scss"
+import GlassmorphicBackground from '../../UIComponents/Modal/DesignComponents/GlassmorphicBackground';
+import { getUrl } from '../../../context/todoContext';
 
 interface LoginProps extends LoginPageProps{
 }
 
-const Login: React.FC<LoginProps> = ({onLogin}) => {
-  const [username, setUsername] = useState('');
+const Login: React.FC<LoginProps> = () => {
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const navigate = useNavigate()
-
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+    setUserName(event.target.value);
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,30 +23,39 @@ const Login: React.FC<LoginProps> = ({onLogin}) => {
 
   const handleLoginFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const formdata = new FormData();
+    formdata.append('userName', userName);
+    formdata.append('password', password);
 
-    // Find the user object with a matching username
-    const user = userCredentialsArray.find((user) => user.username === username);
+    fetch(getUrl('/auth/login'), {
+      method: 'POST',
+      body: formdata,
+    }).then((response) => {
+      if (response.ok) {
+        console.log("user logged in")
+      }
+      return response.json()
+    }).then((jsonResponse) => {
+      console.log(jsonResponse)
+      setError(jsonResponse.message)
+      localStorage.setItem("Token", jsonResponse.token)
+      window.location.href = '/dashboard'
+    })
+      .catch(err => {
+        console.error(err)
+        setError(err)
+      })
 
-    // If a user is found and the password matches, authentication is successful
-    if (user && user.password === password) {
-      // Perform actions like setting the authenticated state or storing the JWT token
-      console.log('Authentication successful');
-      onLogin()
-      navigate("/dashboard")
-      localStorage.setItem("jwtToken",user && user.jwtToken)
-    } else {
-      // Handle authentication failure, such as displaying an error message
-      setError('Invalid username or password');
-    }
   };
 
   return (
-    <div>
+    <div className="main_login_container">
+      <GlassmorphicBackground>
       <h2>Login</h2>
       <form className='login__form' onSubmit={handleLoginFormSubmit}>
         <div className='inputdiv'>
-          <label htmlFor="username">Username:</label>
-          <input type="text" id="username" value={username} onChange={handleUsernameChange} />
+            <label htmlFor="userName">Username:</label>
+            <input type="text" id="userName" value={userName} onChange={handleUsernameChange} />
         </div>
         <div className='inputdiv'>
           <PasswordInput label="Password:" id="password" value={password} onChange={handlePasswordChange}/>
@@ -56,6 +63,7 @@ const Login: React.FC<LoginProps> = ({onLogin}) => {
         <button className="login__btn" type="submit">Login</button>
       </form>
       {error && <p>{error}</p>}
+      </GlassmorphicBackground>
     </div>
   );
 };
