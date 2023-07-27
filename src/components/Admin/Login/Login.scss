@@ -1,3 +1,16 @@
+.main_login_container{
+    width: 400px;
+    padding: 35px;
+
+    h2{
+        margin-top: 0;
+    }
+
+    .glassmorphic-background{
+        padding:20px 30px
+    }
+}
+
 .login__form{
     display: flex;
     flex-direction: column;
