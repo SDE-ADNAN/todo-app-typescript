@@ -1,11 +1,10 @@
 import Login from "../../components/Admin/Login/Login"
 
-export interface LoginPageProps{
-    onLogin: () => any;
+export interface LoginPageProps {
 }
-const LoginPage : React.FC<LoginPageProps>= ({onLogin})=>{
+const LoginPage: React.FC<LoginPageProps> = () => {
     return(
-        <Login onLogin={onLogin}/>
+        <Login />
     )
 }
 
