@@ -68,9 +68,9 @@ useEffect(()=>{
     }
   };
 
-  fetchCallData();
+  // fetchCallData();
   if(remUrl.indexOf("getAllTodos") === -1){
-    fetchData()
+    // fetchData()
   }
 },[])
   return [ data, error ];
