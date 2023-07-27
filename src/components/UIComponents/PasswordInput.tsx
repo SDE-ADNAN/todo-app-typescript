@@ -7,9 +7,10 @@ interface PasswordInputProps {
   id:string;
   value:string;
   onChange:any;
+  required?: any;
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({ label ,id , value, onChange}) => {
+const PasswordInput: React.FC<PasswordInputProps> = ({ label, id, value, onChange, required = false }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +30,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ label ,id , value, onChan
         type={showPassword ? 'text' : 'password'}
         value={value}
         onChange={handleInputChange}
+          required={required}
       />
       <div className='show_hide' onClick={togglePasswordVisibility}>
         {showPassword ? <img src={show} alt="show"></img> : <img src={hide} alt="hide"></img>}
