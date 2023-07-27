@@ -2,9 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { TodoContext } from "./context/todoContext";
 import "./App.scss";
 import { Navigate, Route, BrowserRouter as Router, Routes} from "react-router-dom";
+
+// import bgDark from './medias/bgfinaldark.jpg'
+import bgLight from './medias/bgfinallight.jpg'
 import LoginPage from "./Pages/Admin/LoginPage";
-import userCredentialsArray from "./data/users";
 import DashboardPage from "./Pages/Dashboard/Dashboard";
+import RegisterPage from "./Pages/Admin/RegisterPage";
 
 export interface TodoItem {
   _id: string;
@@ -23,13 +26,14 @@ export function generateUniqueId(): string {
 }
 const App: React.FC = () => {
 
-  const { todos, addTodo , fetchData} = useContext(TodoContext);
+  const { todos, addTodo } = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSubTodoText(event.target.value);
   };
+
 
   const handleParentaddition = () => {
     if(subTodoText.length === 0){
@@ -44,39 +48,38 @@ const App: React.FC = () => {
     handleParentaddition();
   };
 
-  // Function to handle successful authentication
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
-
   // Function to handle logout
   const handleLogout = () => {
     setIsAuthenticated(false);
-    localStorage.removeItem("jwtToken")
+    localStorage.removeItem("Token")
+    window.location.href = '/login'
   };
   useEffect(()=>{
-    fetchData()
-
+    // fetchData()
+    console.log("dsfvdssdvsdv")
+    console.log(process.env.ENV)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   useEffect(()=>{
-    const localStorage_jwtToken = localStorage.getItem("jwtToken")
-    const isUserVerifiedPreviously = userCredentialsArray.find((user) => user.jwtToken === localStorage_jwtToken);
-    if(isUserVerifiedPreviously){
+    const localStorage_jwtToken = localStorage.getItem("Token")
+
+    if (localStorage_jwtToken) {
       setIsAuthenticated(true)
     }
   },[isAuthenticated])
 
   return (
     <div className="main_container">
+      <img src={bgLight} alt='bg'></img>
       <Router>
         <Routes>
-          <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           {isAuthenticated && (<React.Fragment>
             <Route path="/dashboard" element={<DashboardPage handleLogout={handleLogout} submitParentTodo={submitParentTodo} subTodoText={subTodoText} handleChange={handleChange} handleParentaddition={handleParentaddition}  todos={todos} />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} /></React.Fragment>
           )}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/register" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
