@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react"
 import TodoList from "../../components/TodoList"
 import Button from '@mui/material/Button';
 import { TodoItem } from "../../App";
+import GlassmorphicBackground from "../../components/UIComponents/Modal/DesignComponents/GlassmorphicBackground";
 
 interface DashboardPageProps{
     handleLogout:any;
@@ -23,6 +24,7 @@ const DashboardPage:React.FC<DashboardPageProps> =({handleLogout,submitParentTod
   }, []);
     return(
         <React.Fragment>
+        <GlassmorphicBackground>
         <div className="parent_todo_head">
           <h1>Nested Todos</h1>
           <button onClick={handleLogout} className="logoutBtn" >Logout</button>
@@ -45,6 +47,7 @@ const DashboardPage:React.FC<DashboardPageProps> =({handleLogout,submitParentTod
         <div className="todos_list_container">
           <TodoList todo={todos} />
         </div>
+        </GlassmorphicBackground>
       </React.Fragment>
     )
 }
