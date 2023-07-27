@@ -60,7 +60,7 @@ export const TodoContextProvider = ({
     if (!response.ok) {
       throw new Error('Failed to update todo.');
     }
-    fetchData()
+    // fetchData()
     return response.json();
   })
   .catch((error) => {
@@ -81,7 +81,7 @@ export const TodoContextProvider = ({
     if (!response.ok) {
       throw new Error('Failed to update todo.');
     }
-    fetchData()
+    // fetchData()
     return response.json();
   })
   .catch((error) => {
@@ -101,7 +101,7 @@ export const TodoContextProvider = ({
         setIsLoading(true)
         throw new Error('Request failed');
       }
-      fetchData()
+      // fetchData()
       setIsLoading(false)
     } catch (err) {
       console.error('Error:', err);
@@ -124,7 +124,7 @@ export const TodoContextProvider = ({
       // if(jsonData && jsonData.updatedTodos){
       //   setTodos(jsonData.updatedTodos)
       // }else{
-        fetchData()
+        // fetchData()
       // }
       setIsLoading(false)
     } catch (err) {
@@ -148,7 +148,7 @@ export const TodoContextProvider = ({
       // if(jsonData && jsonData.updatedTodos){
       //   setTodos(jsonData.updatedTodos)
       // }else{
-        fetchData()
+        // fetchData()
       // }
       setIsLoading(false)
     } catch (err) {
@@ -170,7 +170,7 @@ export const TodoContextProvider = ({
         setIsLoading(true)
         throw new Error('Request failed');
       }
-        fetchData()
+        // fetchData()
       setIsLoading(false)
     } catch (err) {
       console.error('Error:', err);
