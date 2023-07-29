@@ -1,0 +1,29 @@
+.todo_item_individual{
+    font-size: 24px;
+    font-weight: 400;
+    width:calc(100% - 20px);
+    background: rgb(255 255 255 / 24%);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(4px);
+    border-radius: 10px;
+    padding:10px;
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+    outline: 0.2px solid #8e8e8e;
+    margin:5px 0;
+  
+    .todo_CTAs_container{
+      max-width: 100px;
+      width: 50px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  
+    .todo_item_title{
+      flex-grow: 1;
+      width:calc(100% - 100px)
+    }
+  }
