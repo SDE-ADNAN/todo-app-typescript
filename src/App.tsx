@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TodoContext } from "./context/todoContext";
 import "./App.scss";
-import { Navigate, Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate } from "react-router-dom";
 
 // import bgDark from './medias/bgfinaldark.jpg'
 import bgLight from './medias/bgfinallight.jpg'
 import LoginPage from "./Pages/Admin/LoginPage";
 import DashboardPage from "./Pages/Dashboard/Dashboard";
 import RegisterPage from "./Pages/Admin/RegisterPage";
+import Loader from "./components/UIComponents/Loader/Loader";
 
 export interface TodoItem {
   _id: string;
@@ -29,6 +30,9 @@ const App: React.FC = () => {
   const { todos, addTodo } = useContext(TodoContext);
   const [subTodoText, setSubTodoText] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isloading, setIsLoading] = useState(true);
+  const [tokenIsPresent, setTokenIsPresent] = useState<boolean | null>(null)
+
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSubTodoText(event.target.value);
@@ -50,14 +54,12 @@ const App: React.FC = () => {
 
   // Function to handle logout
   const handleLogout = () => {
-    setIsAuthenticated(false);
     localStorage.removeItem("Token")
+    setIsAuthenticated(false);
     window.location.href = '/login'
   };
   useEffect(()=>{
     // fetchData()
-    console.log("dsfvdssdvsdv")
-    console.log(process.env.ENV)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   useEffect(()=>{
@@ -66,23 +68,35 @@ const App: React.FC = () => {
     if (localStorage_jwtToken) {
       setIsAuthenticated(true)
     }
-  },[isAuthenticated])
+  }, [tokenIsPresent])
+
+  // loading for contents of site to load  ( medias )
+  useEffect(() => {
+    setTokenIsPresent(localStorage.getItem("Token") !== null || localStorage.getItem("Token") !== '' ? false : true)
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 10);
+  }, []);
 
   return (
     <div className="main_container">
-      <img src={bgLight} alt='bg'></img>
+      {/* <img src={bgDark} alt='bg'></img> */}
+      <div className="image_container"><img src={bgLight} alt='bg'></img></div>
       <Router>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          {!isAuthenticated && <>
+            <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
+            <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+          </>}
           {isAuthenticated && (<React.Fragment>
-            <Route path="/dashboard" element={<DashboardPage handleLogout={handleLogout} submitParentTodo={submitParentTodo} subTodoText={subTodoText} handleChange={handleChange} handleParentaddition={handleParentaddition}  todos={todos} />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} /></React.Fragment>
+            <Route path="/dashboard" element={<DashboardPage setIsAuthenticated={setIsAuthenticated} handleLogout={handleLogout} submitParentTodo={submitParentTodo} subTodoText={subTodoText} handleChange={handleChange} handleParentaddition={handleParentaddition} todos={todos} />} />
+            <Route path="/" element={<Navigate to="/dashboard" />} /></React.Fragment>
           )}
-          <Route path="/" element={<Navigate to="/register" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
+      <Loader isLoading={isloading} />
     </div>
   );
 };
