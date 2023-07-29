@@ -4,11 +4,7 @@ import { TodoItem } from "../../App";
 import './Dashboard.scss'
 import Loader from "../../components/UIComponents/Loader/Loader";
 import logo from '../../medias/logo.png'
-import AddIcon from "../../components/UIComponents/AddIcon/AddIcon";
-import MinusIcon from "../../components/UIComponents/MinusIcon/MinusIcon";
 import { useNavigate } from "react-router-dom";
-import ChevronIcon from "../../components/UIComponents/Chevron/ChevronIcon";
-import TodoListItem from "../../components/UIComponents/Todos/TodoItem/TodoListItem";
 import TodosListContainer from "../../components/UIComponents/Todos/TodosListContainer/TodosListContainer";
 
 interface DashboardPageProps {
@@ -57,6 +53,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ handleLogout, submitParen
     } else {
       setIsAuthenticated(true)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="main_dashboard_container">

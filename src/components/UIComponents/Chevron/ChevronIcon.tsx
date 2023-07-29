@@ -1,5 +1,4 @@
 import React, { FC, CSSProperties } from 'react';
-import ReactDOM from 'react-dom'
 import './ChevronIcon.scss'
 import { generateUniqueID } from '../../../data/api';
 
@@ -31,6 +30,7 @@ const ChevronIcon: FC<ChevronIconProps> = ({
 
     const chevRandomUnique32Id = generateUniqueID()
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const tooltipStyle: CSSProperties = {
         position: 'absolute',
         bottom: '-112%',
