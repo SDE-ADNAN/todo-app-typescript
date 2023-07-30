@@ -1,79 +1,60 @@
-import { useContext, useEffect, useState } from "react";
-import { API_URL_LOCAL , API_URL_LIVE } from "../data/api";
-import { TodoContext } from "../context/todoContext";
+import { useState, useEffect } from 'react';
+import { setLoading } from '../ReduxStore/UISlice';
+import { useDispatch } from 'react-redux';
 
-/***
-@param isLive ==> boolean that specifies if the call is for the live server or local.
-@param method ==> string for GET,POST,PUT,PATCH,DELETE,get,post,put,patch and all other HTTP methods
-@param body ==> JSON object for the formdata just pass the object dont stringify it.
-@param headers ==> JSON obj for headers.
-@param remUrl ==> string that gets concatinated after the live or local url e.g liveurl/remUrl or localurl/remUrl 
-***/
+type HttpError = {
+  message: string;
+  status?: number;
+};
 
-function useHTTP(isLive:boolean , method:string , body:Object | FormData,headers:any, remUrl:string) {
-  const {fetchData} = useContext(TodoContext)
-  const [data, setData] = useState<any>(null);
-  const [error, setError] = useState<any | null>(null);
-  let url = `${isLive ? API_URL_LIVE : API_URL_LOCAL}${remUrl}`
+function useHttp<T>(
+  url: string,
+  options?: RequestInit
+): [T | null, HttpError | null] {
+  const [response, setResponse] = useState<T | null>(null);
+  const [error, setError] = useState<HttpError | null>(null);
 
-  const getCallOptions = (method: string, body: Object | FormData, headers: any) => {
-    if (method === 'GET' || method === 'get') {
-      return {
-        method: method,
-      };
-    }
-  
-    if (
-      method === 'POST' ||
-      method === 'post' ||
-      method === 'PUT' ||
-      method === 'put' ||
-      method === 'PATCH' ||
-      method === 'patch' ||
-      method === 'DELETE' ||
-      method === 'delete'
-    ) {
-      if (typeof body === 'object' && !(body instanceof FormData)) {
-        return {
-          method: method,
-          headers: {
-            ...headers,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // dispatch(setLoading(true));
+      try {
+        const headers: HeadersInit = {};
+        if (options?.headers) {
+          for (const [key, value] of Object.entries(options.headers)) {
+            if (value !== null) {
+              headers[key] = value.toString();
+            }
+          }
+        }
+        const fetchOptions: RequestInit = {
+          ...options,
+          headers,
         };
-      } else {
-        const { 'Content-Type': contentType, ...restHeaders } = headers;
-        return {
-          method: method,
-          headers: restHeaders,
-          body: body,
-        };
-      }
-    }
-  };
-  
-useEffect(()=>{
-  const fetchCallData = async () => {
-    try {
-      const response = await fetch(url, getCallOptions(method,body,headers));
-      if (!response.ok) {
-        throw new Error("Failed to fetch");
-      }
-      const data = await response.json();
-      setData(data);
-      setError(null);
-    } catch (error) {
-      setError(error);
-    }
-  };
 
-  // fetchCallData();
-  if(remUrl.indexOf("getAllTodos") === -1){
-    // fetchData()
-  }
-},[])
-  return [ data, error ];
+        const fetchResponse = await fetch(url, fetchOptions);
+        if (!fetchResponse.ok) {
+          // dispatch(setLoading(false));
+          throw new Error(`Request failed with status: ${fetchResponse.status}`);
+        }
+
+        const responseData: T = await fetchResponse.json();
+        setResponse(responseData);
+        // dispatch(setLoading(false));
+      } catch (error: unknown) {
+        setError({
+          message: (error as Error).message,
+          status: (error as HttpError).status,
+        });
+        // dispatch(setLoading(false));
+      }
+    };
+
+    fetchData();
+  }, [url, options, dispatch]);
+
+  return [response, error];
 }
 
-export default useHTTP;
+export default useHttp;
