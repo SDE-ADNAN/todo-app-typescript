@@ -3,11 +3,11 @@ import { LoginPageProps } from '../../../Pages/Admin/LoginPage';
 import PasswordInput from '../../UIComponents/PasswordInput';
 import "./Login.scss"
 import GlassmorphicBackground from '../../UIComponents/Modal/DesignComponents/GlassmorphicBackground';
-import { getUrl } from '../../../context/todoContext';
 import Loader from '../../UIComponents/Loader/Loader';
 import { Link, useNavigate } from 'react-router-dom';
 import { setLoading } from '../../../ReduxStore/UISlice';
 import { useDispatch } from 'react-redux';
+import { getUrl } from '../../../CONFIG';
 
 interface LoginProps extends LoginPageProps{
   setIsAuthenticated: any;
