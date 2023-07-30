@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from "react"
-import TodoList from "../../components/TodoList"
 import { TodoItem } from "../../App";
 import './Dashboard.scss'
 import Loader from "../../components/UIComponents/Loader/Loader";
 import logo from '../../medias/logo.png'
 import { useNavigate } from "react-router-dom";
 import TodosListContainer from "../../components/UIComponents/Todos/TodosListContainer/TodosListContainer";
+import { useSelector } from "react-redux";
+import { RootState } from "../../ReduxStore/store";
 
 interface DashboardPageProps {
   handleLogout: any;
@@ -33,15 +34,13 @@ const navLinks = [
   'Navlink5',
 ]
 
-const Todosarr = [
-  { title: "go to gym" },
-  { title: "drop Talha to school" },
-  { title: "do udemy price action" },
-]
 
 const DashboardPage: React.FC<DashboardPageProps> = ({ handleLogout, submitParentTodo, subTodoText, handleChange, handleParentaddition, todos, setIsAuthenticated }) => {
 
   const navigate = useNavigate()
+
+  const allTodos = useSelector((state: RootState) => state.UI.allTodos)
+
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -64,9 +63,9 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ handleLogout, submitParen
         <div className="navbar_heading">Todos</div>
         <div className="navbar_void"></div>
         <div className='navbar_navlinks'>
-          {navLinks.map((item) => {
+          {navLinks.map((item, index) => {
             return (
-              <div className='navbar_navlink_item'>{item}</div>
+              <div key={`${item}_${index}`} className='navbar_navlink_item'>{item}</div>
             )
           })}
         </div>
@@ -79,7 +78,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ handleLogout, submitParen
           <div className="dashboard_sidebar_contents">
             {sideBarData.map((item, index) => {
               return (
-                <div className="sidebar_item_container">
+                <div key={`${item}_${index}`} className="sidebar_item_container">
                   <div className="sidebar_item">{item}</div>
                   <div className='horizontal_divider'></div>
                 </div>
@@ -115,15 +114,13 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ handleLogout, submitParen
                 </form>
               </div>
             </div>
-            <TodosListContainer todosArray={Todosarr} />
-            <div className="todos_list_container">
+            <TodosListContainer todosArray={allTodos} />
+            {/* <div className="todos_list_container">
               {todos ? <TodoList todo={todos} /> : <></>}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
-
-      <Loader isLoading={false} />
     </div >
   )
 }
