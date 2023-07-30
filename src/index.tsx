@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { TodoContextProvider } from './context/todoContext';
+import { Provider } from 'react-redux';
+import store from './ReduxStore/store';
 
-ReactDOM.render(<TodoContextProvider><App /></TodoContextProvider>, document.getElementById('root'));
+const ReduxProvider = Provider
+
+ReactDOM.render(<ReduxProvider store={store}><App /></ReduxProvider>, document.getElementById('root'));
 
 // Before
 // ReactDOM.render(<App />, document.getElementById('root'));
