@@ -6,6 +6,8 @@ import GlassmorphicBackground from '../../UIComponents/Modal/DesignComponents/Gl
 import { getUrl } from '../../../context/todoContext';
 import Loader from '../../UIComponents/Loader/Loader';
 import { Link, useNavigate } from 'react-router-dom';
+import { setLoading } from '../../../ReduxStore/UISlice';
+import { useDispatch } from 'react-redux';
 
 interface LoginProps extends LoginPageProps{
   setIsAuthenticated: any;
@@ -15,10 +17,11 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false)
   const [res, setRes] = useState<any>('')
 
   const navigate = useNavigate()
+
+  const dispatch = useDispatch()
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
@@ -28,20 +31,11 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
     setPassword(event.target.value);
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('Token');
-    if (!token) {
-      setIsAuthenticated(false)
-    } else {
-      setIsAuthenticated(true)
-      navigate('/dashboard')
-    }
-  }, []);
 
   const handleLoginFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setIsLoading(true)
+    dispatch(setLoading(true))
 
     const formdata = new FormData();
     formdata.append('userName', userName);
@@ -59,18 +53,18 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
       return response.json()
     }).then((jsonResponse) => {
       console.log(jsonResponse)
-      setIsLoading(false)
+      dispatch(setLoading(false))
       setError(jsonResponse && jsonResponse.message)
       if (jsonResponse && jsonResponse.token) {
         localStorage.setItem("Token", jsonResponse && jsonResponse.token)
-        navigate('/dashboard')
+        navigate('/todos')
       }
     })
       .catch(err => {
         console.error(err)
         setError(err)
+        dispatch(setLoading(false))
       })
-
   };
 
   return (
@@ -93,8 +87,6 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
           <Link to='/register'><span>Sign Up / Register</span></Link>
         </div>
       </GlassmorphicBackground>
-      <Loader isLoading={isLoading} />
-
     </div>
   );
 };
