@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getUrl } from '../context/todoContext';
+
 
 interface UISliceReducerState {
   allUserData:any;
@@ -32,34 +32,9 @@ const UserSliceReducer = createSlice({
       state.token = null;
       state.allUserData = [];
     },
-    fetchAllData(state){
-      if(state.token != null){
-        try {
-          if (state.token !== null) {
-              fetch(getUrl('/auth/profile'),{
-                  method: 'GET',
-                  headers: {
-                      'Authorization': state.token
-                  }
-              }).then(
-                (res)=>{
-                  if(res.ok){
-                    return res.json()
-                  }
-                }
-              ).then((jsonData)=>{
-                state.allUserData = jsonData.user
-              })
-          }
-      } catch (err) {
-          console.error('Error:', err);
-      }
-      }else{
-        throw new Error("Token is not present")
-      }
-    }
+    // 
   },
 });
 
-export const { setAllUserData,setToken,UserLogout ,fetchAllData} = UserSliceReducer.actions;
+export const { setAllUserData,setToken,UserLogout} = UserSliceReducer.actions;
 export default UserSliceReducer.reducer;
