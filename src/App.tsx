@@ -1,14 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TodoContext } from "./context/todoContext";
 import "./App.scss";
-import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "./ReduxStore/store";
 
-// import bgDark from './medias/bgfinaldark.jpg'
+import bgDark from './medias/bgfinaldark.jpg'
 import bgLight from './medias/bgfinallight.jpg'
 import LoginPage from "./Pages/Admin/LoginPage";
-import DashboardPage from "./Pages/Dashboard/Dashboard";
 import RegisterPage from "./Pages/Admin/RegisterPage";
 import Loader from "./components/UIComponents/Loader/Loader";
+import { useDispatch } from "react-redux";
+import { UserLogout, setAllUserData, setToken } from "./ReduxStore/UserSlice";
+import useUserProfileCall from "./hooks/useUserProfileAPICall";
+import useGETAllTodos from "./hooks/useGETAllTodos";
+import DashboardWrapper from "./components/WRAPPERS/DashboardWrapper/DashboardWrapper";
+import TodosListContainer from "./components/UIComponents/Todos/TodosListContainer/TodosListContainer";
+import { UILogout, setAllTodos, setLoading } from "./ReduxStore/UISlice";
+import { getUrl } from "./CONFIG";
 
 export interface TodoItem {
   _id: string;
@@ -16,8 +24,8 @@ export interface TodoItem {
   todo: TodoItem[];
   isCreated?: Boolean;
   showInput: Boolean;
-  isCompleted:boolean;
-  showSubtodos:Boolean;
+  isCompleted: boolean;
+  showSubtodos: Boolean;
   // onAddSubTodo?: (parentId: string, title: string) => void;
 }
 export function generateUniqueId(): string {
@@ -27,76 +35,133 @@ export function generateUniqueId(): string {
 }
 const App: React.FC = () => {
 
-  const { todos, addTodo } = useContext(TodoContext);
-  const [subTodoText, setSubTodoText] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isloading, setIsLoading] = useState(true);
   const [tokenIsPresent, setTokenIsPresent] = useState<boolean | null>(null)
 
+  const isLoading = useSelector((state: RootState) => state.UI.loading);
+  // Inside your component or any other place where you want to trigger the API call
+  const dispatch = useDispatch();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSubTodoText(event.target.value);
-  };
+  const allTodos = useSelector((state: RootState) => state.UI.allTodos)
+  const userAllData = useSelector((state: RootState) => state.User.allUserData)
+  const token = useSelector((state: RootState) => state.User.token)
+  const theme = useSelector((state: RootState) => state.UI.theme)
 
 
-  const handleParentaddition = () => {
-    if(subTodoText.length === 0){
-      alert("do a valid input todos cant be empty")
-    }else
-    addTodo(subTodoText);
-    setSubTodoText("");
-  };
+  // const [userAllErr] = useUserProfileCall(getUrl("/auth/profile"), {
+  //   method: 'GET',
+  //   headers: {
+  //     'Authorization': token
+  //   }
+  // })
+  // const [useAllTodosErr] = useGETAllTodos(getUrl("/admin/getAllTodos"), {
+  //   method: 'GET',
+  //   headers: {
+  //     'Authorization': token
+  //   }
+  // })
 
-  const submitParentTodo = (e: any) => {
-    e.preventDefault();
-    handleParentaddition();
-  };
-
+  const fetchAllUserData = (token: string) => {
+    if (token) {
+      try {
+        if (token !== null) {
+          fetch(getUrl('/auth/profile'), {
+            method: 'GET',
+            headers: {
+              'Authorization': token
+            }
+          }).then(
+            (res) => {
+              if (res.ok) {
+                return res.json()
+              }
+            }
+          ).then((jsonData) => {
+            // if(jsonData && jsonData.user){
+            console.log(jsonData)
+            dispatch(setAllUserData(jsonData.user))
+            dispatch(setAllTodos(jsonData.user.todos))
+            // }
+          })
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    } else {
+      throw new Error("Token is not present")
+    }
+  }
   // Function to handle logout
   const handleLogout = () => {
     localStorage.removeItem("Token")
     setIsAuthenticated(false);
     window.location.href = '/login'
   };
-  useEffect(()=>{
-    // fetchData()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
-  useEffect(()=>{
+
+  useEffect(() => {
     const localStorage_jwtToken = localStorage.getItem("Token")
 
-    if (localStorage_jwtToken) {
+    if (!token && localStorage_jwtToken) {
+      dispatch(setToken(localStorage_jwtToken))
+      setIsAuthenticated(true)
+    } else if (token) {
       setIsAuthenticated(true)
     }
   }, [tokenIsPresent])
 
+  useEffect(() => {
+    if (token) {
+      dispatch(setLoading(true))
+      fetchAllUserData(token)
+      dispatch(setLoading(false))
+    }
+  }, [token])
+
+
+
   // loading for contents of site to load  ( medias )
   useEffect(() => {
     setTokenIsPresent(localStorage.getItem("Token") !== null || localStorage.getItem("Token") !== '' ? false : true)
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 10);
   }, []);
 
+
+
+
   return (
-    <div className="main_container">
-      {/* <img src={bgDark} alt='bg'></img> */}
-      <div className="image_container"><img src={bgLight} alt='bg'></img></div>
+    <div className={`main_container ${theme.dark ? 'dark_mode' : 'light_mode'}`}>
+      {theme.dark ? <div className="image_container"><img src={bgDark} alt='bg'></img></div> : <div className="image_container"><img src={bgLight} alt='bg'></img></div>}
+
       <Router>
         <Routes>
-          {!isAuthenticated && <>
-            <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
-            <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
-            <Route path="/" element={<Navigate to="/login" replace />} />
-          </>}
-          {isAuthenticated && (<React.Fragment>
-            <Route path="/dashboard" element={<DashboardPage setIsAuthenticated={setIsAuthenticated} handleLogout={handleLogout} submitParentTodo={submitParentTodo} subTodoText={subTodoText} handleChange={handleChange} handleParentaddition={handleParentaddition} todos={todos} />} />
-            <Route path="/" element={<Navigate to="/dashboard" />} /></React.Fragment>
+          {/* Fallback route for the root */}
+          <Route path="/" element={<Navigate to="/" replace />} />
+
+          {!isAuthenticated && (
+            <>
+              <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
+              <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
+              <Route path="/" element={<Navigate to="/login" replace />} />
+            </>
           )}
-          <Route path="*" element={<Navigate to="/" replace />} />
+
+          {isAuthenticated && (
+            <Route path="/*" element={ // Added a wildcard (*) to match any child routes under "/home"
+              <DashboardWrapper fetchAllUserData={fetchAllUserData} handleLogout={handleLogout} heading="Dashboard / Todos">
+                <Routes>
+                  <Route path="/todos" element={<TodosListContainer todosArray={allTodos} />} />
+                  <Route path="/*" element={<Navigate to="/todos" replace />} />
+                  {/*will Add fallback route for any other unmatched paths */}
+                </Routes>
+              </DashboardWrapper>
+            } />
+          )}
+
+          {/* Fallback route for other unmatched paths */}
+          <Route path="/*" element={<Navigate to="/todos" replace />} />
         </Routes>
       </Router>
-      <Loader isLoading={isloading} />
+
+      <Loader isLoading={isLoading} />
     </div>
   );
 };
