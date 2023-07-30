@@ -4,11 +4,17 @@ import TodoItem from "../TodoItem/TodoListItem";
 
 interface TodoListContainerProps {
     todosArray: {
+        createdAt: string;
         title: string;
+        todo: any[];
+        updatedAt: string;
+        user: string;
+        __v: number;
+        _id: string;
     }[],
 }
 
-const TodosListContainer: React.FC<TodoListContainerProps> = ({ todosArray }) => {
+const TodosListContainer: React.FC<Partial<TodoListContainerProps>> = ({ todosArray }) => {
     if (!todosArray) {
         return null
     }
@@ -16,7 +22,7 @@ const TodosListContainer: React.FC<TodoListContainerProps> = ({ todosArray }) =>
         <div>
             {todosArray && todosArray.map((item, index) => {
                 return (
-                    <TodoItem title={item.title} />
+                    <TodoItem key={item._id} item={item} />
                 )
             })}
         </div>
