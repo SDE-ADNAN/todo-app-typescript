@@ -3,7 +3,9 @@ import "./Register.scss"
 import { Link, useNavigate } from 'react-router-dom';
 import GlassmorphicBackground from '../../UIComponents/Modal/DesignComponents/GlassmorphicBackground';
 import PasswordInput from '../../UIComponents/PasswordInput';
-import { getUrl } from '../../../context/todoContext';
+import { setLoading } from '../../../ReduxStore/UISlice';
+import { useDispatch } from 'react-redux';
+import { getUrl } from '../../../CONFIG';
 
 
 interface RegisterProps {
@@ -17,6 +19,8 @@ const Register: React.FC<RegisterProps> = () => {
     // const [error, setError] = useState('');
 
     const navigate = useNavigate()
+
+    const dispatch = useDispatch()
 
     const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);
@@ -34,7 +38,7 @@ const Register: React.FC<RegisterProps> = () => {
 
     const handleLoginFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        dispatch(setLoading(true))
         const formdata = new FormData();
         formdata.append('userName', userName);
         formdata.append('email', email);
@@ -45,12 +49,14 @@ const Register: React.FC<RegisterProps> = () => {
             method: 'POST',
             body: formdata,
         }).then((response) => {
-            debugger
             if (response.ok) {
+                dispatch(setLoading(false))
                 navigate('/login')
             }
+            dispatch(setLoading(false))
         }).catch(err => {
             console.error(err)
+            dispatch(setLoading(false))
         })
     };
 
