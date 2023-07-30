@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { /*useEffect,*/ useState } from 'react';
 import { LoginPageProps } from '../../../Pages/Admin/LoginPage';
 import PasswordInput from '../../UIComponents/PasswordInput';
 import "./Login.scss"
 import GlassmorphicBackground from '../../UIComponents/Modal/DesignComponents/GlassmorphicBackground';
-import Loader from '../../UIComponents/Loader/Loader';
+// import Loader from '../../UIComponents/Loader/Loader';
 import { Link, useNavigate } from 'react-router-dom';
 import { setLoading } from '../../../ReduxStore/UISlice';
 import { useDispatch } from 'react-redux';
@@ -17,7 +17,6 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const [res, setRes] = useState<any>('')
 
   const navigate = useNavigate()
 
@@ -45,7 +44,6 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
       method: 'POST',
       body: formdata,
     }).then((response) => {
-      setRes(response)
       if (response.status === 200 || response.ok) {
         console.log("user logged in")
         console.log(response)

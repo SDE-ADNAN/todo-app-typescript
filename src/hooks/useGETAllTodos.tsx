@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAllTodos, setLoading } from '../ReduxStore/UISlice';
+import { setAllTodos /* setLoading */ } from '../ReduxStore/UISlice';
 import { RootState } from '../ReduxStore/store';
 import { useSelector } from 'react-redux';
 
@@ -40,6 +40,7 @@ function useUserProfileCall(url: string, options: object): [HttpError | null] {
         };
 
         fetchData(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, token]);
 
     return [err];

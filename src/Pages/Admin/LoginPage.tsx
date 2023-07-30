@@ -15,6 +15,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setIsAuthenticated }) => {
             setIsAuthenticated(true)
             navigate('/dashboard')
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return(
         <Login setIsAuthenticated={setIsAuthenticated} />

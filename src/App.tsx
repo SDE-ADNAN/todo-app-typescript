@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.scss";
 import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -10,12 +10,12 @@ import LoginPage from "./Pages/Admin/LoginPage";
 import RegisterPage from "./Pages/Admin/RegisterPage";
 import Loader from "./components/UIComponents/Loader/Loader";
 import { useDispatch } from "react-redux";
-import { UserLogout, setAllUserData, setToken } from "./ReduxStore/UserSlice";
-import useUserProfileCall from "./hooks/useUserProfileAPICall";
-import useGETAllTodos from "./hooks/useGETAllTodos";
+import { /*UserLogout,*/ setAllUserData, setToken } from "./ReduxStore/UserSlice";
+// import useUserProfileCall from "./hooks/useUserProfileAPICall";
+// import useGETAllTodos from "./hooks/useGETAllTodos";
 import DashboardWrapper from "./components/WRAPPERS/DashboardWrapper/DashboardWrapper";
 import TodosListContainer from "./components/UIComponents/Todos/TodosListContainer/TodosListContainer";
-import { UILogout, setAllTodos, setLoading } from "./ReduxStore/UISlice";
+import {/* UILogout,*/ setAllTodos, setLoading } from "./ReduxStore/UISlice";
 import { getUrl } from "./CONFIG";
 
 export interface TodoItem {
@@ -43,7 +43,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   const allTodos = useSelector((state: RootState) => state.UI.allTodos)
-  const userAllData = useSelector((state: RootState) => state.User.allUserData)
+  // const userAllData = useSelector((state: RootState) => state.User.allUserData)
   const token = useSelector((state: RootState) => state.User.token)
   const theme = useSelector((state: RootState) => state.UI.theme)
 
@@ -107,6 +107,7 @@ const App: React.FC = () => {
     } else if (token) {
       setIsAuthenticated(true)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokenIsPresent])
 
   useEffect(() => {
@@ -115,6 +116,7 @@ const App: React.FC = () => {
       fetchAllUserData(token)
       dispatch(setLoading(false))
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
 

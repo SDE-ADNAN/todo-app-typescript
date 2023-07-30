@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from "react"
 import './DashboardWrapper.scss'
 import logo from '../../../medias/logo.png'
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../ReduxStore/store";
 import { useDispatch } from "react-redux";
@@ -43,9 +43,9 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
     const [todoTitleInput, setTodoTitleInput] = useState<string | null>(null)
     const [todoDescInput, setTodoDescInput] = useState<string | null>(null)
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
-    const allTodos = useSelector((state: RootState) => state.UI.allTodos)
+    // const allTodos = useSelector((state: RootState) => state.UI.allTodos)
 
     const token = useSelector((state: RootState) => state.User.token)
 

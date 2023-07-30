@@ -16,6 +16,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ setIsAuthenticated }) => {
             setIsAuthenticated(true)
             navigate('/dashboard')
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <Register />

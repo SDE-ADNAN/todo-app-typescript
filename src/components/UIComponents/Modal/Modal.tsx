@@ -1,8 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.scss';
-import { Button } from '@mui/material';
-import AddIcon from '../AddIcon/AddIcon';
+// import AddIcon from '../AddIcon/AddIcon';
 import CrossIcon from '../CrossIcon/CrossIcon';
 
 interface ModalProps {
