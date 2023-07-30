@@ -1,6 +1,6 @@
 import React, { FC, CSSProperties } from 'react';
 import './ChevronIcon.scss'
-import { generateUniqueID } from '../../../data/api';
+import { generateUniqueID } from '../../../api';
 
 interface ChevronIconProps {
     onClick?: Function;
