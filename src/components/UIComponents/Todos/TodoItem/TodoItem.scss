@@ -12,14 +12,33 @@
     flex-direction: row;
     outline: 0.2px solid #8e8e8e;
     margin:5px 0;
+
+    .date_and_time{
+      cursor:help;
+      background-color: rgb(255 255 255 / 20%);
+      padding: 5px 10px;
+      border-radius: 10px;
+      backdrop-filter: blur(60px);
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      .text{
+        font-size: 12px;
+      font-weight: 500;
+      color: #3c3c3c;
+      }
+    }
   
     .todo_CTAs_container{
       max-width: 100px;
-      width: 50px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
+    width: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 5px;
+    justify-content: space-around;
+
+      
     }
   
     .todo_item_title{
