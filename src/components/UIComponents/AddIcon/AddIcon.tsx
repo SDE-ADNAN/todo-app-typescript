@@ -7,6 +7,7 @@ interface AddIconProps {
     backgroundColor?: string;
     size?: number;
     tooltipText?: string;
+    showToolTip: boolean;
 }
 
 const AddIcon: FC<AddIconProps> = ({
@@ -14,6 +15,7 @@ const AddIcon: FC<AddIconProps> = ({
     size = 25,
     tooltipText = 'Add',
     darkMode = false,
+    showToolTip = false,
 }) => {
     const iconStyle: CSSProperties = {
         width: size,
@@ -67,9 +69,12 @@ const AddIcon: FC<AddIconProps> = ({
         >
             <div className={`line1 ${darkMode ? 'darkMode' : ''}`}></div>
             <div className={`line2 ${darkMode ? 'darkMode' : ''}`}></div>
+            {showToolTip ? 
             <div id="tooltip" style={tooltipStyle}>
-                {tooltipText}
-            </div>
+                    {tooltipText}
+                </div> : <></>
+            }
+
         </div>
     );
 };
