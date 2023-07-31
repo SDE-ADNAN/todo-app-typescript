@@ -22,7 +22,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, heading = "MOdal hea
             <h3 className=''>{heading}</h3>
           </div>
           <div onClick={onClose} className='modal_close_btn'>
-            <CrossIcon size={20} tooltipText='Close Modal' />
+            <CrossIcon size={20} tooltipText='Close Modal' onClick={() => { }} />
           </div>
         </div>
         <div className='modal_main_content_container'>{children}</div>
