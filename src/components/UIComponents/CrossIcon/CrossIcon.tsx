@@ -2,11 +2,12 @@ import React, { FC, CSSProperties } from 'react';
 import './CrossIcon.scss'
 
 interface CrossIconProps {
-    onClick?: Function;
+    onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
     darkMode?: boolean;
     backgroundColor?: string;
     size?: number;
     tooltipText?: string;
+    showToolTip?: boolean;
 }
 
 const CrossIcon: FC<CrossIconProps> = ({
@@ -14,6 +15,8 @@ const CrossIcon: FC<CrossIconProps> = ({
     size = 25,
     tooltipText = 'Cross',
     darkMode = false,
+    showToolTip = false,
+    onClick = () => { },
 }) => {
     const iconStyle: CSSProperties = {
         width: size,
@@ -64,12 +67,17 @@ const CrossIcon: FC<CrossIconProps> = ({
             style={iconStyle}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            title="DELETE"
+            onClick={onClick}
         >
             <div className={`line1 danger ${darkMode ? 'darkMode' : ''}`}></div>
             <div className={`line2 danger ${darkMode ? 'darkMode' : ''}`}></div>
+            {showToolTip ?
             <div id="cross_tooltip" style={tooltipStyle}>
-                {tooltipText}
-            </div>
+                    {tooltipText}
+                </div> : <></>
+            }
+
         </div>
     );
 };
