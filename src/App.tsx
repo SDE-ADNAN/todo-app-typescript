@@ -63,6 +63,7 @@ const App: React.FC = () => {
 
   const fetchAllUserData = (token: string) => {
     if (token) {
+      dispatch(setLoading(true))
       try {
         if (token !== null) {
           fetch(getUrl('/auth/profile'), {
@@ -87,6 +88,7 @@ const App: React.FC = () => {
       } catch (err) {
         console.error('Error:', err);
       }
+      dispatch(setLoading(false))
     } else {
       throw new Error("Token is not present")
     }
@@ -94,21 +96,21 @@ const App: React.FC = () => {
   // Function to handle logout
   const handleLogout = () => {
     localStorage.removeItem("Token")
-    setIsAuthenticated(false);
     window.location.href = '/login'
   };
 
   useEffect(() => {
     const localStorage_jwtToken = localStorage.getItem("Token")
-
     if (!token && localStorage_jwtToken) {
       dispatch(setToken(localStorage_jwtToken))
       setIsAuthenticated(true)
-    } else if (token) {
+    } else if (token && localStorage_jwtToken) {
       setIsAuthenticated(true)
+    } else {
+      setIsAuthenticated(false)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tokenIsPresent])
+  }, [token])
 
   useEffect(() => {
     if (token) {
@@ -122,9 +124,9 @@ const App: React.FC = () => {
 
 
   // loading for contents of site to load  ( medias )
-  useEffect(() => {
-    setTokenIsPresent(localStorage.getItem("Token") !== null || localStorage.getItem("Token") !== '' ? false : true)
-  }, []);
+  // useEffect(() => {
+  //   setTokenIsPresent(localStorage.getItem("Token") !== null || localStorage.getItem("Token") !== '' ? false : true)
+  // }, []);
 
 
 
@@ -133,35 +135,39 @@ const App: React.FC = () => {
     <div className={`main_container ${theme.dark ? 'dark_mode' : 'light_mode'}`}>
       {theme.dark ? <div className="image_container"><img src={bgDark} alt='bg'></img></div> : <div className="image_container"><img src={bgLight} alt='bg'></img></div>}
 
-      <Router>
+      {/* <Router> */}
         <Routes>
           {/* Fallback route for the root */}
-          <Route path="/" element={<Navigate to="/" replace />} />
+        {/* <Route path="/" element={<Navigate to="/" replace />} /> */}
 
           {!isAuthenticated && (
             <>
               <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
+            {/* <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} /> */}
+            {/* <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} /> */}
+            {/* <Route path="/" element={<Navigate to="/login" replace />} /> */}
               <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
               <Route path="/" element={<Navigate to="/login" replace />} />
             </>
           )}
 
           {isAuthenticated && (
-            <Route path="/*" element={ // Added a wildcard (*) to match any child routes under "/home"
-              <DashboardWrapper fetchAllUserData={fetchAllUserData} handleLogout={handleLogout} heading="Dashboard / Todos">
-                <Routes>
-                  <Route path="/todos" element={<TodosListContainer todosArray={allTodos} />} />
-                  <Route path="/*" element={<Navigate to="/todos" replace />} />
-                  {/*will Add fallback route for any other unmatched paths */}
-                </Routes>
+          <Route path="/" element={ // Added a wildcard (*) to match any child routes under "/home"
+            <DashboardWrapper fetchAllUserData={fetchAllUserData} handleLogout={handleLogout} heading="Dashboard">
+              {/* Nested routes for the dashboard */}
+              <Route index path="/todos" element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
+              {/* Add other nested routes for the dashboard here */}
+              <Route element={<Navigate to="/todos" />} />
+              {/* Fallback route for any other unmatched paths */}
+              <Route path="/" element={<Navigate to="/todos" replace />} />
               </DashboardWrapper>
             } />
           )}
 
           {/* Fallback route for other unmatched paths */}
-          <Route path="/*" element={<Navigate to="/todos" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-      </Router>
+      {/* </Router> */}
 
       <Loader isLoading={isLoading} />
     </div>
