@@ -44,16 +44,16 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ handleLogout, submitParen
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem('Token');
-    if (!token) {
-      setIsAuthenticated(false)
-      navigate('/login')
-    } else {
-      setIsAuthenticated(true)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('Token');
+  //   if (!token) {
+  //     setIsAuthenticated(false)
+  //     // navigate('/login')
+  //   } else {
+  //     setIsAuthenticated(true)
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   return (
     <div className="main_dashboard_container">
       <div className="dashboard_navbar">
