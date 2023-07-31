@@ -121,7 +121,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
                             <div style={{ margin: "5px 0" }} className='button_wrapper'>
                                 <button onClick={() => setIsOpen(!isOpen)}>
                                     <div className="btn_text">Add todo</div>
-                                    <AddIcon size={20} />
+                                    <AddIcon size={20} showToolTip={false} />
                                 </button>
                             </div>
                             <div className='horizontal_divider'></div>
@@ -144,7 +144,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
                     <div className="contents_header">
                         <div className="contents_header_container">
                             <h1 id="header_">{heading}</h1>
-                            <div className='button_wrapper'><button onClick={() => setIsOpen(!isOpen)}><div className="btn_text">Add todo</div> <AddIcon size={20} /></button></div>
+                            <div className='button_wrapper'><button onClick={() => setIsOpen(!isOpen)}><div className="btn_text">Add todo</div> <AddIcon showToolTip={false} size={20} /></button></div>
                         </div>
 
                     </div>
