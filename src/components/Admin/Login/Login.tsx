@@ -55,7 +55,7 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
       setError(jsonResponse && jsonResponse.message)
       if (jsonResponse && jsonResponse.token) {
         localStorage.setItem("Token", jsonResponse && jsonResponse.token)
-        navigate('/todos')
+        // navigate('/home/todos')
       }
     })
       .catch(err => {
