@@ -51,7 +51,7 @@ const Register: React.FC<RegisterProps> = () => {
         }).then((response) => {
             if (response.ok) {
                 dispatch(setLoading(false))
-                navigate('/login')
+                // navigate('/login')
             }
             dispatch(setLoading(false))
         }).catch(err => {
