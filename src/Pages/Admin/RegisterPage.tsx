@@ -8,16 +8,16 @@ interface RegisterPageProps {
 
 const RegisterPage: React.FC<RegisterPageProps> = ({ setIsAuthenticated }) => {
     const navigate = useNavigate()
-    useEffect(() => {
-        const token = localStorage.getItem('Token');
-        if (!token) {
-            setIsAuthenticated(false)
-        } else {
-            setIsAuthenticated(true)
-            navigate('/dashboard')
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // useEffect(() => {
+    //     const token = localStorage.getItem('Token');
+    //     if (!token) {
+    //         setIsAuthenticated(false)
+    //     } else {
+    //         setIsAuthenticated(true)
+    //         navigate('/dashboard')
+    //     }
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
     return (
         <Register />
     )
