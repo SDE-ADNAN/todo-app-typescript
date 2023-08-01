@@ -15,8 +15,9 @@ import { /*UserLogout,*/ setAllUserData, setToken } from "./ReduxStore/UserSlice
 // import useGETAllTodos from "./hooks/useGETAllTodos";
 import DashboardWrapper from "./components/WRAPPERS/DashboardWrapper/DashboardWrapper";
 import TodosListContainer from "./components/UIComponents/Todos/TodosListContainer/TodosListContainer";
-import {/* UILogout,*/ setAllTodos, setLoading } from "./ReduxStore/UISlice";
-import { getUrl } from "./CONFIG";
+import {/* UILogout,*/ setAllTodos, setDarkMode, setLoading } from "./ReduxStore/UISlice";
+import { getUrl, isDarkModeFromLocalStorage } from "./CONFIG";
+import TodoDetails from "./components/UIComponents/TodoDetails/TodoDetails";
 
 export interface TodoItem {
   _id: string;
@@ -121,6 +122,15 @@ const App: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
+  useEffect(() => {
+    const darkMode = isDarkModeFromLocalStorage()
+    if (darkMode) {
+      dispatch(setDarkMode(true))
+    } else {
+      dispatch(setDarkMode(false))
+    }
+  }, [theme.dark])
+
 
 
   // loading for contents of site to load  ( medias )
@@ -135,39 +145,32 @@ const App: React.FC = () => {
     <div className={`main_container ${theme.dark ? 'dark_mode' : 'light_mode'}`}>
       {theme.dark ? <div className="image_container"><img src={bgDark} alt='bg'></img></div> : <div className="image_container"><img src={bgLight} alt='bg'></img></div>}
 
-      {/* <Router> */}
-        <Routes>
-          {/* Fallback route for the root */}
-        {/* <Route path="/" element={<Navigate to="/" replace />} /> */}
-
+      <Routes>
           {!isAuthenticated && (
             <>
-              <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
-            {/* <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} /> */}
-            {/* <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} /> */}
-            {/* <Route path="/" element={<Navigate to="/login" replace />} /> */}
+            <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} />} />
               <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
               <Route path="/" element={<Navigate to="/login" replace />} />
             </>
           )}
 
-          {isAuthenticated && (
+        {isAuthenticated && (<>
+          {/* <Route path="/" element={<Navigate to="/dashboard/todos" />} /> */}
           <Route path="/" element={ // Added a wildcard (*) to match any child routes under "/home"
-            <DashboardWrapper fetchAllUserData={fetchAllUserData} handleLogout={handleLogout} heading="Dashboard">
-              {/* Nested routes for the dashboard */}
-              <Route index path="/todos" element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
-              {/* Add other nested routes for the dashboard here */}
-              <Route element={<Navigate to="/todos" />} />
-              {/* Fallback route for any other unmatched paths */}
-              <Route path="/" element={<Navigate to="/todos" replace />} />
-              </DashboardWrapper>
-            } />
-          )}
+            <DashboardWrapper fetchAllUserData={fetchAllUserData} handleLogout={handleLogout} heading="Dashboard" />
+          }>
+            {/* Nested routes for the dashboard */}
+            <Route index element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
+            <Route path='todos' element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
+            <Route path='todos/:id' element={<TodoDetails />} />
 
+              {/* Fallback route for any other unmatched paths */}
+          </Route></>
+          )}
+        <Route path="/" element={<Navigate to="todos" />} />
           {/* Fallback route for other unmatched paths */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      {/* </Router> */}
+        <Route path="*" element={<h1>Not Found</h1>} />
+      </Routes>
 
       <Loader isLoading={isLoading} />
     </div>
