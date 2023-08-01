@@ -20,7 +20,7 @@ const TodosListContainer: React.FC<Partial<TodoListContainerProps>> = ({ todosAr
         return null
     }
     return (
-        <div>
+        <div className={`todoListItems_container`}>
             {todosArray && todosArray.map((item, index) => {
                 return (
                     <TodoItem key={item._id} item={item} fetchAllUserData={fetchAllUserData} />
