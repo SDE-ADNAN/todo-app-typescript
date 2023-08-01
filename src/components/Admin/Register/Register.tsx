@@ -16,7 +16,6 @@ const Register: React.FC<RegisterProps> = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState('');
-    // const [error, setError] = useState('');
 
     const navigate = useNavigate()
 
@@ -51,7 +50,7 @@ const Register: React.FC<RegisterProps> = () => {
         }).then((response) => {
             if (response.ok) {
                 dispatch(setLoading(false))
-                // navigate('/login')
+                navigate('/login')
             }
             dispatch(setLoading(false))
         }).catch(err => {
