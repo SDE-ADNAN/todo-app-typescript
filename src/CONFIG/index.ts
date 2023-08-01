@@ -23,6 +23,20 @@ export function formatDateAndTime(dateObj: Date): [string, string] {
     return [formattedDate, formattedTime];
   }
 
+  export const isDarkModeFromLocalStorage = () => {
+    const localStorageDarkMode = localStorage.getItem('darkMode')
+
+    if (localStorageDarkMode != null && localStorageDarkMode === 'True') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+export const inCludeDarkClass =(scssClass:string,darkMode:boolean)=>{
+  return `${scssClass} ${darkMode?'dark':'light'}`
+}
 const Todos = {
     getUrl:getUrl,
     formatDateAndTime:formatDateAndTime
