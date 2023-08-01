@@ -46,16 +46,14 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
     }).then((response) => {
       if (response.status === 200 || response.ok) {
         console.log("user logged in")
-        console.log(response)
       }
       return response.json()
     }).then((jsonResponse) => {
-      console.log(jsonResponse)
       dispatch(setLoading(false))
       setError(jsonResponse && jsonResponse.message)
       if (jsonResponse && jsonResponse.token) {
         localStorage.setItem("Token", jsonResponse && jsonResponse.token)
-        // navigate('/home/todos')
+        navigate('/todos')
       }
     })
       .catch(err => {
