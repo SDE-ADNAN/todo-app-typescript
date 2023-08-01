@@ -8,6 +8,7 @@ import { RootState } from '../../../../ReduxStore/store';
 import { setLoading } from '../../../../ReduxStore/UISlice';
 import { useDispatch } from 'react-redux';
 import Modal from '../../Modal/Modal';
+import { useNavigate } from 'react-router-dom';
 
 interface TodoListItemProps {
     item: {
@@ -25,10 +26,10 @@ interface TodoListItemProps {
 
 const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUserData }) => {
     const token = useSelector((state: RootState) => state.User.token)
+    const theme = useSelector((state: RootState) => state.UI.theme)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
-    const [yesDelete, setYesDelete] = useState<boolean | null>(null)
-    console.log("Called")
     if (!item) {
         return null
     }
@@ -37,7 +38,6 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
 
 
     const handleDelete = () => {
-        debugger
         if (token) {
             dispatch(setLoading(true))
             var formdata = new FormData();
@@ -62,20 +62,25 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
             console.error('No token Present')
         }
     }
+    const handleRedirect = () => {
+        console.log("Called")
+        const id = item._id;
+        navigate(`/todos/${id}`)
+    }
     return (
-        <div id={item._id} className='todo_item_individual'>
-            <div className='todo_item_title truncate'>{item && item.title}</div>
-            <div className='date_and_time' title='Created At'>
-                <div className='text'>{date}</div>
-                <div className='text'>{time}</div>
+        <div id={item._id} className={`todo_item_individual ${theme.dark ? 'dark' : 'light'}`}>
+            <div className={`todo_item_title truncate ${theme.dark ? 'dark' : 'light'}`}>{item && item.title}</div>
+            <div className={`date_and_time ${theme.dark ? 'dark' : 'light'}`} title='Created At'>
+                <div className={`text ${theme.dark ? 'dark' : 'light'}`}>{date}</div>
+                <div className={`text ${theme.dark ? 'dark' : 'light'}`}>{time}</div>
             </div>
-            <div className="todo_CTAs_container">
+            <div className={`todo_CTAs_container ${theme.dark ? 'dark' : 'light'}`}>
                 <CrossIcon
                     onClick={() => {
                         console.log("called")
                         setIsOpen(!isOpen);
                     }} />
-                <ChevronIcon tooltipText={'Details Page'} />
+                <ChevronIcon onClick={handleRedirect} tooltipText={'Details Page'} />
             </div>
             <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} heading={`Are you sure you want to delete the "${item.title}" TODO ???`}>
                 <button style={{ color: 'red' }} onClick={handleDelete}>DELETE</button>
