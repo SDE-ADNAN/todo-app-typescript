@@ -50,10 +50,18 @@ const UISliceReducer = createSlice({
       state.token = null
     },
     toogleDarkLight(state){
+      if(state.theme.dark){
+        localStorage.setItem('darkMode','False')
+      }else{
+        localStorage.setItem('darkMode','True')
+      }
       state.theme.dark = !state.theme.dark
+    },
+    setDarkMode(state,action:PayloadAction<any>){
+      state.theme.dark = action.payload
     }
   },
 });
 
-export const { setToken, setLoading,setAllTodos ,UILogout,toogleDarkLight} = UISliceReducer.actions;
+export const { setToken, setLoading,setAllTodos ,UILogout,toogleDarkLight,setDarkMode} = UISliceReducer.actions;
 export default UISliceReducer.reducer;
