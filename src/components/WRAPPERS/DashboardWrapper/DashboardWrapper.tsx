@@ -9,10 +9,11 @@ import { setLoading, toogleDarkLight } from "../../../ReduxStore/UISlice";
 import Modal from "../../UIComponents/Modal/Modal";
 import AddIcon from "../../UIComponents/AddIcon/AddIcon";
 import { getUrl } from "../../../CONFIG";
+import { Outlet } from "react-router-dom";
 
 interface DashboardWrapperProps {
     handleLogout: any;
-    children: ReactNode;
+    children?: ReactNode;
     heading: string;
     fetchAllUserData: any;
 }
@@ -50,6 +51,15 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
     const token = useSelector((state: RootState) => state.User.token)
 
     const theme = useSelector((state: RootState) => state.UI.theme)
+    const isDarkMode = () => {
+        const localStorageDarkMode = localStorage.getItem('darkMode')
+
+        if ((localStorageDarkMode != null && localStorageDarkMode === 'True') || (theme.dark && theme.dark === true)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     const dispatch = useDispatch()
 
@@ -92,7 +102,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
 
     return (
         <div className="main_dashboard_container">
-            <div className="dashboard_navbar">
+            <div className={`dashboard_navbar ${theme.dark ? 'dark' : 'light'}`}>
                 <div className="logo_image">
                     <img src={logo} alt="logo"></img>
                 </div>
@@ -109,14 +119,17 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
                     <div>A</div>
                 </div>
                 <div className={`theme_toggle ${theme.dark ? 'dark' : 'light'}`}>
-                    {theme.dark ? <div onClick={() => dispatch(toogleDarkLight())} className="dark" dangerouslySetInnerHTML={{ __html: darkModeSvgContent }}></div> : <div onClick={() => dispatch(toogleDarkLight())} className="light" dangerouslySetInnerHTML={{ __html: lightModeSvgContent }}></div>}
+                    {isDarkMode() ?
+                        <div onClick={() => dispatch(toogleDarkLight())} className="dark" dangerouslySetInnerHTML={{ __html: darkModeSvgContent }}></div>
+                        :
+                        <div onClick={() => dispatch(toogleDarkLight())} className="light" dangerouslySetInnerHTML={{ __html: lightModeSvgContent }}></div>}
 
 
                 </div>
             </div>
-            <div className='dashboard_sidebar_and_contents'>
+            <div className={`dashboard_sidebar_and_contents ${theme.dark ? 'dark' : 'light'}`}>
                 <div className="dashboard_sidebar">
-                    <div className="dashboard_sidebar_contents">
+                    <div className={`dashboard_sidebar_contents ${theme.dark ? 'dark' : 'light'}`}>
                         <div className="sidebar_item_container">
                             <div style={{ margin: "5px 0" }} className='button_wrapper'>
                                 <button onClick={() => setIsOpen(!isOpen)}>
@@ -142,20 +155,22 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
                 </div>
                 <div className="dashboard_contents_main_container">
                     <div className="contents_header">
-                        <div className="contents_header_container">
+                        <div className={`contents_header_container ${theme.dark ? 'dark' : 'light'}`}>
                             <h1 id="header_">{heading}</h1>
                             <div className='button_wrapper'><button onClick={() => setIsOpen(!isOpen)}><div className="btn_text">Add todo</div> <AddIcon showToolTip={false} size={20} /></button></div>
                         </div>
 
                     </div>
-                    <div className="contents_container">
+                    <div className={`contents_container ${theme.dark ? 'dark' : 'light'}`}>
                         {children}
+                        {/* FOR rendering the underlying children <Route/> components */}
+                        <Outlet />
                     </div>
                     <Modal heading="Add a new Todo" isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
                         <div className='addTodo_form_container'>
                             <form onSubmit={handleAddTodo}>
-                                <input onChange={(e) => setTodoTitleInput(e.target.value)} type='text' placeholder="Title for your new Todo ." />
-                                <input onChange={(e) => setTodoDescInput(e.target.value)} type='textarea' placeholder="Description for your new Todo ." />
+                                <input required onChange={(e) => setTodoTitleInput(e.target.value)} type='text' placeholder="Title for your new Todo ." />
+                                <input required onChange={(e) => setTodoDescInput(e.target.value)} type='textarea' placeholder="Description for your new Todo ." />
                                 <div><button>Submit</button></div>
                             </form>
                         </div>
