@@ -1,9 +1,9 @@
-import React, { FC, CSSProperties } from 'react';
+import React, { FC, CSSProperties, MouseEventHandler } from 'react';
 import './ChevronIcon.scss'
 import { generateUniqueID } from '../../../api';
 
 interface ChevronIconProps {
-    onClick?: Function;
+    onClick?: MouseEventHandler<HTMLDivElement>;
     darkMode?: boolean;
     backgroundColor?: string;
     size?: number;
@@ -15,6 +15,7 @@ const ChevronIcon: FC<ChevronIconProps> = ({
     size = 25,
     tooltipText = 'More',
     darkMode = false,
+    onClick = () => { }
 }) => {
     const iconStyle: CSSProperties = {
         width: size,
@@ -81,6 +82,7 @@ const ChevronIcon: FC<ChevronIconProps> = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             title={tooltipText}
+            onClick={onClick}
         >
             <div className={`line1 ${darkMode ? 'darkMode' : ''}`}></div>
             <div className={`line2 ${darkMode ? 'darkMode' : ''}`}></div>
