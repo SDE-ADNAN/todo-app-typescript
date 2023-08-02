@@ -24,11 +24,11 @@ const darkModeSvgContent = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0
 
 
 const sideBarData = [
-    'Projects',
-    'Todos',
-    'Tags',
-    'TodoTypes',
-    'Profile',
+    { name: 'Profile', url: '/profile' },
+    { name: 'Projects', url: '/todos' },
+    { name: 'Todos', url: '/todos' },
+    { name: 'Tags', url: '/todos' },
+    { name: 'TodoTypes', url: '/todos' },
 ]
 const navLinks = [
     { name: 'Home', url: '/todos' },
@@ -150,8 +150,10 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
                         {sideBarData.map((item, index) => {
                             return (
                                 <div key={`${item}_${index}`} className={includeDarkClass("sidebar_item_container", darkMode)} >
-                                    <div className={includeDarkClass("sidebar_item", darkMode)} > {item}</div >
-                                    <div className={includeDarkClass('horizontal_divider', darkMode)} ></div >
+                                    <div className={includeDarkClass("sidebar_item", darkMode)}>
+                                        <Link to={item.url}>{item.name}</Link>
+                                    </div >
+                                    <div className={includeDarkClass('horizontal_divider', darkMode)} />
                                 </div>
                             )
                         })}
