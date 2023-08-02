@@ -18,6 +18,7 @@ import TodosListContainer from "./components/UIComponents/Todos/TodosListContain
 import {/* UILogout,*/ setAllTodos, setDarkMode, setLoading } from "./ReduxStore/UISlice";
 import { getUrl, isDarkModeFromLocalStorage } from "./CONFIG";
 import TodoDetails from "./components/UIComponents/TodoDetails/TodoDetails";
+import NotFound from "./Pages/NotFound/NotFound";
 
 export interface TodoItem {
   _id: string;
@@ -49,18 +50,6 @@ const App: React.FC = () => {
   const theme = useSelector((state: RootState) => state.UI.theme)
 
 
-  // const [userAllErr] = useUserProfileCall(getUrl("/auth/profile"), {
-  //   method: 'GET',
-  //   headers: {
-  //     'Authorization': token
-  //   }
-  // })
-  // const [useAllTodosErr] = useGETAllTodos(getUrl("/admin/getAllTodos"), {
-  //   method: 'GET',
-  //   headers: {
-  //     'Authorization': token
-  //   }
-  // })
 
   const fetchAllUserData = (token: string) => {
     if (token) {
@@ -123,23 +112,15 @@ const App: React.FC = () => {
   }, [token])
 
   useEffect(() => {
+    // dispatch(setLoading(true))
     const darkMode = isDarkModeFromLocalStorage()
     if (darkMode) {
       dispatch(setDarkMode(true))
     } else {
       dispatch(setDarkMode(false))
     }
+    // dispatch(setLoading(false))
   }, [theme.dark])
-
-
-
-  // loading for contents of site to load  ( medias )
-  // useEffect(() => {
-  //   setTokenIsPresent(localStorage.getItem("Token") !== null || localStorage.getItem("Token") !== '' ? false : true)
-  // }, []);
-
-
-
 
   return (
     <div className={`main_container ${theme.dark ? 'dark_mode' : 'light_mode'}`}>
@@ -148,28 +129,30 @@ const App: React.FC = () => {
       <Routes>
           {!isAuthenticated && (
             <>
-            <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} />} />
+            <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} fetchAllUserData={fetchAllUserData} />} />
               <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
               <Route path="/" element={<Navigate to="/login" replace />} />
             </>
           )}
 
-        {isAuthenticated && (<>
+        {isAuthenticated ? (<>
           {/* <Route path="/" element={<Navigate to="/dashboard/todos" />} /> */}
           <Route path="/" element={ // Added a wildcard (*) to match any child routes under "/home"
             <DashboardWrapper fetchAllUserData={fetchAllUserData} handleLogout={handleLogout} heading="Dashboard" />
           }>
             {/* Nested routes for the dashboard */}
-            <Route index element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
-            <Route path='todos' element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
-            <Route path='todos/:id' element={<TodoDetails />} />
+            {/* <Route index element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} /> */}
+            <Route index path='todos' element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
+            <Route path='todos/:parentTodo_id' element={<TodoDetails />} />
+            <Route path='todos/:parentTodo_id/subTodo/:childTodo_id' element={<TodoDetails />} />
+            <Route path='todos' element={<Navigate to='/todos' />} />
 
               {/* Fallback route for any other unmatched paths */}
+            <Route path="*" element={<NotFound isAuthenticated={isAuthenticated} />} />
           </Route></>
-          )}
-        <Route path="/" element={<Navigate to="todos" />} />
+        ) : <></>}
           {/* Fallback route for other unmatched paths */}
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="*" element={<NotFound isAuthenticated={isAuthenticated} />} />
       </Routes>
 
       <Loader isLoading={isLoading} />
