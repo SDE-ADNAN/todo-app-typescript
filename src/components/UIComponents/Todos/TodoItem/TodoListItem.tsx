@@ -21,12 +21,16 @@ interface TodoListItemProps {
         _id: string;
     },
     fetchAllUserData: any,
+    isSubTodo: boolean;
+    parentTodoId: string;
+    fetchParentTodo?: any;
 
 }
 
-const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUserData }) => {
+const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUserData, isSubTodo, parentTodoId = "", fetchParentTodo = () => { } }) => {
     const token = useSelector((state: RootState) => state.User.token)
     const theme = useSelector((state: RootState) => state.UI.theme)
+    // console.log(item)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
@@ -37,7 +41,7 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
     const [date, time] = formatDateAndTime(createdAtDate)
 
 
-    const handleDelete = () => {
+    const handleParentDelete = () => {
         if (token) {
             dispatch(setLoading(true))
             var formdata = new FormData();
@@ -62,10 +66,40 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
             console.error('No token Present')
         }
     }
+    const handleChildTodoDelete = () => {
+        if (token) {
+            dispatch(setLoading(true))
+            var formdata = new FormData();
+            formdata.append("subTodoId", item._id);
+            formdata.append("parentTodoId", parentTodoId);
+            fetch(getUrl("/admin/deleteSubTodo"), {
+                method: 'DELETE',
+                body: formdata,
+                headers: {
+                    'Authorization': token
+                }
+            }).then(response => response.json())
+                .then(result => {
+                    console.log(result)
+                    // fetchAllUserData(token)
+                    fetchParentTodo(parentTodoId, token)
+                    dispatch(setLoading(false));
+                    setIsOpen(false)
+                })
+                .catch(error => console.log('error', error));
+            dispatch(setLoading(false));
+            setIsOpen(false)
+        } else {
+            console.error('No token Present')
+        }
+    }
     const handleRedirect = () => {
-        console.log("Called")
         const id = item._id;
-        navigate(`/todos/${id}`)
+        if (!isSubTodo) {
+            navigate(`/todos/${id}`)
+        } else {
+            navigate(`/todos/${parentTodoId}/subTodo/${id}`)
+        }
     }
     return (
         <div id={item._id} className={`todo_item_individual ${theme.dark ? 'dark' : 'light'}`}>
@@ -83,7 +117,13 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
                 <ChevronIcon onClick={handleRedirect} tooltipText={'Details Page'} />
             </div>
             <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} heading={`Are you sure you want to delete the "${item.title}" TODO ???`}>
-                <button style={{ color: 'red' }} onClick={handleDelete}>DELETE</button>
+                <button style={{ color: 'red' }} onClick={() => {
+                    if (isSubTodo && parentTodoId) {
+                        handleChildTodoDelete()
+                    } else {
+                        handleParentDelete()
+                    }
+                }}>DELETE</button>
                 <button onClick={() => setIsOpen(!isOpen)}>Cancel</button>
             </Modal>
         </div>
