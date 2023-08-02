@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react"
+import React, { ReactNode, useEffect, useState } from "react"
 import './DashboardWrapper.scss'
 import logo from '../../../medias/logo.png'
 // import { useNavigate } from "react-router-dom";
@@ -8,8 +8,8 @@ import { useDispatch } from "react-redux";
 import { setLoading, toogleDarkLight } from "../../../ReduxStore/UISlice";
 import Modal from "../../UIComponents/Modal/Modal";
 import AddIcon from "../../UIComponents/AddIcon/AddIcon";
-import { getUrl } from "../../../CONFIG";
-import { Outlet } from "react-router-dom";
+import { getUrl, includeDarkClass } from "../../../CONFIG";
+import { Link, Outlet, useParams } from "react-router-dom";
 
 interface DashboardWrapperProps {
     handleLogout: any;
@@ -31,11 +31,9 @@ const sideBarData = [
     'Profile',
 ]
 const navLinks = [
-    'Navlink1',
-    'Navlink2',
-    'Navlink3',
-    'Navlink4',
-    'Navlink5',
+    { name: 'Home', url: '/todos' },
+    { name: 'Nav 2', url: 'undefined' },
+    { name: 'Nav 3', url: 'undefined' },
 ]
 
 const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, heading, children, fetchAllUserData }) => {
@@ -45,12 +43,16 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
     const [todoDescInput, setTodoDescInput] = useState<string | null>(null)
 
     // const navigate = useNavigate()
+    const params = useParams()
+    console.log(params)
 
     // const allTodos = useSelector((state: RootState) => state.UI.allTodos)
 
     const token = useSelector((state: RootState) => state.User.token)
+    const allUserData = useSelector((state: RootState) => state.User.allUserData)
 
     const theme = useSelector((state: RootState) => state.UI.theme)
+    const darkMode = useSelector((state: RootState) => state.UI.theme.dark)
     const isDarkMode = () => {
         const localStorageDarkMode = localStorage.getItem('darkMode')
 
@@ -89,7 +91,9 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
                     const jsonData = await response.json();
                     dispatch(setLoading(false));
                     setIsOpen(false)
+                    dispatch(setLoading(true));
                     fetchAllUserData(token)
+                    dispatch(setLoading(false));
                     console.log(jsonData)
                 }
             } catch (err) {
@@ -99,75 +103,86 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
             }
         }
     }
-
     return (
-        <div className="main_dashboard_container">
-            <div className={`dashboard_navbar ${theme.dark ? 'dark' : 'light'}`}>
-                <div className="logo_image">
+        <div className={includeDarkClass("main_dashboard_container", darkMode)}>
+            <div className={includeDarkClass("dashboard_navbar", darkMode)}>
+                <div className={includeDarkClass("logo_image", darkMode)}>
                     <img src={logo} alt="logo"></img>
                 </div>
-                <div className="navbar_heading">Todos</div>
-                <div className="navbar_void"></div>
-                <div className='navbar_navlinks'>
+                <div className={includeDarkClass("navbar_heading", darkMode)}>Todos</div>
+                <div className={includeDarkClass("navbar_void", darkMode)}></div>
+                <div className={includeDarkClass('navbar_navlinks', darkMode)}>
                     {navLinks.map((item, index) => {
                         return (
-                            <div key={`${item}_${index}`} className='navbar_navlink_item'>{item}</div>
+                            <div key={`${item}_${index}`} className={includeDarkClass('navbar_navlink_item', darkMode)}>
+                                <Link to={item.url}>{item.name}</Link></div>
                         )
                     })}
                 </div>
-                <div className="navbar_right">
-                    <div>A</div>
+                <div className={includeDarkClass("navbar_right", darkMode)}>
+                    <div className={includeDarkClass("profile_pic", darkMode)}><img src={allUserData.picUrl} alt="profile pic"></img></div>
                 </div>
-                <div className={`theme_toggle ${theme.dark ? 'dark' : 'light'}`}>
+                <div className={includeDarkClass("theme_toggle", darkMode)}>
                     {isDarkMode() ?
-                        <div onClick={() => dispatch(toogleDarkLight())} className="dark" dangerouslySetInnerHTML={{ __html: darkModeSvgContent }}></div>
+                        <div onClick={() => dispatch(toogleDarkLight())} className={includeDarkClass(" ", darkMode)} dangerouslySetInnerHTML={{ __html: darkModeSvgContent }}></div>
                         :
-                        <div onClick={() => dispatch(toogleDarkLight())} className="light" dangerouslySetInnerHTML={{ __html: lightModeSvgContent }}></div>}
+                        <div onClick={() => dispatch(toogleDarkLight())} className={includeDarkClass(" ", darkMode)} dangerouslySetInnerHTML={{ __html: lightModeSvgContent }}></div>}
 
 
                 </div>
             </div>
-            <div className={`dashboard_sidebar_and_contents ${theme.dark ? 'dark' : 'light'}`}>
-                <div className="dashboard_sidebar">
-                    <div className={`dashboard_sidebar_contents ${theme.dark ? 'dark' : 'light'}`}>
-                        <div className="sidebar_item_container">
-                            <div style={{ margin: "5px 0" }} className='button_wrapper'>
-                                <button onClick={() => setIsOpen(!isOpen)}>
-                                    <div className="btn_text">Add todo</div>
-                                    <AddIcon size={20} showToolTip={false} />
-                                </button>
-                            </div>
-                            <div className='horizontal_divider'></div>
-                        </div>
+            <div className={includeDarkClass("dashboard_sidebar_and_contents", darkMode)}>
+                <div className={includeDarkClass("dashboard_sidebar", darkMode)}>
+                    <div className={includeDarkClass('dashboard_sidebar_contents', darkMode)}>
+                        {!params.parentTodo_id ?
+                            <div className={includeDarkClass("sidebar_item_container", darkMode)}>
+                                <div style={{ margin: "5px 0" }} className={includeDarkClass('button_wrapper', darkMode)}>
+                                    <button onClick={() => setIsOpen(!isOpen)}>
+                                        <div className={includeDarkClass("btn_text", darkMode)}>Add todo</div>
+                                        <AddIcon size={20} showToolTip={false} />
+                                    </button>
+                                </div>
+                                <div className={includeDarkClass('horizontal_divider', darkMode)} ></div >
+                            </div> : <></>
+                        }
+
 
                         {sideBarData.map((item, index) => {
                             return (
-                                <div key={`${item}_${index}`} className="sidebar_item_container">
-                                    <div className="sidebar_item">{item}</div>
-                                    <div className='horizontal_divider'></div>
+                                <div key={`${item}_${index}`} className={includeDarkClass("sidebar_item_container", darkMode)} >
+                                    <div className={includeDarkClass("sidebar_item", darkMode)} > {item}</div >
+                                    <div className={includeDarkClass('horizontal_divider', darkMode)} ></div >
                                 </div>
                             )
                         })}
                     </div>
-                    <div className="dashboard_sidebar_logoutbtn">
-                        <button onClick={handleLogout} className="logoutBtn" >Logout</button>
+                    <div className={includeDarkClass("dashboard_sidebar_logoutbtn", darkMode)} >
+                        <button onClick={handleLogout} className={includeDarkClass("logoutBtn", darkMode)} > Logout</button >
                     </div>
                 </div>
-                <div className="dashboard_contents_main_container">
-                    <div className="contents_header">
-                        <div className={`contents_header_container ${theme.dark ? 'dark' : 'light'}`}>
+                <div className={includeDarkClass("dashboard_contents_main_container", darkMode)} >
+                    <div className={includeDarkClass("contents_header", darkMode)} >
+                        <div className={includeDarkClass("contents_header_container", darkMode)}>
                             <h1 id="header_">{heading}</h1>
-                            <div className='button_wrapper'><button onClick={() => setIsOpen(!isOpen)}><div className="btn_text">Add todo</div> <AddIcon showToolTip={false} size={20} /></button></div>
+                            {!params.parentTodo_id ?
+                                <div className={includeDarkClass('button_wrapper', darkMode)}>
+                                    <button onClick={() => setIsOpen(!isOpen)}>
+                                        <div className={includeDarkClass("btn_text", darkMode)}>
+                                            Add todo
+                                        </div>
+                                        <AddIcon showToolTip={false} size={20} />
+                                    </button >
+                                </div > : <></>
+                            }
                         </div>
-
                     </div>
-                    <div className={`contents_container ${theme.dark ? 'dark' : 'light'}`}>
+                    <div className={includeDarkClass("contents_container", darkMode)}>
                         {children}
                         {/* FOR rendering the underlying children <Route/> components */}
                         <Outlet />
                     </div>
                     <Modal heading="Add a new Todo" isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
-                        <div className='addTodo_form_container'>
+                        <div className={includeDarkClass('addTodo_form_container', darkMode)}>
                             <form onSubmit={handleAddTodo}>
                                 <input required onChange={(e) => setTodoTitleInput(e.target.value)} type='text' placeholder="Title for your new Todo ." />
                                 <input required onChange={(e) => setTodoDescInput(e.target.value)} type='textarea' placeholder="Description for your new Todo ." />
