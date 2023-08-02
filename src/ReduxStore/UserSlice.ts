@@ -1,13 +1,39 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export interface Todo {
+  _id: string;
+  title: string;
+  user: string;
+  description: string;
+  todo: Todo[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface User {
+  _id: string;
+  userName: string;
+  password: string;
+  email: string;
+  picUrl: string;
+  todos: Todo[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+// export interface ApiResponse {
+//   user: User;
+// }
 
 interface UISliceReducerState {
-  allUserData:any;
+  allUserData:Partial<User>;
   token:string | null;
 }
 
 const initialState: UISliceReducerState = {
-    allUserData:null,
+    allUserData:{},
     token:null,
 };
 
@@ -30,7 +56,7 @@ const UserSliceReducer = createSlice({
     },
     UserLogout(state){
       state.token = null;
-      state.allUserData = [];
+      state.allUserData ={};
     },
     // 
   },
