@@ -9,6 +9,7 @@ import Modal from "../Modal/Modal";
 import AddIcon from "../AddIcon/AddIcon";
 import { useDispatch } from "react-redux";
 import { setLoading } from "../../../ReduxStore/UISlice";
+import LoaderComponent from "../LoaderComponent/LoaderComponent";
 
 interface TodoItem {
     createdAt: string;
@@ -147,7 +148,7 @@ const TodoDetails: React.FC = () => {
         }
     }, [params.childTodo_id, params.parentTodo_id, token]);
     if (!todo) {
-        return null;
+        return <LoaderComponent />;
     }
     return (
         <div className={includeDarkClass("todo_details_container", darkMode)}>
