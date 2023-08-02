@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react"
+import React, { ReactNode, useState } from "react"
 import './DashboardWrapper.scss'
 import logo from '../../../medias/logo.png'
 // import { useNavigate } from "react-router-dom";
@@ -44,7 +44,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
 
     // const navigate = useNavigate()
     const params = useParams()
-    console.log(params)
+    // console.log(params)
 
     // const allTodos = useSelector((state: RootState) => state.UI.allTodos)
 
@@ -88,13 +88,13 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({ handleLogout, headi
                         setIsOpen(false)
                         throw new Error('Request failed');
                     }
-                    const jsonData = await response.json();
+                    // const jsonData = await response.json();
                     dispatch(setLoading(false));
                     setIsOpen(false)
                     dispatch(setLoading(true));
                     fetchAllUserData(token)
                     dispatch(setLoading(false));
-                    console.log(jsonData)
+                    // console.log(jsonData)
                 }
             } catch (err) {
                 console.error('Error:', err);

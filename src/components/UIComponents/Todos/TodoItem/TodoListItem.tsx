@@ -54,7 +54,7 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
                 }
             }).then(response => response.json())
                 .then(result => {
-                    console.log(result)
+                    // console.log(result)
                     fetchAllUserData(token)
                     dispatch(setLoading(false));
                     setIsOpen(false)
@@ -80,7 +80,7 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
                 }
             }).then(response => response.json())
                 .then(result => {
-                    console.log(result)
+                    // console.log(result)
                     // fetchAllUserData(token)
                     fetchParentTodo(parentTodoId, token)
                     dispatch(setLoading(false));
@@ -111,7 +111,7 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
             <div className={`todo_CTAs_container ${theme.dark ? 'dark' : 'light'}`}>
                 <CrossIcon
                     onClick={() => {
-                        console.log("called")
+                        // console.log("called")
                         setIsOpen(!isOpen);
                     }} />
                 <ChevronIcon onClick={handleRedirect} tooltipText={'Details Page'} />

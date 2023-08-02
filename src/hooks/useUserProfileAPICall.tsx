@@ -29,7 +29,7 @@ function useUserProfileCall(url: string, options: object): [HttpError | null] {
                     const jsonData = await response.json();
                     dispatch(setAllUserData(jsonData));
                     // dispatch(setLoading(false));
-                    console.log(jsonData)
+                    // console.log(jsonData)
                 }
             } catch (err) {
                 console.error('Error:', err);

@@ -34,14 +34,14 @@ const TodoDetails: React.FC = () => {
     const [subTodoDescInput, setSubTodoDescInput] = useState<string | null>(null);
     const params = useParams();
     // todos/:parentTodo_id/subTodo/:childTodo_id
-    console.log(params);
+    // console.log(params);
     const dispatch = useDispatch();
     const token = useSelector((state: RootState) => state.User.token);
     const darkMode = useSelector((state: RootState) => state.UI.theme.dark);
     const fetchParentTodo = (TodoId: string, token: string) => {
         const formData = new FormData();
         formData.append("todoId", TodoId);
-        console.log("Called");
+        // console.log("Called");
         if (token)
             fetch(getUrl("/admin/postGetTodo"), {
                 method: "POST",
@@ -58,7 +58,7 @@ const TodoDetails: React.FC = () => {
                     }
                 })
                 .then((jsonData) => {
-                    console.log(jsonData);
+                    // console.log(jsonData);
                     setTodo(jsonData);
                     setCreatedAtDateAndTime(
                         formatDateAndTime(new Date(jsonData.createdAt))
@@ -87,7 +87,7 @@ const TodoDetails: React.FC = () => {
                     }
                 })
                 .then((jsonData) => {
-                    console.log(jsonData);
+                    // console.log(jsonData);
                     setTodo(jsonData);
                     setCreatedAtDateAndTime(
                         formatDateAndTime(new Date(jsonData.createdAt))
@@ -122,12 +122,12 @@ const TodoDetails: React.FC = () => {
                         setIsOpen(false);
                         throw new Error("Request failed");
                     }
-                    const jsonData = await response.json();
+                    // const jsonData = await response.json();
                     dispatch(setLoading(false));
                     setIsOpen(false);
                     // fetchAllUserData(token)
                     fetchParentTodo(params.parentTodo_id, token);
-                    console.log(jsonData);
+                    // console.log(jsonData);
                 }
             } catch (err) {
                 console.error("Error:", err);

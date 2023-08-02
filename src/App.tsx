@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.scss";
-import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "./ReduxStore/store";
 
@@ -38,7 +38,6 @@ export function generateUniqueId(): string {
 const App: React.FC = () => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [tokenIsPresent, setTokenIsPresent] = useState<boolean | null>(null)
 
   const isLoading = useSelector((state: RootState) => state.UI.loading);
   // Inside your component or any other place where you want to trigger the API call
@@ -69,7 +68,7 @@ const App: React.FC = () => {
             }
           ).then((jsonData) => {
             // if(jsonData && jsonData.user){
-            console.log(jsonData)
+            // console.log(jsonData)
             dispatch(setAllUserData(jsonData.user))
             dispatch(setAllTodos(jsonData.user.todos))
             // }
@@ -120,7 +119,7 @@ const App: React.FC = () => {
       dispatch(setDarkMode(false))
     }
     // dispatch(setLoading(false))
-  }, [theme.dark])
+  }, [dispatch, theme.dark])
 
   return (
     <div className={`main_container ${theme.dark ? 'dark_mode' : 'light_mode'}`}>

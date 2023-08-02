@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { /*useEffect*/ } from "react";
 import './TodosListContainer.scss'
 import TodoItem from "../TodoItem/TodoListItem";
-import { useDispatch } from "react-redux";
-import { setLoading } from "../../../../ReduxStore/UISlice";
+// import { useDispatch } from "react-redux";
+// import { setLoading } from "../../../../ReduxStore/UISlice";
 
 interface TodoListContainerProps {
     todosArray: {
@@ -22,15 +22,15 @@ interface TodoListContainerProps {
 
 const TodosListContainer: React.FC<Partial<TodoListContainerProps>> = ({ todosArray, fetchAllUserData, isSubTodoContainer, parentTodoId = "", fetchParentTodo = () => { } }) => {
 
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        dispatch(setLoading(true))
-        if (todosArray && todosArray.length > 0) {
-            dispatch(setLoading(false))
-        }
-    }, [dispatch, todosArray])
+    //     dispatch(setLoading(true))
+    //     if (todosArray && todosArray.length > 0) {
+    //         dispatch(setLoading(false))
+    //     }
+    // }, [dispatch, todosArray])
     return (
         <div className={`todoListItems_container`}>
             {todosArray && todosArray.map((item, index) => {

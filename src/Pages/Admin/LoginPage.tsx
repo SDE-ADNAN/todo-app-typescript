@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import Login from "../../components/Admin/Login/Login"
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../ReduxStore/store";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../../ReduxStore/store";
 
 export interface LoginPageProps {
     setIsAuthenticated: any;
@@ -11,7 +11,7 @@ export interface LoginPageProps {
 }
 const LoginPage: React.FC<LoginPageProps> = ({ setIsAuthenticated, isAuthenticated, fetchAllUserData = () => { } }) => {
     const navigate = useNavigate()
-    const reduxToken = useSelector((state: RootState) => state.User.token)
+    // const reduxToken = useSelector((state: RootState) => state.User.token)
     useEffect(() => {
         if (isAuthenticated) {
             navigate('/dashboard')
