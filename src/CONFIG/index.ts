@@ -34,7 +34,7 @@ export function formatDateAndTime(dateObj: Date): [string, string] {
 }
 
 
-export const inCludeDarkClass =(scssClass:string,darkMode:boolean)=>{
+export const includeDarkClass =(scssClass:string,darkMode:boolean)=>{
   return `${scssClass} ${darkMode?'dark':'light'}`
 }
 const Todos = {
