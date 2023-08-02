@@ -19,6 +19,7 @@ import {/* UILogout,*/ setAllTodos, setDarkMode, setLoading } from "./ReduxStore
 import { getUrl, isDarkModeFromLocalStorage } from "./CONFIG";
 import TodoDetails from "./components/UIComponents/TodoDetails/TodoDetails";
 import NotFound from "./Pages/NotFound/NotFound";
+import Profile from "./components/UIComponents/Profile/Profile";
 
 export interface TodoItem {
   _id: string;
@@ -46,6 +47,7 @@ const App: React.FC = () => {
   const allTodos = useSelector((state: RootState) => state.UI.allTodos)
   // const userAllData = useSelector((state: RootState) => state.User.allUserData)
   const token = useSelector((state: RootState) => state.User.token)
+  // const userProfile = useSelector((state: RootState) => state.User.allUserData)
   const theme = useSelector((state: RootState) => state.UI.theme)
 
 
@@ -144,6 +146,7 @@ const App: React.FC = () => {
             <Route index path='todos' element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
             <Route path='todos/:parentTodo_id' element={<TodoDetails />} />
             <Route path='todos/:parentTodo_id/subTodo/:childTodo_id' element={<TodoDetails />} />
+            <Route path='profile' element={<Profile />} />
             <Route path='todos' element={<Navigate to='/todos' />} />
 
               {/* Fallback route for any other unmatched paths */}
