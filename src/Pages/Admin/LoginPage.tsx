@@ -6,9 +6,10 @@ import { RootState } from "../../ReduxStore/store";
 
 export interface LoginPageProps {
     setIsAuthenticated: any;
-    isAuthenticated: boolean
+    isAuthenticated: boolean;
+    fetchAllUserData: any;
 }
-const LoginPage: React.FC<LoginPageProps> = ({ setIsAuthenticated, isAuthenticated }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ setIsAuthenticated, isAuthenticated, fetchAllUserData = () => { } }) => {
     const navigate = useNavigate()
     const reduxToken = useSelector((state: RootState) => state.User.token)
     useEffect(() => {
@@ -18,7 +19,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setIsAuthenticated, isAuthenticat
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return(
-        <Login setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} />
+        <Login setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} fetchAllUserData={fetchAllUserData} />
     )
 }
 
