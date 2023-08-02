@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Signika:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Meera+Inimai&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Signika:wght@300;400;500;600;700&display=swap');
 
 @import './styles/typography/typography.scss';
 $black1: 	#000000;
@@ -9,6 +9,11 @@ $black5: 	#aeaeae;
 $black6: 	#c1c1c1;
 $black7: 	#dcdcdc;
 $white: 	#ffffff;
+
+// available families
+// font-family: 'Meera Inimai', sans-serif;
+// font-family: 'Roboto', sans-serif;
+// font-family: 'Signika', sans-serif;
 
 
 
@@ -33,7 +38,7 @@ body{
   padding:0;
   background:$black1;
   color:$black1;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Meera Inimai', sans-serif;
   font-weight: 300;
   display:flex;
   justify-content: center;
@@ -67,6 +72,11 @@ body{
     &:hover{
       background: rgba(255, 255, 255, 0.35);
     }
+  }
+
+  a{
+    text-decoration: none;
+    color:currentColor;
   }
 
   input{
