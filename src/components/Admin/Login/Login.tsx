@@ -8,12 +8,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { setLoading } from '../../../ReduxStore/UISlice';
 import { useDispatch } from 'react-redux';
 import { getUrl } from '../../../CONFIG';
+import { RootState } from '../../../ReduxStore/store';
+import { useSelector } from 'react-redux';
+import { setToken } from '../../../ReduxStore/UserSlice';
 
 interface LoginProps extends LoginPageProps{
   setIsAuthenticated: any;
 }
 
-const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
+const Login: React.FC<LoginProps> = ({ setIsAuthenticated, fetchAllUserData }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -21,6 +24,7 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
+  const token = useSelector((state: RootState) => state.User.token)
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
@@ -53,7 +57,13 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
       setError(jsonResponse && jsonResponse.message)
       if (jsonResponse && jsonResponse.token) {
         localStorage.setItem("Token", jsonResponse && jsonResponse.token)
-        navigate('/todos')
+        dispatch(setToken(jsonResponse.token))
+        // dispatch(setLoading(true))
+        // fetchAllUserData(jsonResponse.token)
+        // dispatch(setLoading(false))
+        if (token) {
+          navigate('/todos')
+        }
       }
     })
       .catch(err => {
