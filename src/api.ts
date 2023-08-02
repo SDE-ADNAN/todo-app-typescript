@@ -10,7 +10,7 @@ export const API_URL_LOCAL = "http://192.168.0.101:3033"
 export const API_URL_LIVE = "https://adnans-todo-backend.onrender.com"
 
 // isLive
-export const isLive = false;
+export const isLive = true;
 
 
 export function generateUniqueID() {
