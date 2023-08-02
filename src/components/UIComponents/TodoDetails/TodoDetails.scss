@@ -1,4 +1,4 @@
-.todo_details_container{
+.todo_details_container {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -7,10 +7,10 @@
     height: auto;
     // padding:10px;
 
-    .todo_id{
+    .todo_id {
         font-size: 16px;
         font-weight: 500;
-        display:flex;
+        display: flex;
         align-items: flex-start;
         width: calc(100% - 20px);
         border-radius: 10px 10px 0 0;
@@ -19,18 +19,20 @@
         -webkit-backdrop-filter: blur(60px);
         backdrop-filter: blur(60px);
 
-        .dark{
+        .dark {
             background: rgb(255 255 255 / 20%);
         }
     }
-    .horizontal_line{
+
+    .horizontal_line {
         width: 100%;
         height: 1px;
         background: rgba(255, 255, 255, 0.19);
         -webkit-backdrop-filter: blur(12px);
         backdrop-filter: blur(16px);
     }
-    .todo_contents_container{
+
+    .todo_contents_container {
         width: calc(100% - 20px);
         margin: 5px;
         -webkit-backdrop-filter: blur(1px);
@@ -39,21 +41,50 @@
         padding: 5px;
         display: flex;
         flex-direction: column;
-        row-gap:10px;
-        flex:1;
+        row-gap: 10px;
+        flex: 1;
 
-        .header{
+        .header {
             font-size: 12px;
             font-weight: 400;
             color: rgb(0 0 0 / 71%);
         }
-        .content{
+
+        .content {
             padding: 3px 0 10px 0;
             font-size: 16px;
             font-weight: 200;
+            word-wrap: break-word;
         }
-    }
-    .todo_title_title{
-    
+
+        
+
+        .todo_date_and_time_container {
+            display: flex;
+            column-gap: 20px;
+
+            .todo_createdAt,
+            .todo_updatedAt {
+                background-color: rgb(255 255 255 / 10%);
+                -webkit-backdrop-filter: blur(60px);
+                backdrop-filter: blur(60px);
+                padding: 7px;
+                border-radius: 5px;
+                display: flex;
+                font-size: 12px;
+
+                .time {
+                    padding: 0 10px;
+                }
+            }
+        }
+
+        .todo_subTodos {
+            .subTodo_addbtn {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
     }
 }
