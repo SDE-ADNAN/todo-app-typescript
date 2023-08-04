@@ -43,7 +43,7 @@ const AddIcon: FC<AddIconProps> = ({
         whiteSpace: 'nowrap',
         pointerEvents: 'none',
         opacity: 0,
-        transition: 'opacity 0.2s ease-in-out',
+        // transition: 'opacity 0.2s ease-in-out',
     };
 
     const handleMouseEnter = () => {
