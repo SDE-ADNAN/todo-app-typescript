@@ -11,8 +11,6 @@ import RegisterPage from "./Pages/Admin/RegisterPage";
 import Loader from "./components/UIComponents/Loader/Loader";
 import { useDispatch } from "react-redux";
 import { /*UserLogout,*/ setAllUserData, setToken } from "./ReduxStore/UserSlice";
-// import useUserProfileCall from "./hooks/useUserProfileAPICall";
-// import useGETAllTodos from "./hooks/useGETAllTodos";
 import DashboardWrapper from "./components/WRAPPERS/DashboardWrapper/DashboardWrapper";
 import TodosListContainer from "./components/UIComponents/Todos/TodosListContainer/TodosListContainer";
 import {/* UILogout,*/ setAllTodos, setDarkMode, setLoading } from "./ReduxStore/UISlice";
@@ -29,7 +27,6 @@ export interface TodoItem {
   showInput: Boolean;
   isCompleted: boolean;
   showSubtodos: Boolean;
-  // onAddSubTodo?: (parentId: string, title: string) => void;
 }
 export function generateUniqueId(): string {
   const timestamp = new Date().getTime();
@@ -126,6 +123,7 @@ const App: React.FC = () => {
   return (
     <div className={`main_container ${theme.dark ? 'dark_mode' : 'light_mode'}`}>
       {theme.dark ? <div className="image_container"><img src={bgDark} alt='bg'></img></div> : <div className="image_container"><img src={bgLight} alt='bg'></img></div>}
+      <div className="image_backdrop"></div>
 
       <Routes>
           {!isAuthenticated && (
