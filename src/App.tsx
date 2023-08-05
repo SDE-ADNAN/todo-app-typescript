@@ -123,7 +123,7 @@ const App: React.FC = () => {
   return (
     <div className={`main_container ${theme.dark ? 'dark_mode' : 'light_mode'}`}>
       {theme.dark ? <div className="image_container"><img src={bgDark} alt='bg'></img></div> : <div className="image_container"><img src={bgLight} alt='bg'></img></div>}
-      <div className="image_backdrop"></div>
+      {/* <div className="image_backdrop"></div> */}
 
       <Routes>
           {!isAuthenticated && (
@@ -144,7 +144,7 @@ const App: React.FC = () => {
             <Route index path='todos' element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
             <Route path='todos/:parentTodo_id' element={<TodoDetails />} />
             <Route path='todos/:parentTodo_id/subTodo/:childTodo_id' element={<TodoDetails />} />
-            <Route path='profile' element={<Profile />} />
+            <Route path='profile' element={<Profile fetchAllUserData={fetchAllUserData} />} />
             <Route path='todos' element={<Navigate to='/todos' />} />
 
               {/* Fallback route for any other unmatched paths */}
