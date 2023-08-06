@@ -9,6 +9,7 @@ import { setLoading } from '../../../../ReduxStore/UISlice';
 import { useDispatch } from 'react-redux';
 import Modal from '../../Modal/Modal';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion'
 
 interface TodoListItemProps {
     item: {
@@ -34,7 +35,7 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
-    if (!item) {
+    if (!item || !item.title || !item.createdAt) {
         return null
     }
     const createdAtDate = new Date(item.createdAt)
@@ -102,7 +103,11 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
         }
     }
     return (
-        <div id={item._id} className={`todo_item_individual ${theme.dark ? 'dark' : 'light'}`}>
+        <motion.div
+            initial={{ y: -30, opacity: 0, scale: 1 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            transition={{ /*type: "spring", stiffness: 100,*/ duration: .5 }}
+            id={item._id} className={`todo_item_individual ${theme.dark ? 'dark' : 'light'}`}>
             <div className={`todo_item_title truncate ${theme.dark ? 'dark' : 'light'}`}>{item && item.title}</div>
             <div className={`date_and_time ${theme.dark ? 'dark' : 'light'}`} title='Created At'>
                 <div className={`text ${theme.dark ? 'dark' : 'light'}`}>{date}</div>
@@ -126,7 +131,7 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
                 }}>DELETE</button>
                 <button onClick={() => setIsOpen(!isOpen)}>Cancel</button>
             </Modal>
-        </div>
+        </motion.div>
     );
 };
 
