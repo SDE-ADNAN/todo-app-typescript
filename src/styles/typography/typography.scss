@@ -61,7 +61,11 @@ $default-font-size: 1rem;
 $default-font-weight: 300;
 $default-line-height: 1.6;
 
-$link_blue:#007AFF;
+$link_blue:#0080ff;
+
+$dark_mode_outline:1px solid #1f2025;
+$dark_mode_border:1px solid #6d6d6d;
+$dark_mode_bgColor:rgba(0, 0, 0, 0.54);
 
 @mixin typography($font-size: $default-font-size, $font-weight: $default-font-weight, $line-height: $default-line-height, $color: inherit) {
   font-size: $font-size;
