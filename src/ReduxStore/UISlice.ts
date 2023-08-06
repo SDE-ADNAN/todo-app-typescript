@@ -8,7 +8,9 @@ interface UISliceReducerState {
   sideBarActiveTab:string;
   theme:{
     dark:boolean
-  }
+  },
+  currentPage:string;
+  isMobSidebarOpen:boolean;
 }
 
 const initialState: UISliceReducerState = {
@@ -19,7 +21,9 @@ const initialState: UISliceReducerState = {
   sideBarActiveTab:'',
   theme:{
     dark:false
-  }
+  },
+  currentPage:'',
+  isMobSidebarOpen:false
 };
 
 const UISliceReducer = createSlice({
@@ -27,27 +31,27 @@ const UISliceReducer = createSlice({
   initialState,
   reducers: {
     setToken(state,action:PayloadAction<string>) {
-      state.token = action.payload
+      state.token = action.payload;
       let isTokenPresent = localStorage.getItem('Token');
       if(!isTokenPresent){
-        localStorage.setItem('Token',action.payload)
+        localStorage.setItem('Token',action.payload);
       }else{
-        localStorage.removeItem('Token')
-        localStorage.setItem('Token',action.payload)
+        localStorage.removeItem('Token');
+        localStorage.setItem('Token',action.payload);
       }
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
     setAllTodos(state,action:PayloadAction<any>){
-      state.allTodos = action.payload
+      state.allTodos = action.payload;
     },
     UILogout(state){
-      state.allTodos = []
-      state.data = []
-      state.loading = false
+      state.allTodos = [];
+      state.data = [];
+      state.loading = false;
       state.sideBarActiveTab = '';
-      state.token = null
+      state.token = null;
     },
     toogleDarkLight(state){
       if(state.theme.dark){
@@ -55,13 +59,19 @@ const UISliceReducer = createSlice({
       }else{
         localStorage.setItem('darkMode','True')
       }
-      state.theme.dark = !state.theme.dark
+      state.theme.dark = !state.theme.dark;
     },
     setDarkMode(state,action:PayloadAction<any>){
-      state.theme.dark = action.payload
+      state.theme.dark = action.payload;
+    },
+    setCurrentPage(state,action:PayloadAction<string>){
+      state.currentPage = action.payload;
+    },
+    toggleMobSidebar(state){
+      state.isMobSidebarOpen = !state.isMobSidebarOpen;
     }
   },
 });
 
-export const { setToken, setLoading,setAllTodos ,UILogout,toogleDarkLight,setDarkMode} = UISliceReducer.actions;
+export const { setToken, setLoading,setAllTodos ,UILogout,toogleDarkLight,setDarkMode,setCurrentPage,toggleMobSidebar} = UISliceReducer.actions;
 export default UISliceReducer.reducer;
