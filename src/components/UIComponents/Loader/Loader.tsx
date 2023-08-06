@@ -14,6 +14,7 @@ const Loader: React.FC<LoaderProps> = ({ isLoading }) => {
             <div className="loader-container">
                 <div className="ios-gear-loading" />
                 <p>Loading...</p>
+                <p style={{ fontSize: "8px" }}>Free service takes longer than usual to load</p>
             </div>
         </div>,
         document.getElementById('loader')!
