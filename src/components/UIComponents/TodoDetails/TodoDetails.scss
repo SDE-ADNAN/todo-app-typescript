@@ -104,5 +104,14 @@
                 justify-content: space-between;
             }
         }
+
+        .btn_grp {
+            display: flex;
+            justify-content: center;
+            column-gap: 10px;
+            button:nth-child(1){
+              background-color: rgb(156, 255, 145);
+            }
+          }
     }
 }
