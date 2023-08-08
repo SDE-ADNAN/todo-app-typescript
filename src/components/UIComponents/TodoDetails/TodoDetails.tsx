@@ -300,6 +300,7 @@ const TodoDetails: React.FC = () => {
                         ></div>
                     </div>
                     {isEditing ? (
+                        <>
                         <div className={includeDarkClass("btn_grp", darkMode)}>
                             <button type="submit">Submit</button>
                             <button
@@ -312,7 +313,11 @@ const TodoDetails: React.FC = () => {
                             >
                                 Cancel
                             </button>
+
                         </div>
+                            <div
+                                className={includeDarkClass("horizontal_line", darkMode)}
+                            ></div></>
                     ) : (
                         <></>
                     )}
