@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './TodoItem.scss';
 import ChevronIcon from '../../Chevron/ChevronIcon';
 import { formatDateAndTime, getUrl } from '../../../../CONFIG';
-import CrossIcon from '../../CrossIcon/CrossIcon';
+// import CrossIcon from '../../CrossIcon/CrossIcon';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../ReduxStore/store';
 import { setLoading } from '../../../../ReduxStore/UISlice';
@@ -10,6 +10,9 @@ import { useDispatch } from 'react-redux';
 import Modal from '../../Modal/Modal';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'
+import CTAIconWrapper from '../../../WRAPPERS/CTAIconWrapper/CTAIconWrapper';
+import ChevronRight from '../../../../medias/ChevronRight';
+import CrossIcon from '../../../../medias/CrossIcon';
 
 interface TodoListItemProps {
     item: {
@@ -114,12 +117,14 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
                 <div className={`text ${theme.dark ? 'dark' : 'light'}`}>{time}</div>
             </div>
             <div className={`todo_CTAs_container ${theme.dark ? 'dark' : 'light'}`}>
-                <CrossIcon
-                    onClick={() => {
-                        // console.log("called")
+                <CTAIconWrapper onClick={() => {
                         setIsOpen(!isOpen);
-                    }} />
-                <ChevronIcon onClick={handleRedirect} tooltipText={'Details Page'} />
+                }}  >
+                    <CrossIcon />
+                </CTAIconWrapper>
+                <CTAIconWrapper onClick={handleRedirect} >
+                    <ChevronRight />
+                </CTAIconWrapper>
             </div>
             <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} heading={`Are you sure you want to delete the "${item.title}" TODO ???`}>
                 <button style={{ color: 'red' }} onClick={() => {
