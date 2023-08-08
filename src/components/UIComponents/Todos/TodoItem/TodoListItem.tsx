@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './TodoItem.scss';
-import ChevronIcon from '../../Chevron/ChevronIcon';
+// import ChevronIcon from '../../Chevron/ChevronIcon';
 import { formatDateAndTime, getUrl } from '../../../../CONFIG';
 // import CrossIcon from '../../CrossIcon/CrossIcon';
 import { useSelector } from 'react-redux';
