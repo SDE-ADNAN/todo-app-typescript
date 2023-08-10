@@ -7,6 +7,7 @@ import { RootState } from "../../../ReduxStore/store";
 import { useDispatch } from "react-redux";
 import {
     setLoading,
+    setSideBarActiveTab,
     toggleMobSidebar,
     toogleDarkLight,
 } from "../../../ReduxStore/UISlice";
@@ -60,6 +61,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
     const token = useSelector((state: RootState) => state.User.token);
     const allUserData = useSelector((state: RootState) => state.User.allUserData);
     const currentPage = useSelector((state: RootState) => state.UI.currentPage);
+    const currSideBarIdx = useSelector((state: RootState) => state.UI.sideBarActiveTab)
 
     const theme = useSelector((state: RootState) => state.UI.theme);
     const darkMode = useSelector((state: RootState) => state.UI.theme.dark);
@@ -225,11 +227,13 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                                 <div
                                     key={`${item}_${index}`}
                                     className={includeDarkClass(
-                                        "sidebar_item_container",
+                                        'sidebar_item_container',
                                         darkMode
                                     )}
+                                    onClick={() => dispatch(setSideBarActiveTab(index))}
                                 >
-                                    <div className={includeDarkClass("sidebar_item", darkMode)}>
+                                    <div className={includeDarkClass(`sidebar_item ${currSideBarIdx === index ?
+                                        'selected' : ''}`, darkMode)}>
                                         <Link
                                             onClick={() => dispatch(toggleMobSidebar())}
                                             to={item.url}
