@@ -18,7 +18,7 @@ const initialState: UISliceReducerState = {
   data: [],
   loading: false,
   token:null,
-  sideBarActiveTab:-1,
+  sideBarActiveTab:0,
   theme:{
     dark:false
   },
@@ -50,7 +50,7 @@ const UISliceReducer = createSlice({
       state.allTodos = [];
       state.data = [];
       state.loading = false;
-      state.sideBarActiveTab = -1;
+      state.sideBarActiveTab = 0;
       state.token = null;
     },
     toogleDarkLight(state){
