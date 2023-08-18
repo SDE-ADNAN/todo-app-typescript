@@ -36,6 +36,7 @@ const sideBarData = [
     { name: "Todos", url: "/todos" },
     { name: "Tags", url: "/todos" },
     { name: "TodoTypes", url: "/todos" },
+    { name: "Profile", url: "/profile" },
 ];
 const navLinks = [
     { name: null, url: null },
@@ -161,7 +162,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                     >
 
                         {allUserData.picUrl ?
-                            <img src={allUserData.picUrl} alt="profile pic" /> :
+                            <img onClick={() => dispatch(setSideBarActiveTab(sideBarData && sideBarData.length && sideBarData.length - 1))} src={allUserData.picUrl} alt="profile pic" /> :
                             <UserProfile />
                         }
                     </div>
