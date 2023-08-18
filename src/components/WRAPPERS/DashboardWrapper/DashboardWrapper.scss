@@ -263,7 +263,7 @@ $dash_contents_dark_mode_bgColor: rgb(55 55 55 / 69%);
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            width: 98%;
+            width: calc(100% - 10px);
             padding: 5px;
             border-radius: 5px;
             margin: 4px 0;
