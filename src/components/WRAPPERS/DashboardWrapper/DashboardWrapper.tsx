@@ -51,6 +51,21 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
     const [isOpen, setIsOpen] = useState(false);
     const [todoTitleInput, setTodoTitleInput] = useState<string | null>(null);
     const [todoDescInput, setTodoDescInput] = useState<string | null>(null);
+    const [selectedStatus, setSelectedStatus] = useState('Todo');
+
+    const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newStatus = event.target.value;
+        setSelectedStatus(newStatus);
+        // onChange(newStatus);
+    };
+    const [selectedPriority, setSelectedPriority] = useState('Medium');
+
+    const handlePriorityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newStatus = event.target.value;
+        setSelectedPriority(newStatus);
+        // onChange(newStatus);
+    };
+
 
     const navigate = useNavigate();
     const params = useParams();
@@ -90,6 +105,8 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
             const formData = new FormData();
             formData.append("title", todoTitleInput);
             formData.append("description", todoDescInput);
+            formData.append("status", selectedStatus);
+            formData.append("priority", selectedPriority);
 
             try {
                 if (token !== null) {
@@ -320,6 +337,23 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                                     type="textarea"
                                     placeholder="Description for your new Todo ."
                                 />
+                                <div>
+                                    <label htmlFor="status">Status:</label>
+                                    <select id="status" name="status" value={selectedStatus} onChange={handleStatusChange}>
+                                        <option value="Todo">Todo</option>
+                                        <option value="InProgress">In Progress</option>
+                                        <option value="Completed">Completed</option>
+                                        {/* <option value="OnHold">On Hold</option> */}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label htmlFor="Priority">Priority:</label>
+                                    <select id="Priority" name="Priority" value={selectedPriority} onChange={handlePriorityChange}>
+                                        <option value="High">High</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Low">Low</option>
+                                    </select>
+                                </div>
                                 <div>
                                     <button>Submit</button>
                                 </div>
