@@ -46,6 +46,14 @@ body{
   letter-spacing: 0.04em;
 
 
+  select{
+    border-radius: 5px;
+    padding: 2px;
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid #ffffff57;
+    outline: 1px solid #00000030;
+  }
 
   button{
     border: none;
@@ -53,7 +61,9 @@ body{
     cursor:pointer;
     padding:0 10px;
     border-radius: 10px;
-    background: rgb(255 255 255);
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid #ffffff57;
+    outline: 1px solid #00000030;
     color: #000000;
 
     @include typography(
@@ -93,14 +103,17 @@ body{
     flex:1;
     border: none;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.2);
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid #ffffff57;
+    outline: 1px solid #00000030;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     cursor:pointer;
     @include typography(
       $heading6-size,
       300,
-      $default-line-height,
+      unset,
       #000000
     );
     padding:10px !important;
@@ -212,7 +225,7 @@ font-family: 'Roboto', sans-serif;
     margin-top: 10px;
   }
   input{
-    border-radius: 10px;
+    border-radius: 5px;
     border: none;
     font-size: 16px;
     background: rgb(255 255 255 / 24%);
