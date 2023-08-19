@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './TodoItem.scss';
 // import ChevronIcon from '../../Chevron/ChevronIcon';
-import { formatDateAndTime, getUrl } from '../../../../CONFIG';
+import { formatDateAndTime, getUrl, includeDarkClass } from '../../../../CONFIG';
 // import CrossIcon from '../../CrossIcon/CrossIcon';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../ReduxStore/store';
@@ -127,6 +127,7 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
                 </CTAIconWrapper>
             </div>
             <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} heading={`Are you sure you want to delete the "${item.title}" TODO ???`}>
+                <div className={includeDarkClass('del_cncl', theme.dark)}>
                 <button style={{ color: 'red' }} onClick={() => {
                     if (isSubTodo && parentTodoId) {
                         handleChildTodoDelete()
@@ -134,7 +135,7 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
                         handleParentDelete()
                     }
                 }}>DELETE</button>
-                <button onClick={() => setIsOpen(!isOpen)}>Cancel</button>
+                    <button onClick={() => setIsOpen(!isOpen)}>Cancel</button></div>
             </Modal>
         </motion.div>
     );
