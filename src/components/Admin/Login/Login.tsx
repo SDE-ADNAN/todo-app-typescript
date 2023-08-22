@@ -7,7 +7,7 @@ import GlassmorphicBackground from '../../UIComponents/Modal/DesignComponents/Gl
 import { Link, useNavigate } from 'react-router-dom';
 import { setLoading } from '../../../ReduxStore/UISlice';
 import { useDispatch } from 'react-redux';
-import { getUrl } from '../../../CONFIG';
+import { getUrl, includeDarkClass } from '../../../CONFIG';
 import { RootState } from '../../../ReduxStore/store';
 import { useSelector } from 'react-redux';
 import { setToken } from '../../../ReduxStore/UserSlice';
@@ -20,6 +20,8 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated, fetchAllUserData }) =
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+
+  const darkMode = useSelector((state: RootState) => state.UI.theme.dark)
 
   const navigate = useNavigate()
 
@@ -74,23 +76,23 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated, fetchAllUserData }) =
   };
 
   return (
-    <div className="main_login_container">
+    <div className={includeDarkClass("main_login_container", darkMode)} >
       <GlassmorphicBackground>
       <h2>Login</h2>
-      <form className='login__form' onSubmit={handleLoginFormSubmit}>
-        <div className='inputdiv'>
+        <form className={includeDarkClass('login__form', darkMode)} onSubmit={handleLoginFormSubmit}>
+          <div className={includeDarkClass('inputdiv', darkMode)}>
             <label htmlFor="userName">Username:</label>
             <input type="text" id="userName" value={userName} onChange={handleUsernameChange} />
         </div>
-        <div className='inputdiv'>
+          <div className={includeDarkClass('inputdiv', darkMode)}>
           <PasswordInput label="Password:" id="password" value={password} onChange={handlePasswordChange}/>
         </div>
-        <button className="login__btn" type="submit">Login</button>
+          <button className={includeDarkClass("login__btn", darkMode)} type="submit">Login</button>
       </form>
         {error && <p>{JSON.stringify(error)}</p>}
-        <div className='sign_in_redirect'>
-          Don't have an account ?
-          <Link to='/register'><span>Sign Up / Register</span></Link>
+        <div className={includeDarkClass('sign_in_redirect', darkMode)}>
+          Don't have an account ?&nbsp;
+          <Link to='/register'><span>&nbsp;Sign Up / Register</span></Link>
         </div>
       </GlassmorphicBackground>
     </div>
