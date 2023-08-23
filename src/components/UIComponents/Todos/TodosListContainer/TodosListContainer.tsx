@@ -22,6 +22,8 @@ interface TodoListContainerProps {
     fetchParentTodo?: any
 }
 
+// const NoTodosSvg: any = () => <div>dsfdsvsd</div>
+
 const TodosListContainer: React.FC<Partial<TodoListContainerProps>> = ({ todosArray, fetchAllUserData, isSubTodoContainer, parentTodoId = "", fetchParentTodo = () => { } }) => {
 
     const dispatch = useDispatch()
@@ -35,11 +37,13 @@ const TodosListContainer: React.FC<Partial<TodoListContainerProps>> = ({ todosAr
     }, [dispatch, isSubTodoContainer])
     return (
         <div className={`todoListItems_container`}>
-            {todosArray ? todosArray.map((item, index) => {
+            {todosArray && todosArray.length === 0 ? '<NoTodosSvg />' : todosArray ? todosArray.map((item, index) => {
                 return (
                     <TodoItem isSubTodo={isSubTodoContainer} parentTodoId={parentTodoId} key={item._id} item={item} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} />
                 )
             }) : <LoaderComponent />}
+
+
         </div>
     )
 }
