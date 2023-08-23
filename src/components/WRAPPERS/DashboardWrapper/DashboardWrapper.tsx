@@ -73,13 +73,13 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
 
   // const allTodos = useSelector((state: RootState) => state.UI.allTodos)
 
-    const token = useSelector((state: RootState) => state.User.token);
-    const allUserData = useSelector((state: RootState) => state.User.allUserData);
-    const currentPage = useSelector((state: RootState) => state.UI.currentPage);
-    const currSideBarIdx = useSelector((state: RootState) => state.UI.sideBarActiveTab)
+    const token = useSelector((state: RootState) => state && state.User && state.User.token);
+    const allUserData = useSelector((state: RootState) => state && state.User && state.User.allUserData);
+    const currentPage = useSelector((state: RootState) => state && state.UI && state.UI.currentPage);
+    const currSideBarIdx = useSelector((state: RootState) => state && state.UI && state.UI.sideBarActiveTab)
 
-    const theme = useSelector((state: RootState) => state.UI.theme);
-    const darkMode = useSelector((state: RootState) => state.UI.theme.dark);
+    const theme = useSelector((state: RootState) => state && state.UI && state.UI.theme);
+    const darkMode = useSelector((state: RootState) => state && state.UI && state.UI.theme.dark);
     const isMobSidebarOpen = useSelector(
         (state: RootState) => state.UI.isMobSidebarOpen
     );
