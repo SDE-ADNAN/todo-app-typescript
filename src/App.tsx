@@ -18,6 +18,7 @@ import { getUrl, isDarkModeFromLocalStorage } from "./CONFIG";
 import TodoDetails from "./components/UIComponents/TodoDetails/TodoDetails";
 import NotFound from "./Pages/NotFound/NotFound";
 import Profile from "./components/UIComponents/Profile/Profile";
+import ForgotPassword from "./components/Admin/ForgotPassword/ForgotPassword";
 
 export interface TodoItem {
   _id: string;
@@ -129,6 +130,7 @@ const App: React.FC = () => {
           {!isAuthenticated && (
             <>
             <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} fetchAllUserData={fetchAllUserData} />} />
+            <Route path="/forgot-password" element={<ForgotPassword setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} fetchAllUserData={fetchAllUserData} />} />
               <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
               <Route path="/" element={<Navigate to="/login" replace />} />
             </>
