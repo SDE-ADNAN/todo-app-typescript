@@ -81,19 +81,18 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
     const theme = useSelector((state: RootState) => state && state.UI && state.UI.theme);
     const darkMode = useSelector((state: RootState) => state && state.UI && state.UI.theme.dark);
     const isMobSidebarOpen = useSelector(
-        (state: RootState) => state.UI.isMobSidebarOpen
+        (state: RootState) => state && state.UI && state.UI.isMobSidebarOpen
     );
     const isDarkMode = () => {
-        const localStorageDarkMode = localStorage.getItem("darkMode");
+        const localStorageDarkMode = localStorage && localStorage.getItem("darkMode");
 
         if (
             (localStorageDarkMode != null && localStorageDarkMode === "True") ||
             (theme.dark && theme.dark === true)
         ) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     };
 
     const dispatch = useDispatch();
@@ -103,10 +102,10 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
         dispatch(setLoading(true));
         if (todoTitleInput && todoDescInput) {
             const formData = new FormData();
-            formData.append("title", todoTitleInput);
-            formData.append("description", todoDescInput);
-            formData.append("status", selectedStatus);
-            formData.append("priority", selectedPriority);
+            formData.append("title", todoTitleInput ? todoTitleInput : 'Your title');
+            formData.append("description", todoDescInput ? todoDescInput : 'Your desc');
+            formData.append("status", selectedStatus ? selectedStatus : 'your status');
+            formData.append("priority", selectedPriority ? selectedPriority : 'priority');
 
             try {
                 if (token !== null) {
@@ -160,7 +159,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                 </div>
                 <div className={includeDarkClass("navbar_void", darkMode)}></div>
                 <div className={includeDarkClass("navbar_navlinks", darkMode)}>
-                    {navLinks.map((item, index) => {
+                    {navLinks && navLinks.length !== 0 && navLinks.map((item, index) => {
                         return (
                             <div
                                 key={`${item}_${index}`}
@@ -178,7 +177,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                         className={includeDarkClass("profile_pic", darkMode)}
                     >
 
-                        {allUserData.picUrl ?
+                        {allUserData && allUserData.picUrl ?
                             <img onClick={() => dispatch(setSideBarActiveTab(sideBarData && sideBarData.length && sideBarData.length - 1))} src={allUserData.picUrl} alt="profile pic" /> :
                             <UserProfile />
                         }
@@ -240,7 +239,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                             <></>
                         )}
 
-                        {sideBarData.map((item, index) => {
+                        {sideBarData && sideBarData.length !== 0 && sideBarData.map((item, index) => {
                             return (
                                 <div
                                     key={`${item}_${index}`}
