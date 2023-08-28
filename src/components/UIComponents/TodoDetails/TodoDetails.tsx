@@ -43,6 +43,164 @@ const TodoDetails: React.FC = () => {
     const dispatch = useDispatch();
     const token = useSelector((state: RootState) => state.User.token);
     const darkMode = useSelector((state: RootState) => state.UI.theme.dark);
+
+    const updateStatus = async (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        event.preventDefault();
+        dispatch(setLoading(true));
+        try {
+            if (token !== null) {
+                const formData = new FormData();
+
+                if (params.childTodo_id) {
+                    // Update a childTodo
+                    formData.append("todoId", params.childTodo_id);
+                    formData.append(
+                        "changeObj",
+                        JSON.stringify({
+                            status: event.target.value,
+                            // description: descriptionInput,
+                        })
+                    );
+
+                    const response = await fetch(getUrl("/admin/putSubTodo"), {
+                        method: "PUT",
+                        body: formData,
+                        headers: {
+                            Authorization: token,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        dispatch(setLoading(false));
+                        setIsEditing(false);
+                        setIsOpen(false);
+                        throw new Error("Request failed");
+                    }
+
+                    // Fetch updated childTodo after successful API call
+                    fetchChildTodo(params.childTodo_id, token);
+                } else if (params.parentTodo_id) {
+                    // Update a parentTodo
+                    formData.append("todoId", params.parentTodo_id);
+                    formData.append(
+                        "changeObj",
+                        JSON.stringify({
+                            status: event.target.value,
+                            // description: descriptionInput,
+                        })
+                    );
+
+                    const response = await fetch(getUrl("/admin/putTodo"), {
+                        method: "PUT",
+                        body: formData,
+                        headers: {
+                            Authorization: token,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        dispatch(setLoading(false));
+                        setIsEditing(false);
+                        setIsOpen(false);
+                        throw new Error("Request failed");
+                    }
+
+                    // Fetch updated parentTodo after successful API call
+                    fetchParentTodo(params.parentTodo_id, token);
+                }
+
+                dispatch(setLoading(false));
+                setIsEditing(false);
+                setIsOpen(false);
+            }
+        } catch (err) {
+            console.error("Error:", err);
+            dispatch(setLoading(false));
+            setIsEditing(false);
+            setIsOpen(false);
+        }
+    };
+    const updatePriority = async (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        event.preventDefault();
+        dispatch(setLoading(true));
+        try {
+            if (token !== null) {
+                const formData = new FormData();
+
+                if (params.childTodo_id) {
+                    // Update a childTodo
+                    formData.append("todoId", params.childTodo_id);
+                    formData.append(
+                        "changeObj",
+                        JSON.stringify({
+                            priority: event.target.value,
+                            // description: descriptionInput,
+                        })
+                    );
+
+                    const response = await fetch(getUrl("/admin/putSubTodo"), {
+                        method: "PUT",
+                        body: formData,
+                        headers: {
+                            Authorization: token,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        dispatch(setLoading(false));
+                        setIsEditing(false);
+                        setIsOpen(false);
+                        throw new Error("Request failed");
+                    }
+
+                    // Fetch updated childTodo after successful API call
+                    fetchChildTodo(params.childTodo_id, token);
+                } else if (params.parentTodo_id) {
+                    // Update a parentTodo
+                    formData.append("todoId", params.parentTodo_id);
+                    formData.append(
+                        "changeObj",
+                        JSON.stringify({
+                            priority: event.target.value,
+                            // description: descriptionInput,
+                        })
+                    );
+
+                    const response = await fetch(getUrl("/admin/putTodo"), {
+                        method: "PUT",
+                        body: formData,
+                        headers: {
+                            Authorization: token,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        dispatch(setLoading(false));
+                        setIsEditing(false);
+                        setIsOpen(false);
+                        throw new Error("Request failed");
+                    }
+
+                    // Fetch updated parentTodo after successful API call
+                    fetchParentTodo(params.parentTodo_id, token);
+                }
+
+                dispatch(setLoading(false));
+                setIsEditing(false);
+                setIsOpen(false);
+            }
+        } catch (err) {
+            console.error("Error:", err);
+            dispatch(setLoading(false));
+            setIsEditing(false);
+            setIsOpen(false);
+        }
+    };
+
     const fetchParentTodo = (TodoId: string, token: string) => {
         const formData = new FormData();
         formData.append("todoId", TodoId);
