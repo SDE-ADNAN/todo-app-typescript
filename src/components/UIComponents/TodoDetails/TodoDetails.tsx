@@ -508,6 +508,22 @@ const TodoDetails: React.FC = () => {
                                     {updatedAtdateAndTime[1]}
                                 </div>
                             </div>
+                            {todo && todo.status ?
+                                <div>
+                                    <label htmlFor="status">Status :&nbsp;</label>
+                                    <select value={todo && todo.status} onChange={updateStatus}>{status.map((item, index) =>
+                                        <option>{item}</option>
+                                    )}</select>
+                                </div> : <></>
+                            }
+                            {todo && todo.priority ?
+                                <div>
+                                    <label htmlFor="status">Priority :&nbsp;</label>
+                                    <select value={todo && todo.priority} onChange={updatePriority}>{priority.map((item, index) =>
+                                        <option>{item}</option>
+                                    )}</select>
+                                </div> : <></>
+                            }
                         </div>
                     )}
                     <div className={includeDarkClass("horizontal_line", darkMode)}></div>
