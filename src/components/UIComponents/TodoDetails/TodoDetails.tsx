@@ -19,11 +19,14 @@ interface TodoItem {
     title: string;
     todo: TodoItem[];
     updatedAt: string;
+    status: string;
+    priority: string;
     user: string;
     __v: number;
     _id: string;
 }
-
+const status = ['Todo', 'InProgress', 'Completed', 'OnHold'];
+const priority = ['High', 'Medium', 'Low'];
 const TodoDetails: React.FC = () => {
     const [todo, setTodo] = useState<TodoItem | null>(null);
     const [createdAtdateAndTime, setCreatedAtDateAndTime] =
