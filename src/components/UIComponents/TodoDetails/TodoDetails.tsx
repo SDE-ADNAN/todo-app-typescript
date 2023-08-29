@@ -341,78 +341,32 @@ const TodoDetails: React.FC = () => {
         event.preventDefault();
         dispatch(setLoading(true));
         if (isEditing) {
-            try {
-                if (token !== null) {
+        try {
+            if (token !== null) {
                     const formData = new FormData();
 
-                    if (params.childTodo_id) {
-                        // Update a childTodo
-                        formData.append("todoId", params.childTodo_id);
-                        // formData.append("title", titleInput);
-                        // formData.append("description", descriptionInput);
-                        formData.append(
-                            "changeObj",
-                            JSON.stringify({
+                if (params.childTodo_id) {
+                    // Update a childTodo
+                    const chnageObj = JSON.stringify({
                                 title: titleInput,
                                 description: descriptionInput,
                             })
-                        );
-
-                        const response = await fetch(getUrl("/admin/putSubTodo"), {
-                            method: "PUT",
-                            body: formData,
-                            headers: {
-                                Authorization: token,
-                            },
-                        });
-
-                        if (!response.ok) {
-                            dispatch(setLoading(false));
-                            setIsEditing(false);
-                            setIsOpen(false);
-                            throw new Error("Request failed");
-                        }
-
-                        // Fetch updated childTodo after successful API call
-                        fetchChildTodo(params.childTodo_id, token);
-                    } else if (params.parentTodo_id) {
-                        // Update a parentTodo
-                        formData.append("todoId", params.parentTodo_id);
-                        // formData.append("title", titleInput);
-                        // formData.append("description", descriptionInput);
-                        formData.append(
-                            "changeObj",
-                            JSON.stringify({
-                                title: titleInput,
-                                description: descriptionInput,
-                            })
-                        );
-
-                        const response = await fetch(getUrl("/admin/putTodo"), {
-                            method: "PUT",
-                            body: formData,
-                            headers: {
-                                Authorization: token,
-                            },
-                        });
-
-                        if (!response.ok) {
-                            dispatch(setLoading(false));
-                            setIsEditing(false);
-                            setIsOpen(false);
-                            throw new Error("Request failed");
-                        }
-
-                        // Fetch updated parentTodo after successful API call
-                        fetchParentTodo(params.parentTodo_id, token);
-                    }
+                    update(chnageObj)
+                } else if (params.parentTodo_id) {
+                    // Update a parentTodo
+                    const chnageObj = JSON.stringify({
+                        title: titleInput,
+                        description: descriptionInput,
+                    })
+                    update(chnageObj)
+                }
 
                     dispatch(setLoading(false));
                     setIsEditing(false);
                     setIsOpen(false);
-                }
-            } catch (err) {
-                console.error("Error:", err);
+            }
+        } catch (err) {
+            console.error("Error:", err);
                 dispatch(setLoading(false));
                 setIsEditing(false);
                 setIsOpen(false);
