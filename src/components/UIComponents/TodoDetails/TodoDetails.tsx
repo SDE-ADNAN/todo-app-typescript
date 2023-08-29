@@ -46,11 +46,7 @@ const TodoDetails: React.FC = () => {
     const dispatch = useDispatch();
     const token = useSelector((state: RootState) => state.User.token);
     const darkMode = useSelector((state: RootState) => state.UI.theme.dark);
-
-    const updateStatus = async (
-        event: React.ChangeEvent<HTMLSelectElement>
-    ) => {
-        event.preventDefault();
+    const update = async (changeObj: any,) => {
         dispatch(setLoading(true));
         try {
             if (token !== null) {
@@ -61,10 +57,7 @@ const TodoDetails: React.FC = () => {
                     formData.append("todoId", params.childTodo_id);
                     formData.append(
                         "changeObj",
-                        JSON.stringify({
-                            status: event.target.value,
-                            // description: descriptionInput,
-                        })
+                        changeObj
                     );
 
                     const response = await fetch(getUrl("/admin/putSubTodo"), {
@@ -89,10 +82,7 @@ const TodoDetails: React.FC = () => {
                     formData.append("todoId", params.parentTodo_id);
                     formData.append(
                         "changeObj",
-                        JSON.stringify({
-                            status: event.target.value,
-                            // description: descriptionInput,
-                        })
+                        changeObj
                     );
 
                     const response = await fetch(getUrl("/admin/putTodo"), {
@@ -154,36 +144,24 @@ const TodoDetails: React.FC = () => {
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
         event.preventDefault();
-        dispatch(setLoading(true));
         try {
             if (token !== null) {
-                const formData = new FormData();
-
                 if (params.childTodo_id) {
                     // Update a childTodo
                     const chnageObj = JSON.stringify({
                         priority: event.target.value,
-                            // description: descriptionInput,
                     })
                     update(chnageObj)
                 } else if (params.parentTodo_id) {
                     // Update a parentTodo
                     const chnageObj = JSON.stringify({
                         priority: event.target.value,
-                            // description: descriptionInput,
                     })
                     update(chnageObj)
                 }
-
-                dispatch(setLoading(false));
-                setIsEditing(false);
-                setIsOpen(false);
             }
         } catch (err) {
             console.error("Error:", err);
-            dispatch(setLoading(false));
-            setIsEditing(false);
-            setIsOpen(false);
         }
     };
 
@@ -297,12 +275,8 @@ const TodoDetails: React.FC = () => {
         event: React.FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
-        dispatch(setLoading(true));
-        if (isEditing) {
         try {
             if (token !== null) {
-                    const formData = new FormData();
-
                 if (params.childTodo_id) {
                     // Update a childTodo
                     const chnageObj = JSON.stringify({
@@ -318,17 +292,9 @@ const TodoDetails: React.FC = () => {
                     })
                     update(chnageObj)
                 }
-
-                    dispatch(setLoading(false));
-                    setIsEditing(false);
-                    setIsOpen(false);
             }
         } catch (err) {
             console.error("Error:", err);
-                dispatch(setLoading(false));
-                setIsEditing(false);
-                setIsOpen(false);
-            }
         }
     };
 
@@ -349,7 +315,6 @@ const TodoDetails: React.FC = () => {
         <div className={includeDarkClass("todo_details_container", darkMode)}>
             <form style={{ width: "100%" }} onSubmit={handleUpdateSubmit}>
                 <div className={includeDarkClass("todo_id", darkMode)}>
-                    {" "}
                     Todo ID:
                     {params.parentTodo_id}
                     <CTAIconWrapper onClick={() => setIsEditing(!isEditing)}>
