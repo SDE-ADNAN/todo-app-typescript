@@ -94,6 +94,9 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated, fetchAllUserData }) =
           Don't have an account ?&nbsp;
           <Link to='/register'><span>&nbsp;Sign Up / Register</span></Link>
         </div>
+        <div className={includeDarkClass('sign_in_redirect', darkMode)}>
+          <Link to='/forgot-password'><span>&nbsp;Forgot Password ?? </span></Link>
+        </div>
       </GlassmorphicBackground>
     </div>
   );
