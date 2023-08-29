@@ -49,4 +49,48 @@ const Todos = {
     formatDateAndTime:formatDateAndTime
 }
 
+
+type HttpError = {
+  message: string;
+  status?: number;
+};
+interface HttpRequest {
+  url: string;
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  headers?: { [key: string]: string };
+  body?: FormData | string | null;
+}
+export const doFetchCall=async(options:HttpRequest)=>{
+  try {
+    const headers: HeadersInit = {};
+    if (options && options.headers) {
+      for (const [key, value] of Object.entries(options.headers)) {
+        if (value !== null) {
+          headers[key] = value && value.toString();
+        }
+      }
+    }
+    const fetchOptions: RequestInit = {
+      ...options,
+      headers,
+    };
+
+    const fetchResponse = await fetch(options.url, fetchOptions);
+    if (!fetchResponse.ok) {
+      // dispatch(setLoading(false));
+      throw new Error(`Request failed with status: ${fetchResponse.status}`);
+    }
+
+    const responseData = await fetchResponse.json();
+    return responseData
+    // dispatch(setLoading(false));
+  } catch (error: unknown) {
+    return{
+      message: (error as Error).message,
+      status: (error as HttpError).status,
+    };
+    // dispatch(setLoading(false));
+  }
+}
+
 export default Todos;
