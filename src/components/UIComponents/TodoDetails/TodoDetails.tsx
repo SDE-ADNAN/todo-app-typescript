@@ -124,6 +124,31 @@ const TodoDetails: React.FC = () => {
             setIsEditing(false);
             setIsOpen(false);
         }
+    }
+
+    const updateStatus = async (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        event.preventDefault();
+        try {
+            if (token !== null) {
+                if (params.childTodo_id) {
+                    // Update a childTodo
+                    const chnageObj = JSON.stringify({
+                        status: event.target.value,
+                    })
+                    update(chnageObj)
+                } else if (params.parentTodo_id) {
+                    // Update a parentTodo
+                    const chnageObj = JSON.stringify({
+                        status: event.target.value,
+                    })
+                    update(chnageObj)
+                }
+            }
+        } catch (err) {
+            console.error("Error:", err);
+        }
     };
     const updatePriority = async (
         event: React.ChangeEvent<HTMLSelectElement>
