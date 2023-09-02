@@ -21,13 +21,23 @@ import Profile from "./components/UIComponents/Profile/Profile";
 import ForgotPassword from "./components/Admin/ForgotPassword/ForgotPassword";
 
 export interface TodoItem {
-  _id: string;
+  attachments: any[]; // You can specify the actual type for attachments if needed
+  collaborators: any[]; // You can specify the actual type for collaborators if needed
+  createdAt: string;
+  dependencies: any[]; // You can specify the actual type for dependencies if needed
+  description: string;
+  priority: string;
+  progress: number;
+  recurring: boolean;
+  status: string;
+  subtasks: any[]; // You can specify the actual type for subtasks if needed
+  tags: any[]; // You can specify the actual type for tags if needed
   title: string;
-  todo: TodoItem[];
-  isCreated?: Boolean;
-  showInput: Boolean;
-  isCompleted: boolean;
-  showSubtodos: Boolean;
+  todo: any[]; // You can specify the actual type for todo if needed
+  updatedAt: string;
+  user: string;
+  __v: number;
+  _id: string;
 }
 export function generateUniqueId(): string {
   const timestamp = new Date().getTime();
@@ -98,7 +108,7 @@ const App: React.FC = () => {
     } else {
       setIsAuthenticated(false)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
   useEffect(() => {
@@ -107,7 +117,7 @@ const App: React.FC = () => {
       fetchAllUserData(token)
       dispatch(setLoading(false))
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
   useEffect(() => {
@@ -127,14 +137,14 @@ const App: React.FC = () => {
       {/* <div className="image_backdrop"></div> */}
 
       <Routes>
-          {!isAuthenticated && (
-            <>
+        {!isAuthenticated && (
+          <>
             <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} fetchAllUserData={fetchAllUserData} />} />
             <Route path="/forgot-password" element={<ForgotPassword setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} fetchAllUserData={fetchAllUserData} />} />
-              <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
-              <Route path="/" element={<Navigate to="/login" replace />} />
-            </>
-          )}
+            <Route path="/register" element={<RegisterPage setIsAuthenticated={setIsAuthenticated} />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+          </>
+        )}
 
         {isAuthenticated ? (<>
           {/* <Route path="/" element={<Navigate to="/dashboard/todos" />} /> */}
@@ -146,14 +156,14 @@ const App: React.FC = () => {
             <Route index path='todos' element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
             <Route path='todos/:parentTodo_id' element={<TodoDetails />} />
             <Route path='todos/:parentTodo_id/subTodo/:childTodo_id' element={<TodoDetails />} />
-            <Route path='profile' element={<Profile fetchAllUserData={fetchAllUserData} />} />
+            <Route path='profile' element={<Profile handleLogout={handleLogout} fetchAllUserData={fetchAllUserData} />} />
             <Route path='todos' element={<Navigate to='/todos' />} />
 
-              {/* Fallback route for any other unmatched paths */}
+            {/* Fallback route for any other unmatched paths */}
             <Route path="*" element={<NotFound isAuthenticated={isAuthenticated} />} />
           </Route></>
         ) : <></>}
-          {/* Fallback route for other unmatched paths */}
+        {/* Fallback route for other unmatched paths */}
         <Route path="*" element={<NotFound isAuthenticated={isAuthenticated} />} />
       </Routes>
 
