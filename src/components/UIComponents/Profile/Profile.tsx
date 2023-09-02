@@ -13,9 +13,10 @@ import Modal from "../Modal/Modal";
 
 interface ProfileProps {
     fetchAllUserData: any;
+    handleLogout: any;
 }
 
-const Profile: React.FC<ProfileProps> = ({ fetchAllUserData = () => { } }) => {
+const Profile: React.FC<ProfileProps> = ({ fetchAllUserData = () => { } ,handleLogout=() => { }}) => {
     const userProfile = useSelector((state: RootState) => state.User.allUserData);
     const darkMode = useSelector((state: RootState) => state.UI.theme.dark);
     const token = useSelector((state: RootState) => state.User.token);
@@ -94,6 +95,20 @@ const Profile: React.FC<ProfileProps> = ({ fetchAllUserData = () => { } }) => {
                 userProfile.picUrl ? (
                 <div className={includeDarkClass("profile_main_card", darkMode)}>
                     <div className={includeDarkClass("profile_pic_con", darkMode)}>
+                    <div
+                            className={includeDarkClass(
+                                "dashboard_sidebar_logoutbtn",
+                                darkMode
+                            )}
+                        >
+                            <button
+                                onClick={handleLogout}
+                                className={includeDarkClass("logoutBtn", darkMode)}
+                            >
+                                {" "}
+                                Logout
+                            </button>
+                        </div>
                             <div>
                                 {userProfile.picUrl ? (
                                     <img src={userProfile.picUrl} alt="profile pic"></img>
