@@ -1,5 +1,6 @@
 // Mobile-first styles
 @import "../../WRAPPERS/DashboardWrapper/DashboardWrapper.scss";
+
 .modal-overlay {
   display: flex;
   justify-content: center;
@@ -12,6 +13,7 @@
   background-color: rgb(0 0 0 / 40%);
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(px);
+  z-index: 1;
 }
 
 .modal {
@@ -40,6 +42,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     h3 {
       margin: 0 0 10px 0;
       font-weight: 400;
@@ -62,11 +65,13 @@
       flex-direction: column;
       row-gap: 10px;
     }
+
     .btn_grp {
       display: flex;
       justify-content: center;
       column-gap: 10px;
-      button:nth-child(1){
+
+      button:nth-child(1) {
         background-color: rgb(156, 255, 145);
       }
     }
@@ -77,10 +82,12 @@
     border-radius: 10px;
     backdrop-filter: blur(1px);
     padding: 10px;
+
     &.dark {
       background-color: #ffffff4f;
     }
   }
+
   @media screen and (max-device-width: 650px) {
     max-width: 90%;
   }
