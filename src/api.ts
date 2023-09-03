@@ -1,7 +1,9 @@
 
 // local one
 
-export const API_URL_LOCAL = "http://192.168.0.101:3033"
+// export const API_URL_LOCAL = "http://192.168.0.101:3033"
+// export const API_URL_LOCAL = "http://192.168.0.103:3033"
+export const API_URL_LOCAL = "http://192.168.0.100:3033/jarvis"
 
 // personal host
 // export const API_URL_LOCAL = "http://172.20.10.13:3033"
