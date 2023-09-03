@@ -280,9 +280,9 @@ const TodoDetails: React.FC = () => {
                 if (params.childTodo_id) {
                     // Update a childTodo
                     const chnageObj = JSON.stringify({
-                                title: titleInput,
-                                description: descriptionInput,
-                            })
+                        title: titleInput,
+                        description: descriptionInput,
+                    })
                     update(chnageObj)
                 } else if (params.parentTodo_id) {
                     // Update a parentTodo
@@ -364,20 +364,20 @@ const TodoDetails: React.FC = () => {
                     </div>
                     {isEditing ? (
                         <>
-                        <div className={includeDarkClass("btn_grp", darkMode)}>
-                            <button type="submit">Submit</button>
-                            <button
-                                type={undefined}
-                                onClick={() => {
-                                    setIsEditing(false);
-                                    setTitleInput(todo.title);
-                                    setDescriptionInput(todo.description);
-                                }}
-                            >
-                                Cancel
-                            </button>
+                            <div className={includeDarkClass("btn_grp", darkMode)}>
+                                <button type="submit">Submit</button>
+                                <button
+                                    type={undefined}
+                                    onClick={() => {
+                                        setIsEditing(false);
+                                        setTitleInput(todo.title);
+                                        setDescriptionInput(todo.description);
+                                    }}
+                                >
+                                    Cancel
+                                </button>
 
-                        </div>
+                            </div>
                             <div
                                 className={includeDarkClass("horizontal_line", darkMode)}
                             ></div></>
@@ -448,7 +448,7 @@ const TodoDetails: React.FC = () => {
 
                             <div className={includeDarkClass("todo_desc_desc", darkMode)}>
                                 <TodosListContainer
-                                    isSubTodoContainer
+                                    isSubTodoContainer={true}
                                     parentTodoId={params.parentTodo_id}
                                     todosArray={todo.todo}
                                     fetchParentTodo={fetchParentTodo}
