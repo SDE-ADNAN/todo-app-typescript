@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TodoItem } from '../App';
 
 export interface Todo {
   _id: string;
@@ -17,9 +18,24 @@ export interface User {
   password: string;
   email: string;
   picUrl: string;
-  todos: Todo[];
+  todos: TodoItem[];
+  social: {};
+  statusFiltered: {
+    __filteredTodos: TodoItem[];
+    __filteredInProgress: TodoItem[];
+    __filteredCompleted: TodoItem[];
+    __filteredOnHold: TodoItem[];
+  };
+  priorityFiltered: {
+    __filteredHigh: TodoItem[];
+    __filteredMedium: TodoItem[];
+    __filteredLow: TodoItem[];
+  };
   createdAt: string;
   updatedAt: string;
+  website: string;
+  bio: string;
+  location: string;
   __v: number;
 }
 
@@ -28,13 +44,13 @@ export interface User {
 // }
 
 interface UISliceReducerState {
-  allUserData:Partial<User>;
-  token:string | null;
+  allUserData: Partial<User>;
+  token: string | null;
 }
 
 const initialState: UISliceReducerState = {
-    allUserData:{},
-    token:null,
+  allUserData: {},
+  token: null,
 };
 
 const UserSliceReducer = createSlice({
@@ -44,23 +60,23 @@ const UserSliceReducer = createSlice({
     setAllUserData(state, action: PayloadAction<any>) {
       state.allUserData = action.payload;
     },
-    setToken(state,action:PayloadAction<string>) {
+    setToken(state, action: PayloadAction<string>) {
       state.token = action.payload
       let isTokenPresent = localStorage.getItem('Token');
-      if(!isTokenPresent){
-        localStorage.setItem('Token',action.payload)
-      }else{
+      if (!isTokenPresent) {
+        localStorage.setItem('Token', action.payload)
+      } else {
         localStorage.removeItem('Token')
-        localStorage.setItem('Token',action.payload)
+        localStorage.setItem('Token', action.payload)
       }
     },
-    UserLogout(state){
+    UserLogout(state) {
       state.token = null;
-      state.allUserData ={};
+      state.allUserData = {};
     },
     // 
   },
 });
 
-export const { setAllUserData,setToken,UserLogout} = UserSliceReducer.actions;
+export const { setAllUserData, setToken, UserLogout } = UserSliceReducer.actions;
 export default UserSliceReducer.reducer;
