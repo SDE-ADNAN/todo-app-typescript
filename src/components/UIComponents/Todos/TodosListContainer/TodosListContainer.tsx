@@ -5,6 +5,9 @@ import { useDispatch } from "react-redux";
 // import { setLoading } from "../../../../ReduxStore/UISlice";
 import LoaderComponent from "../../LoaderComponent/LoaderComponent";
 import { setCurrentPage } from "../../../../ReduxStore/UISlice";
+import { includeDarkClass } from "../../../../CONFIG";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../ReduxStore/store";
 
 interface TodoListContainerProps {
     todosArray: {
@@ -19,14 +22,39 @@ interface TodoListContainerProps {
     fetchAllUserData: any;
     isSubTodoContainer?: boolean;
     parentTodoId?: string;
-    fetchParentTodo?: any
+    fetchParentTodo?: any;
+    className?: string;
+    title?: string;
 }
 
 // const NoTodosSvg: any = () => <div>dsfdsvsd</div>
 
+export const Container: React.FC<Partial<TodoListContainerProps>> = ({ title = '', className = '', todosArray = [], isSubTodoContainer = false, parentTodoId = '', fetchAllUserData = () => { }, fetchParentTodo = () => { } }) => {
+    const darkMode = useSelector((state: RootState) => state.UI.theme.dark)
+    return (
+        <div className={includeDarkClass(`status_container ${className}`, darkMode)}>
+            <div className={includeDarkClass(`title`, darkMode)}>{title}</div>
+            <div className={includeDarkClass(`all_todos`, darkMode)}>
+                {todosArray && todosArray.length === 0 ? 'NoTodosSvg' : todosArray ? todosArray.map((item, index) => {
+                    return (
+                        <TodoItem isSubTodo={isSubTodoContainer} parentTodoId={parentTodoId} key={item._id} item={item} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} />
+                    )
+                })
+                    :
+                    <LoaderComponent />}
+            </div>
+        </div>
+    )
+};
+
 const TodosListContainer: React.FC<Partial<TodoListContainerProps>> = ({ todosArray, fetchAllUserData, isSubTodoContainer, parentTodoId = "", fetchParentTodo = () => { } }) => {
 
     const dispatch = useDispatch()
+
+    const darkMode = useSelector((state: RootState) => state.UI.theme.dark)
+    const User = useSelector((state: RootState) => state.User.allUserData)
+
+    console.log(User && User.statusFiltered && User.statusFiltered.__filteredTodos);
 
     useEffect(() => {
         if (isSubTodoContainer) {
@@ -36,14 +64,22 @@ const TodosListContainer: React.FC<Partial<TodoListContainerProps>> = ({ todosAr
         }
     }, [dispatch, isSubTodoContainer])
     return (
-        <div className={`todoListItems_container`}>
-            {todosArray && todosArray.length === 0 ? '<NoTodosSvg />' : todosArray ? todosArray.map((item, index) => {
-                return (
-                    <TodoItem isSubTodo={isSubTodoContainer} parentTodoId={parentTodoId} key={item._id} item={item} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} />
-                )
-            }) : <LoaderComponent />}
-
-
+        <div className={includeDarkClass(`todoListItems_container`, darkMode)}>
+            {isSubTodoContainer && todosArray ?
+                <Container title={'Sub-Todos'} className={'Sub-Todos'} todosArray={todosArray} isSubTodoContainer={isSubTodoContainer} parentTodoId={parentTodoId} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} /> : <>
+                    {User && User.statusFiltered && User.statusFiltered.__filteredTodos ?
+                        <Container title={'Todo'} className={'Todo'} todosArray={User.statusFiltered.__filteredTodos} isSubTodoContainer={isSubTodoContainer} parentTodoId={parentTodoId} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} /> : <></>
+                    }
+                    {User && User.statusFiltered && User.statusFiltered.__filteredInProgress ?
+                        <Container title={'InProgress'} className={'InProgress'} todosArray={User.statusFiltered.__filteredInProgress} isSubTodoContainer={isSubTodoContainer} parentTodoId={parentTodoId} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} /> : <></>
+                    }
+                    {User && User.statusFiltered && User.statusFiltered.__filteredCompleted ?
+                        <Container title={'Completed'} className={'Completed'} todosArray={User.statusFiltered.__filteredCompleted} isSubTodoContainer={isSubTodoContainer} parentTodoId={parentTodoId} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} /> : <></>
+                    }
+                    {User && User.statusFiltered && User.statusFiltered.__filteredOnHold ?
+                        <Container title={'OnHold'} className={'OnHold'} todosArray={User.statusFiltered.__filteredOnHold} isSubTodoContainer={isSubTodoContainer} parentTodoId={parentTodoId} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} /> : <></>
+                    }
+                </>}
         </div>
     )
 }
