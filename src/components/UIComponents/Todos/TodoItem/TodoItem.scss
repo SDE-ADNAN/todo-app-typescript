@@ -1,56 +1,84 @@
-@import '../../../WRAPPERS/./DashboardWrapper/DashboardWrapper.scss'; 
+@import '../../../WRAPPERS/./DashboardWrapper/DashboardWrapper.scss';
 
-.todo_item_individual{
-    font-size: 24px;
-    font-weight: 400;
-    width:calc(100% - 20px);
-    background: rgba(255, 255, 255, 0.4);
-    -webkit-backdrop-filter: blur(12px);
+.todo_item_individual {
+  font-size: 24px;
+  font-weight: 400;
+  width: calc(100% - 20px);
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 3px 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin: 5px 0;
+  box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+
+  .status_mark {
+    width: 100%;
+
+    position: absolute;
+    height: 2px;
+    bottom: 0px;
+    left: 0;
+
+    &.Todo {
+      background-color: rgba(255, 225, 0, 0.684);
+    }
+
+    &.InProgress {
+      background-color: #0080ff;
+    }
+
+    &.Completed {
+      background-color: rgba(77, 255, 0, 0.684);
+    }
+
+    &.OnHold {
+      background-color: rgba(255, 136, 0, 0.684);
+    }
+  }
+
+  &.dark {
+    box-shadow: inset 0px 0px 2px rgba(255, 255, 255, 0.4);
+    background: $dash_contents_dark_mode_bgColor;
+    outline: $dash_contents_dark_mode_outline;
+    border: $dash_contents_dark_mode_border;
+    border: 0.5px;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
+  }
+
+  &:hover {
+    box-shadow: inset 0px 0px 5px;
+  }
+
+  .date_and_time {
+    cursor: help;
+    background-color: rgb(255 255 255 / 20%);
+    padding: 5px 10px;
     border-radius: 10px;
-    padding: 3px 10px;
-    display:flex;
-    align-items: center;
-    flex-direction: row;
-    margin:5px 0;
-    box-shadow:inset 0px 0px 2px rgba(0, 0, 0, 0.4);
-    
-    &.dark{
-      box-shadow:inset 0px 0px 2px rgba(255, 255, 255, 0.4);
-      background: $dash_contents_dark_mode_bgColor;
-      outline: $dash_contents_dark_mode_outline;
-      border:$dash_contents_dark_mode_border;
-      border: 0.5px;
-      -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    // outline: 0.2px solid #767676;
-    }
-    &:hover{
-      box-shadow:inset 0px 0px 5px;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 57px;
 
-    .date_and_time{
-      cursor:help;
-      background-color: rgb(255 255 255 / 20%);
-      padding: 5px 10px;
-      border-radius: 10px;
-      backdrop-filter: blur(10px);
-      display:flex;
-      flex-direction: column;
-      align-items: center;
-      width: 57px;
-      .text{
+    .text {
       font-size: 8px;
       font-weight: 900;
       color: #3c3c3c;
-      &.dark{
-        color: rgb(255, 255, 255,90%);
-      }
+
+      &.dark {
+        color: rgb(255, 255, 255, 90%);
       }
     }
-  
-    .todo_CTAs_container{
-      max-width: 100px;
+  }
+
+  .todo_CTAs_container {
+    max-width: 100px;
     width: 80px;
     display: flex;
     flex-direction: row;
@@ -58,24 +86,26 @@
     margin-left: 5px;
     justify-content: space-between;
 
-      
-    }
-  
-    .todo_item_title{
-      flex-grow: 1;
-      width:calc(100% - 100px);
-      font-weight: 400;
-      color: rgb(0 0 0 );
-      font-size: 16px;
 
-    &.dark{
-      color: rgb(255, 255, 255,90%);
-    }
+  }
+
+  .todo_item_title {
+    flex-grow: 1;
+    width: calc(100% - 100px);
+    font-weight: 400;
+    color: rgb(0 0 0);
+    font-size: 16px;
+
+    &.dark {
+      color: rgb(255, 255, 255, 90%);
     }
   }
 
 
-.del_cncl{
+}
+
+
+.del_cncl {
   display: flex;
-    justify-content: space-evenly;
+  justify-content: space-evenly;
 }
