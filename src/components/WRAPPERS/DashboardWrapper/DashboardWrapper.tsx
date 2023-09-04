@@ -265,20 +265,7 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                                 </div>
                             );
                         })}
-                        <div
-                            className={includeDarkClass(
-                                "dashboard_sidebar_logoutbtn",
-                                darkMode
-                            )}
-                        >
-                            <button
-                                onClick={handleLogout}
-                                className={includeDarkClass("logoutBtn", darkMode)}
-                            >
-                                {" "}
-                                Logout
-                            </button>
-                        </div>
+                        
                     </div>
 
                 </div>
