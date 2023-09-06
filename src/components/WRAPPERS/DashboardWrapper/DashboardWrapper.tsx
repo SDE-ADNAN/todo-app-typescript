@@ -211,34 +211,6 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                     <div
                         className={includeDarkClass("dashboard_sidebar_contents", darkMode)}
                     >
-                        {!params.parentTodo_id ? (
-                            <div
-                                className={includeDarkClass("sidebar_item_container", darkMode)}
-                            >
-                                <div
-                                    style={{ margin: "5px 0" }}
-                                    className={includeDarkClass("button_wrapper", darkMode)}
-                                >
-                                    <button
-                                        onClick={() => {
-                                            setIsOpen(!isOpen);
-                                            dispatch(toggleMobSidebar());
-                                        }}
-                                    >
-                                        <div className={includeDarkClass("btn_text", darkMode)}>
-                                            Add todo
-                                        </div>
-                                        <AddIcon size={20} showToolTip={false} />
-                                    </button>
-                                </div>
-                                <div
-                                    className={includeDarkClass("horizontal_divider", darkMode)}
-                                ></div>
-                            </div>
-                        ) : (
-                            <></>
-                        )}
-
                         {sideBarData && sideBarData.length !== 0 && sideBarData.map((item, index) => {
                             return (
                                 <div
@@ -259,9 +231,9 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                                         </Link>}
 
                                     </div>
-                                    <div
+                                    {index !== sideBarData.length - 1 ? <div
                                         className={includeDarkClass("horizontal_divider", darkMode)}
-                                    />
+                                    />:<></>}
                                 </div>
                             );
                         })}
