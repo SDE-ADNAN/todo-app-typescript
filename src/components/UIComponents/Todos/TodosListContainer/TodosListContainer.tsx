@@ -54,8 +54,6 @@ const TodosListContainer: React.FC<Partial<TodoListContainerProps>> = ({ todosAr
     const darkMode = useSelector((state: RootState) => state.UI.theme.dark)
     const User = useSelector((state: RootState) => state.User.allUserData)
 
-    console.log(User && User.statusFiltered && User.statusFiltered.__filteredTodos);
-
     useEffect(() => {
         if (isSubTodoContainer) {
             dispatch(setCurrentPage('Todo Details'))
