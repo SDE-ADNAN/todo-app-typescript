@@ -52,7 +52,7 @@ const App: React.FC = () => {
   // Inside your component or any other place where you want to trigger the API call
   const dispatch = useDispatch();
 
-  const allTodos = useSelector((state: RootState) => state.UI.allTodos)
+  const allTodos = useSelector((state: RootState) => state.User.allUserData.todos)
   // const userAllData = useSelector((state: RootState) => state.User.allUserData)
   const token = useSelector((state: RootState) => state.User.token)
   // const userProfile = useSelector((state: RootState) => state.User.allUserData)
@@ -154,6 +154,7 @@ const App: React.FC = () => {
             {/* Nested routes for the dashboard */}
             {/* <Route index element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} /> */}
             <Route index path='todos' element={<TodosListContainer fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
+            <Route index path='all-todos' element={<TodosListContainer isAllTodosContainer={true} fetchAllUserData={fetchAllUserData} todosArray={allTodos} />} />
             <Route path='todos/:parentTodo_id' element={<TodoDetails />} />
             <Route path='todos/:parentTodo_id/subTodo/:childTodo_id' element={<TodoDetails />} />
             <Route path='profile' element={<Profile handleLogout={handleLogout} fetchAllUserData={fetchAllUserData} />} />
