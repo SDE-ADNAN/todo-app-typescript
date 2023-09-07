@@ -56,15 +56,15 @@
   }
 
   .date_and_time {
-    cursor: help;
-    background-color: rgb(255 255 255 / 20%);
-    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 3px 3px;
     border-radius: 10px;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 57px;
+    width: 80px;
 
     .text {
       font-size: 8px;
