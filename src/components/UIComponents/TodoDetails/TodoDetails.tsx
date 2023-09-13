@@ -16,6 +16,7 @@ import Editsvg from "../../../medias/Editsvg";
 interface TodoItem {
     createdAt: string;
     description: string;
+    possibleStatus: object;
     title: string;
     todo: TodoItem[];
     updatedAt: string;
@@ -416,7 +417,9 @@ const TodoDetails: React.FC = () => {
                             {todo && todo.status ?
                                 <div>
                                     <label htmlFor="status">Status :&nbsp;</label>
-                                    <select value={todo && todo.status} onChange={updateStatus}>{status.map((item, index) =>
+                                    <select style={{
+                                        backgroundColor: todo && todo.possibleStatus && (todo.possibleStatus as any)[`${todo.status}`],
+                                    }} value={todo && todo.status} onChange={updateStatus}>{status.map((item, index) =>
                                         <option>{item}</option>
                                     )}</select>
                                 </div> : <></>
