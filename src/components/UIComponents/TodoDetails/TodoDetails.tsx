@@ -354,8 +354,6 @@ const TodoDetails: React.FC = () => {
                                 ></textarea>
                             )}
                         </div>
-
-
                         <div
                             className={includeDarkClass("horizontal_line", darkMode)}
                         ></div>
@@ -374,7 +372,6 @@ const TodoDetails: React.FC = () => {
                                 >
                                     Cancel
                                 </button>
-
                             </div>
                             <div
                                 className={includeDarkClass("horizontal_line", darkMode)}
