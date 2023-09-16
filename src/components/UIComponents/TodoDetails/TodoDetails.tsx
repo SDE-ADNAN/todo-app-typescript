@@ -17,6 +17,7 @@ interface TodoItem {
     createdAt: string;
     description: string;
     possibleStatus: object;
+    possiblePriority: object;
     title: string;
     todo: TodoItem[];
     updatedAt: string;
@@ -416,15 +417,21 @@ const TodoDetails: React.FC = () => {
                                     <select style={{
                                         backgroundColor: todo && todo.possibleStatus && (todo.possibleStatus as any)[`${todo.status}`],
                                     }} value={todo && todo.status} onChange={updateStatus}>{status.map((item, index) =>
-                                        <option>{item}</option>
+                                        <option style={{
+                                            backgroundColor: todo && todo.possibleStatus && (todo.possibleStatus as any)[`${todo.status}`],
+                                        }}>{item}</option>
                                     )}</select>
                                 </div> : <></>
                             }
                             {todo && todo.priority ?
                                 <div>
                                     <label htmlFor="status">Priority :&nbsp;</label>
-                                    <select value={todo && todo.priority} onChange={updatePriority}>{priority.map((item, index) =>
-                                        <option>{item}</option>
+                                    <select style={{
+                                        backgroundColor: todo && todo.possiblePriority && (todo.possiblePriority as any)[`${todo.priority}`],
+                                    }} value={todo && todo.priority} onChange={updatePriority}>{priority.map((item, index) =>
+                                        <option style={{
+                                            backgroundColor: todo && todo.possiblePriority && (todo.possiblePriority as any)[`${todo.priority}`],
+                                        }}>{item}</option>
                                     )}</select>
                                 </div> : <></>
                             }
