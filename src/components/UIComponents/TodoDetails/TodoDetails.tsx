@@ -53,7 +53,6 @@ const TodoDetails: React.FC = () => {
         try {
             if (token !== null) {
                 const formData = new FormData();
-
                 if (params.childTodo_id) {
                     // Update a childTodo
                     formData.append("todoId", params.childTodo_id);
@@ -61,7 +60,6 @@ const TodoDetails: React.FC = () => {
                         "changeObj",
                         changeObj
                     );
-
                     const response = await fetch(getUrl("/admin/putSubTodo"), {
                         method: "PUT",
                         body: formData,
@@ -69,14 +67,12 @@ const TodoDetails: React.FC = () => {
                             Authorization: token,
                         },
                     });
-
                     if (!response.ok) {
                         dispatch(setLoading(false));
                         setIsEditing(false);
                         setIsOpen(false);
                         throw new Error("Request failed");
                     }
-
                     // Fetch updated childTodo after successful API call
                     fetchChildTodo(params.childTodo_id, token);
                 } else if (params.parentTodo_id) {
@@ -86,7 +82,6 @@ const TodoDetails: React.FC = () => {
                         "changeObj",
                         changeObj
                     );
-
                     const response = await fetch(getUrl("/admin/putTodo"), {
                         method: "PUT",
                         body: formData,
@@ -94,18 +89,15 @@ const TodoDetails: React.FC = () => {
                             Authorization: token,
                         },
                     });
-
                     if (!response.ok) {
                         dispatch(setLoading(false));
                         setIsEditing(false);
                         setIsOpen(false);
                         throw new Error("Request failed");
                     }
-
                     // Fetch updated parentTodo after successful API call
                     fetchParentTodo(params.parentTodo_id, token);
                 }
-
                 dispatch(setLoading(false));
                 setIsEditing(false);
                 setIsOpen(false);
