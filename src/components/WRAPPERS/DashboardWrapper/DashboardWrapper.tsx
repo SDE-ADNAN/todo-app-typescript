@@ -33,7 +33,7 @@ const darkModeSvgContent =
 
 const sideBarData = [
     { name: "Todos", url: "/todos" },
-    { name: "Tags", url: "/todos" },
+    { name: null, url: null },
     { name: "All Todos", url: "/all-todos" },
     { name: "Profile", url: "/profile" },
 ];
@@ -68,15 +68,10 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
 
     const navigate = useNavigate();
     const params = useParams();
-  // console.log(params)
-
-  // const allTodos = useSelector((state: RootState) => state.UI.allTodos)
-
     const token = useSelector((state: RootState) => state && state.User && state.User.token);
     const allUserData = useSelector((state: RootState) => state && state.User && state.User.allUserData);
     const currentPage = useSelector((state: RootState) => state && state.UI && state.UI.currentPage);
     const currSideBarIdx = useSelector((state: RootState) => state && state.UI && state.UI.sideBarActiveTab)
-
     const theme = useSelector((state: RootState) => state && state.UI && state.UI.theme);
     const darkMode = useSelector((state: RootState) => state && state.UI && state.UI.theme.dark);
     const isMobSidebarOpen = useSelector(
@@ -151,7 +146,6 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                 </div>
                 <div className={includeDarkClass("logo_image", darkMode)}>
                     <img src={logo} alt="logo"></img>
-
                 </div>
                 <div className={includeDarkClass("navbar_heading", darkMode)}>
                     Todos
@@ -165,7 +159,6 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                                 className={includeDarkClass("navbar_navlink_item", darkMode)}
                             >
                                 {item && item.url && item.name && <Link to={item.url}>{item.name}</Link>}
-
                             </div>
                         );
                     })}
@@ -175,7 +168,6 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                         onClick={() => navigate("/profile")}
                         className={includeDarkClass("profile_pic", darkMode)}
                     >
-
                         {allUserData && allUserData.picUrl ?
                             <img onClick={() => dispatch(setSideBarActiveTab(sideBarData && sideBarData.length && sideBarData.length - 1))} src={allUserData.picUrl} alt="profile pic" /> :
                             <UserProfile />
@@ -210,35 +202,34 @@ const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
                     <div
                         className={includeDarkClass("dashboard_sidebar_contents", darkMode)}
                     >
-                        {sideBarData && sideBarData.length !== 0 && sideBarData.map((item, index) => {
+                        {sideBarData && sideBarData.length !== 0 && sideBarData.map((Item, index) => {
                             return (
-                                <div
-                                    key={`${item}_${index}`}
-                                    className={includeDarkClass(
-                                        'sidebar_item_container',
-                                        darkMode
-                                    )}
-                                    onClick={() => dispatch(setSideBarActiveTab(index))}
-                                >
-                                    <div className={includeDarkClass(`sidebar_item ${currSideBarIdx === index ?
-                                        'selected' : ''}`, darkMode)}>
-                                        {item && item.url && item.name && <Link
-                                            onClick={() => dispatch(toggleMobSidebar())}
-                                            to={item.url}
-                                        >
-                                            {item.name}
-                                        </Link>}
-
-                                    </div>
-                                    {index !== sideBarData.length - 1 ? <div
-                                        className={includeDarkClass("horizontal_divider", darkMode)}
-                                    />:<></>}
-                                </div>
+                                <>{
+                                    Item && Item.name && Item.name !== null ? <div
+                                        key={`${Item}_${index}`}
+                                        className={includeDarkClass(
+                                            'sidebar_item_container',
+                                            darkMode
+                                        )}
+                                        onClick={() => dispatch(setSideBarActiveTab(index))}
+                                    >
+                                        <div className={includeDarkClass(`sidebar_item ${currSideBarIdx === index ?
+                                            'selected' : ''}`, darkMode)}>
+                                            {Item && Item.url && Item.name && <Link
+                                                onClick={() => dispatch(toggleMobSidebar())}
+                                                to={Item.url}
+                                            >
+                                                {Item.name}
+                                            </Link>}
+                                        </div>
+                                        {index !== sideBarData.length - 1 ? <div
+                                            className={includeDarkClass("horizontal_divider", darkMode)}
+                                        /> : <></>}
+                                    </div> : <></>}
+                                </>
                             );
                         })}
-                        
                     </div>
-
                 </div>
                 <div
                     className={includeDarkClass(
