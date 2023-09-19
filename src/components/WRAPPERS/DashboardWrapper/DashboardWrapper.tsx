@@ -42,8 +42,6 @@ const navLinks = [
 ];
 
 const DashboardWrapper: React.FC<DashboardWrapperProps> = ({
-    handleLogout,
-    heading,
     children,
     fetchAllUserData,
 }) => {
