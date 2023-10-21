@@ -108,19 +108,21 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
             transition={{ /*type: "spring", stiffness: 100,*/ duration: .5 }}
             id={item._id} className={`todo_item_individual ${item && item.status ? `${item.status}` : ''} ${theme.dark ? 'dark' : 'light'}`}>
             <div className={`todo_item_title truncate ${theme.dark ? 'dark' : 'light'}`}>{item && item.title}</div>
-            <div className={`date_and_time ${theme.dark ? 'dark' : 'light'}`} title='Created At'>
-                <div className={`text ${theme.dark ? 'dark' : 'light'}`}>{date}</div>
-                <div className={`text ${theme.dark ? 'dark' : 'light'}`}>{time}</div>
-            </div>
-            <div className={`todo_CTAs_container ${theme.dark ? 'dark' : 'light'}`}>
-                <CTAIconWrapper onClick={() => {
-                    setIsOpen(!isOpen);
-                }}  >
-                    <CrossIcon />
-                </CTAIconWrapper>
-                <CTAIconWrapper onClick={handleRedirect} >
-                    <ChevronRight />
-                </CTAIconWrapper>
+            <div className='date_and_time_ctas_container'>
+                <div className={`date_and_time ${theme.dark ? 'dark' : 'light'}`} title='Created At'>
+                    <div className={`text ${theme.dark ? 'dark' : 'light'}`}>{date}</div>
+                    <div className={`text ${theme.dark ? 'dark' : 'light'}`}>{time}</div>
+                </div>
+                <div className={`todo_CTAs_container ${theme.dark ? 'dark' : 'light'}`}>
+                    <CTAIconWrapper onClick={() => {
+                        setIsOpen(!isOpen);
+                    }}  >
+                        <CrossIcon />
+                    </CTAIconWrapper>
+                    <CTAIconWrapper onClick={handleRedirect} >
+                        <ChevronRight />
+                    </CTAIconWrapper>
+                </div>
             </div>
             <div className={includeDarkClass(`status_mark ${item && item.status ? `${item.status}` : ''}`, theme.dark)}></div>
             <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} heading={`Are you sure you want to delete the "${item.title}" TODO ???`}>
