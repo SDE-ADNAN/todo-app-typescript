@@ -13,11 +13,11 @@
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        background-color: rgba(255, 255, 255, 0.099);
+        background: rgba(206, 206, 206, 0.27);
+    backdrop-filter: blur(15px);
         outline: 0.5px solid #1f2025;
         border: 1px solid #6d6d6d;
         border-radius: 10px;
-        backdrop-filter: blur(5px);
 
         .title {
             width: calc(100% - 10px);
