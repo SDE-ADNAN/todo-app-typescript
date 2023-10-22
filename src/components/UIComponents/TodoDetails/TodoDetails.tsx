@@ -24,12 +24,17 @@ interface TodoItem {
     status: string;
     priority: string;
     user: string;
+    todoId?:string;
+    parentTodo_id?:string;
     __v: number;
     _id: string;
 }
+interface TodoDetailsProps {
+    parentTodo_id?:string;
+}
 const status = ['Todo', 'InProgress', 'Completed', 'OnHold'];
 const priority = ['High', 'Medium', 'Low'];
-const TodoDetails: React.FC = () => {
+const TodoDetails: React.FC<Partial<TodoDetailsProps>>= ({parentTodo_id=''}) => {
     const [todo, setTodo] = useState<TodoItem | null>(null);
     const [createdAtdateAndTime, setCreatedAtDateAndTime] =
         useState<Array<string> | null>(null);
@@ -48,6 +53,7 @@ const TodoDetails: React.FC = () => {
     const dispatch = useDispatch();
     const token = useSelector((state: RootState) => state.User.token);
     const darkMode = useSelector((state: RootState) => state.UI.theme.dark);
+    const finalParentTodo_id = params.parentTodo_id ? params.parentTodo_id : parentTodo_id
     const update = async (changeObj: any,) => {
         dispatch(setLoading(true));
         try {
@@ -75,9 +81,9 @@ const TodoDetails: React.FC = () => {
                     }
                     // Fetch updated childTodo after successful API call
                     fetchChildTodo(params.childTodo_id, token);
-                } else if (params.parentTodo_id) {
+                } else if (finalParentTodo_id) {
                     // Update a parentTodo
-                    formData.append("todoId", params.parentTodo_id);
+                    formData.append("todoId", finalParentTodo_id);
                     formData.append(
                         "changeObj",
                         changeObj
@@ -96,7 +102,7 @@ const TodoDetails: React.FC = () => {
                         throw new Error("Request failed");
                     }
                     // Fetch updated parentTodo after successful API call
-                    fetchParentTodo(params.parentTodo_id, token);
+                    fetchParentTodo(finalParentTodo_id, token);
                 }
                 dispatch(setLoading(false));
                 setIsEditing(false);
@@ -122,7 +128,7 @@ const TodoDetails: React.FC = () => {
                         status: event.target.value,
                     })
                     update(chnageObj)
-                } else if (params.parentTodo_id) {
+                } else if (finalParentTodo_id) {
                     // Update a parentTodo
                     const chnageObj = JSON.stringify({
                         status: event.target.value,
@@ -146,7 +152,7 @@ const TodoDetails: React.FC = () => {
                         priority: event.target.value,
                     })
                     update(chnageObj)
-                } else if (params.parentTodo_id) {
+                } else if (finalParentTodo_id) {
                     // Update a parentTodo
                     const chnageObj = JSON.stringify({
                         priority: event.target.value,
@@ -221,9 +227,9 @@ const TodoDetails: React.FC = () => {
     const handleAddSubTodo = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(setLoading(true));
-        if (subTodoTitleInput && subTodoDescInput && params.parentTodo_id) {
+        if (subTodoTitleInput && subTodoDescInput && finalParentTodo_id) {
             const formData = new FormData();
-            formData.append("parentId", params.parentTodo_id);
+            formData.append("parentId", finalParentTodo_id);
             formData.append("subTodoTitle", subTodoTitleInput);
             formData.append("subTodoDescription", subTodoDescInput);
 
@@ -244,7 +250,7 @@ const TodoDetails: React.FC = () => {
                     }
                     dispatch(setLoading(false));
                     setIsOpen(false);
-                    fetchParentTodo(params.parentTodo_id, token);
+                    fetchParentTodo(finalParentTodo_id, token);
                 }
             } catch (err) {
                 console.error("Error:", err);
@@ -274,7 +280,7 @@ const TodoDetails: React.FC = () => {
                         description: descriptionInput,
                     })
                     update(chnageObj)
-                } else if (params.parentTodo_id) {
+                } else if (finalParentTodo_id) {
                     // Update a parentTodo
                     const chnageObj = JSON.stringify({
                         title: titleInput,
@@ -290,14 +296,14 @@ const TodoDetails: React.FC = () => {
 
     useEffect(() => {
         if (token) {
-            if (params.parentTodo_id && !params.childTodo_id) {
-                fetchParentTodo(params.parentTodo_id, token);
-            } else if (params.parentTodo_id && params.childTodo_id) {
+            if (finalParentTodo_id && !params.childTodo_id) {
+                fetchParentTodo(finalParentTodo_id, token);
+            } else if (finalParentTodo_id && params.childTodo_id) {
                 fetchChildTodo(params.childTodo_id, token);
                 dispatch(setCurrentPage("Sub-Todo Details"));
             }
         }
-    }, [dispatch, params.childTodo_id, params.parentTodo_id, token]);
+    }, [dispatch, params.childTodo_id, finalParentTodo_id, token]);
     if (!todo) {
         return <LoaderComponent />;
     }
@@ -306,7 +312,7 @@ const TodoDetails: React.FC = () => {
             <form style={{ width: "100%" }} onSubmit={handleUpdateSubmit}>
                 <div className={includeDarkClass("todo_id", darkMode)}>
                     Todo ID:
-                    {params.parentTodo_id}
+                    {finalParentTodo_id}
                     <CTAIconWrapper onClick={() => setIsEditing(!isEditing)}>
                         <Editsvg />
                     </CTAIconWrapper>
@@ -427,7 +433,7 @@ const TodoDetails: React.FC = () => {
                         </div>
                     )}
                     <div className={includeDarkClass("horizontal_line", darkMode)}></div>
-                    {params.parentTodo_id && !params.childTodo_id ? (
+                    {finalParentTodo_id && !params.childTodo_id ? (
                         <div className={includeDarkClass("todo_subTodos", darkMode)}>
                             <div className={includeDarkClass("subTodo_addbtn", darkMode)}>
                                 <div className={includeDarkClass("header", darkMode)}>
@@ -444,7 +450,7 @@ const TodoDetails: React.FC = () => {
                             <div className={includeDarkClass("todo_desc_desc", darkMode)}>
                                 <TodosListContainer
                                     isSubTodoContainer={true}
-                                    parentTodoId={params.parentTodo_id}
+                                    parentTodoId={finalParentTodo_id}
                                     todosArray={todo.todo}
                                     fetchParentTodo={fetchParentTodo}
                                 />
