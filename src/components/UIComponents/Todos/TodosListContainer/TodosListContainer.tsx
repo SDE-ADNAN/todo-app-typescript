@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import './TodosListContainer.scss'
 import TodoItem from "../TodoItem/TodoListItem";
 import { useDispatch } from "react-redux";
@@ -39,7 +39,9 @@ export const Container: React.FC<Partial<TodoListContainerProps>> = ({hideParent
             <div className={includeDarkClass(`all_todos`, darkMode)}>
                 {todosArray && todosArray.length === 0 ? 'NoTodosSvg' : todosArray ? todosArray.map((item, index) => {
                     return (
-                        <TodoItem isSubTodo={isSubTodoContainer} parentTodoId={parentTodoId} key={item._id} item={item} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} />
+                        <>
+                            <TodoItem isSubTodo={isSubTodoContainer} parentTodoId={parentTodoId} key={item._id} item={item} fetchAllUserData={fetchAllUserData} fetchParentTodo={fetchParentTodo} />
+                        </>
                     )
                 })
                     :

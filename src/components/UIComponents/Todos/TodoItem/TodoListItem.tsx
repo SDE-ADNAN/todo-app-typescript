@@ -14,6 +14,7 @@ import CTAIconWrapper from '../../../WRAPPERS/CTAIconWrapper/CTAIconWrapper';
 import ChevronRight from '../../../../medias/ChevronRight';
 import CrossIcon from '../../../../medias/CrossIcon';
 import { TodoItem } from '../../../../App';
+import TodoDetails from '../../TodoDetails/TodoDetails';
 
 interface PartialTodo extends Partial<TodoItem> { }
 
@@ -23,12 +24,12 @@ interface TodoListItemProps {
     isSubTodo: boolean;
     parentTodoId: string;
     fetchParentTodo?: any;
-
 }
 
 const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUserData, isSubTodo, parentTodoId = "", fetchParentTodo = () => { } }) => {
     const token = useSelector((state: RootState) => state.User.token)
     const theme = useSelector((state: RootState) => state.UI.theme)
+    const [todoItemModalIsOpen,setTodoItemModalIsOpen]= useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
@@ -106,6 +107,7 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
             initial={{ y: -30, opacity: 0, scale: 1 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             transition={{ /*type: "spring", stiffness: 100,*/ duration: .5 }}
+            onClick={() => setTodoItemModalIsOpen(!todoItemModalIsOpen)}
             id={item._id} className={`todo_item_individual ${item && item.status ? `${item.status}` : ''} ${theme.dark ? 'dark' : 'light'}`}>
             <div className={`todo_item_title truncate ${theme.dark ? 'dark' : 'light'}`}>{item && item.title}</div>
             <div className='date_and_time_ctas_container'>
@@ -135,6 +137,9 @@ const TodoListItem: React.FC<Partial<TodoListItemProps>> = ({ item, fetchAllUser
                         }
                     }}>DELETE</button>
                     <button onClick={() => setIsOpen(!isOpen)}>Cancel</button></div>
+            </Modal>
+            <Modal isOpen={todoItemModalIsOpen} onClose={() => setTodoItemModalIsOpen(!todoItemModalIsOpen)} heading={`Todo Details!! `}>
+                <TodoDetails /*todoId={item._id}*/ parentTodo_id={item._id} />
             </Modal>
         </motion.div>
     );
