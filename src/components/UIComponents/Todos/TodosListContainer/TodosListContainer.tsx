@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import './TodosListContainer.scss'
 import TodoItem from "../TodoItem/TodoListItem";
 import { useDispatch } from "react-redux";
